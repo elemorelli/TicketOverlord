@@ -3,6 +3,7 @@ package es.ujaen.dae.ticketlord.models;
 import java.util.List;
 
 public class Recinto {
+    private String nombre;
     private String localidad;
     private String direccion;
     private List<Zona> zonas;
@@ -10,7 +11,8 @@ public class Recinto {
     public Recinto() {
     }
 
-    public Recinto(String localidad, String direccion, List<Zona> zonas) {
+    public Recinto(String nombre, String localidad, String direccion, List<Zona> zonas) {
+        this.nombre = nombre;
         this.localidad = localidad;
         this.direccion = direccion;
         this.zonas = zonas;
@@ -23,6 +25,14 @@ public class Recinto {
                 ", direccion='" + direccion + '\'' +
                 ", zonas=" + zonas +
                 '}';
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getLocalidad() {
