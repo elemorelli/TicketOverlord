@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="usuariosTest" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <bean class="es.ujaen.dae.ticketlord.models.Usuario">
+                    <property name="token" value="9999"/>
+                    <property name="nombre" value="Administrador"/>
+                    <property name="password" value="admin"/>
+                </bean>
+                <bean class="es.ujaen.dae.ticketlord.models.Usuario">
+                    <property name="token" value="1001"/>
+                    <property name="nombre" value="alessandro"/>
+                    <property name="password" value="intrigante"/>
+                </bean>
+                <bean class="es.ujaen.dae.ticketlord.models.Usuario">
+                    <property name="token" value="1002"/>
+                    <property name="nombre" value="egle"/>
+                    <property name="password" value="maperque"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+</beans>

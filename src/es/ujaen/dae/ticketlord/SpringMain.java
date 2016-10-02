@@ -1,6 +1,5 @@
 package es.ujaen.dae.ticketlord;
 
-import es.ujaen.dae.ticketlord.dtos.UsuarioDTO;
 import es.ujaen.dae.ticketlord.services.VentaTicketsService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -13,8 +12,6 @@ public class SpringMain {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
 
-        UsuarioDTO usuario1 = new UsuarioDTO();
-
-        ventaTicketsService.agregarUsuario(usuario1);
+        System.out.println(ventaTicketsService.listarUsuarios());
     }
 }

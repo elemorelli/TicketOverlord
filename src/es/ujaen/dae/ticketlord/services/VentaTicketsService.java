@@ -4,12 +4,15 @@ import es.ujaen.dae.ticketlord.dtos.EventoDTO;
 import es.ujaen.dae.ticketlord.dtos.TicketDTO;
 import es.ujaen.dae.ticketlord.dtos.UsuarioDTO;
 import es.ujaen.dae.ticketlord.dtos.ZonaDTO;
+import es.ujaen.dae.ticketlord.models.Usuario;
 
 import java.util.Calendar;
 import java.util.List;
 
 public interface VentaTicketsService {
     void agregarUsuario(UsuarioDTO usuario);
+
+    List<UsuarioDTO> listarUsuarios();
 
     EventoDTO buscarEventoPorNombre(String nombre);
 
