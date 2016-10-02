@@ -7,6 +7,15 @@ public class Recinto {
     private String direccion;
     private List<Zona> zonas;
 
+    @Override
+    public String toString() {
+        return "Recinto{" +
+                "localidad='" + localidad + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", zonas=" + zonas +
+                '}';
+    }
+
     public String getLocalidad() {
         return localidad;
     }

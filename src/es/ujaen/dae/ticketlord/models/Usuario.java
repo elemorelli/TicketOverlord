@@ -8,6 +8,16 @@ public class Usuario {
     private String password;
     private List<Ticket> tickets;
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "token=" + token +
+                ", nombre='" + nombre + '\'' +
+                ", password='" + password + '\'' +
+                ", tickets=" + tickets +
+                '}';
+    }
+
     public Long getToken() {
         return token;
     }

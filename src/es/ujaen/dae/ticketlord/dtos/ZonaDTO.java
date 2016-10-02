@@ -4,6 +4,14 @@ public class ZonaDTO {
     private Character nombre;
     private Integer asientos;
 
+    @Override
+    public String toString() {
+        return "ZonaDTO{" +
+                "nombre=" + nombre +
+                ", asientos=" + asientos +
+                '}';
+    }
+
     public Character getNombre() {
         return nombre;
     }

@@ -6,6 +6,14 @@ public class PrecioPorZonaDTO {
     private BigDecimal precio;
     private ZonaDTO zona;
 
+    @Override
+    public String toString() {
+        return "PrecioPorZonaDTO{" +
+                "precio=" + precio +
+                ", zona=" + zona +
+                '}';
+    }
+
     public BigDecimal getPrecio() {
         return precio;
     }

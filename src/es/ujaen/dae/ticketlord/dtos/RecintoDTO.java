@@ -7,6 +7,15 @@ public class RecintoDTO {
     private String direccion;
     private List<ZonaDTO> zonas;
 
+    @Override
+    public String toString() {
+        return "RecintoDTO{" +
+                "localidad='" + localidad + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", zonas=" + zonas +
+                '}';
+    }
+
     public String getLocalidad() {
         return localidad;
     }

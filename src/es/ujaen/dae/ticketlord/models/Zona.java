@@ -4,6 +4,14 @@ public class Zona {
     private Character nombre;
     private Integer asientos;
 
+    @Override
+    public String toString() {
+        return "Zona{" +
+                "nombre=" + nombre +
+                ", asientos=" + asientos +
+                '}';
+    }
+
     public Character getNombre() {
         return nombre;
     }

@@ -10,6 +10,17 @@ public class Evento {
     private Recinto recinto;
     private List<PrecioPorZona> preciosPorZona;
 
+    @Override
+    public String toString() {
+        return "Evento{" +
+                "nombre='" + nombre + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", fecha=" + fecha +
+                ", recinto=" + recinto +
+                ", preciosPorZona=" + preciosPorZona +
+                '}';
+    }
+
     public String getNombre() {
         return nombre;
     }

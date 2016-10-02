@@ -3,16 +3,17 @@ package es.ujaen.dae.ticketlord.models;
 import java.math.BigDecimal;
 
 public class Ticket {
-    private BigDecimal precio;
     private Evento evento;
     private Zona zona;
+    private BigDecimal precio;
 
-    public BigDecimal getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(BigDecimal precio) {
-        this.precio = precio;
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "evento=" + evento +
+                ", zona=" + zona +
+                ", precio=" + precio +
+                '}';
     }
 
     public Evento getEvento() {
@@ -29,5 +30,13 @@ public class Ticket {
 
     public void setZona(Zona zona) {
         this.zona = zona;
+    }
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
     }
 }
