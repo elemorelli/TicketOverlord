@@ -1,4 +1,4 @@
-package com.uja.dae.ticketlord.models;
+package es.ujaen.dae.ticketlord.models;
 
 import java.util.Calendar;
 import java.util.List;

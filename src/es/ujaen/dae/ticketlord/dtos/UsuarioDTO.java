@@ -1,4 +1,4 @@
-package com.uja.dae.ticketlord.dtos;
+package es.ujaen.dae.ticketlord.dtos;
 
 public class UsuarioDTO {
     private Long token;

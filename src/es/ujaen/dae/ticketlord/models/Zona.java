@@ -1,6 +1,6 @@
-package com.uja.dae.ticketlord.dtos;
+package es.ujaen.dae.ticketlord.models;
 
-public class ZonaDTO {
+public class Zona {
     private Character nombre;
     private Integer asientos;
 }

@@ -1,4 +1,4 @@
-package com.uja.dae.ticketlord.dtos;
+package es.ujaen.dae.ticketlord.dtos;
 
 import java.math.BigDecimal;
 

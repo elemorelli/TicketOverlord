@@ -1,9 +1,9 @@
-package com.uja.dae.ticketlord.services;
+package es.ujaen.dae.ticketlord.services;
 
-import com.uja.dae.ticketlord.dtos.EventoDTO;
-import com.uja.dae.ticketlord.dtos.TicketDTO;
-import com.uja.dae.ticketlord.dtos.UsuarioDTO;
-import com.uja.dae.ticketlord.dtos.ZonaDTO;
+import es.ujaen.dae.ticketlord.dtos.EventoDTO;
+import es.ujaen.dae.ticketlord.dtos.TicketDTO;
+import es.ujaen.dae.ticketlord.dtos.UsuarioDTO;
+import es.ujaen.dae.ticketlord.dtos.ZonaDTO;
 
 import java.util.Calendar;
 import java.util.List;
