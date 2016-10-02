@@ -1,4 +1,4 @@
-package com.uja.dae.ticketlord.dto;
+package com.uja.dae.ticketlord.dtos;
 
 import java.util.Calendar;
 import java.util.List;
