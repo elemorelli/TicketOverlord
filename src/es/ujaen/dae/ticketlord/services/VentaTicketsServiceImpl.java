@@ -53,15 +53,15 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
 
     @Override
     public void agregarUsuario(UsuarioDTO usuario) {
-
+        usuarios.add(new Usuario(usuario.getToken(), usuario.getNombre(), usuario.getPassword(), null));
     }
 
     @Override
     public List<UsuarioDTO> listarUsuarios() {
 
         List<UsuarioDTO> usuariosDTO = new ArrayList<>();
-        for (Usuario u : usuarios) {
-            UsuarioDTO dto = new UsuarioDTO(u.getToken(), u.getNombre(), u.getPassword());
+        for (Usuario usuario : usuarios) {
+            UsuarioDTO dto = new UsuarioDTO(usuario.getToken(), usuario.getNombre(), usuario.getPassword());
             usuariosDTO.add(dto);
         }
         return usuariosDTO;
