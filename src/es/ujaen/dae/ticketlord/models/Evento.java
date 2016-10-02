@@ -10,6 +10,17 @@ public class Evento {
     private Recinto recinto;
     private List<PrecioPorZona> preciosPorZona;
 
+    public Evento() {
+    }
+
+    public Evento(String nombre, String tipo, Calendar fecha, Recinto recinto, List<PrecioPorZona> preciosPorZona) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.fecha = fecha;
+        this.recinto = recinto;
+        this.preciosPorZona = preciosPorZona;
+    }
+
     @Override
     public String toString() {
         return "Evento{" +

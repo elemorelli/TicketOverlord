@@ -8,6 +8,16 @@ public class Usuario {
     private String password;
     private List<Ticket> tickets;
 
+    public Usuario() {
+    }
+
+    public Usuario(Long token, String nombre, String password, List<Ticket> tickets) {
+        this.token = token;
+        this.nombre = nombre;
+        this.password = password;
+        this.tickets = tickets;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +

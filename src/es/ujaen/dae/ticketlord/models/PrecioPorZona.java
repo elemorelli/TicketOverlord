@@ -6,6 +6,14 @@ public class PrecioPorZona {
     private BigDecimal precio;
     private Zona zona;
 
+    public PrecioPorZona() {
+    }
+
+    public PrecioPorZona(BigDecimal precio, Zona zona) {
+        this.precio = precio;
+        this.zona = zona;
+    }
+
     @Override
     public String toString() {
         return "PrecioPorZona{" +

@@ -7,6 +7,15 @@ public class TicketDTO {
     private EventoDTO evento;
     private ZonaDTO zona;
 
+    public TicketDTO() {
+    }
+
+    public TicketDTO(BigDecimal precio, EventoDTO evento, ZonaDTO zona) {
+        this.precio = precio;
+        this.evento = evento;
+        this.zona = zona;
+    }
+
     @Override
     public String toString() {
         return "TicketDTO{" +

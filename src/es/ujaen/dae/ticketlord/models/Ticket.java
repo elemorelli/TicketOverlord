@@ -7,6 +7,15 @@ public class Ticket {
     private Zona zona;
     private BigDecimal precio;
 
+    public Ticket() {
+    }
+
+    public Ticket(Evento evento, Zona zona, BigDecimal precio) {
+        this.evento = evento;
+        this.zona = zona;
+        this.precio = precio;
+    }
+
     @Override
     public String toString() {
         return "Ticket{" +

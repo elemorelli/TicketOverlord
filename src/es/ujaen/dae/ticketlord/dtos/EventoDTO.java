@@ -10,6 +10,24 @@ public class EventoDTO {
     private RecintoDTO recinto;
     private List<PrecioPorZonaDTO> preciosPorZona;
 
+    public EventoDTO() {
+    }
+
+    public EventoDTO(String nombre, String tipo, Calendar fecha, RecintoDTO recinto) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.fecha = fecha;
+        this.recinto = recinto;
+    }
+
+    public EventoDTO(String nombre, String tipo, Calendar fecha, RecintoDTO recinto, List<PrecioPorZonaDTO> preciosPorZona) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.fecha = fecha;
+        this.recinto = recinto;
+        this.preciosPorZona = preciosPorZona;
+    }
+
     @Override
     public String toString() {
         return "EventoDTO{" +

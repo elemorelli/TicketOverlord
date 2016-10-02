@@ -4,6 +4,14 @@ public class Zona {
     private Character nombre;
     private Integer asientos;
 
+    public Zona() {
+    }
+
+    public Zona(Character nombre, Integer asientos) {
+        this.nombre = nombre;
+        this.asientos = asientos;
+    }
+
     @Override
     public String toString() {
         return "Zona{" +

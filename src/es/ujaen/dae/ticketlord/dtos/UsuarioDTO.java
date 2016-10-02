@@ -5,6 +5,15 @@ public class UsuarioDTO {
     private String nombre;
     private String password;
 
+    public UsuarioDTO() {
+    }
+
+    public UsuarioDTO(Long token, String nombre, String password) {
+        this.token = token;
+        this.nombre = nombre;
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "UsuarioDTO{" +
