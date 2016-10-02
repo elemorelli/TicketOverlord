@@ -15,7 +15,7 @@ public class SpringMain {
 
         System.out.println(ventaTicketsService.listarUsuarios());
 
-        ventaTicketsService.agregarUsuario(new UsuarioDTO(1003L, "eleazar", "password"));
+        ventaTicketsService.agregarUsuario(new UsuarioDTO("eleazar", "password"));
 
         System.out.println(ventaTicketsService.listarUsuarios());
     }

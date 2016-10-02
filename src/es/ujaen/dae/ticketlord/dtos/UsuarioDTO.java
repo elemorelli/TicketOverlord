@@ -1,15 +1,20 @@
 package es.ujaen.dae.ticketlord.dtos;
 
 public class UsuarioDTO {
-    private Long token;
+    private String uuidToken;
     private String nombre;
     private String password;
 
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(Long token, String nombre, String password) {
-        this.token = token;
+    public UsuarioDTO(String nombre, String password) {
+        this.nombre = nombre;
+        this.password = password;
+    }
+
+    public UsuarioDTO(String uuidToken, String nombre, String password) {
+        this.uuidToken = uuidToken;
         this.nombre = nombre;
         this.password = password;
     }
@@ -17,18 +22,18 @@ public class UsuarioDTO {
     @Override
     public String toString() {
         return "UsuarioDTO{" +
-                "token=" + token +
+                "uuidToken=" + uuidToken +
                 ", nombre='" + nombre + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
 
-    public Long getToken() {
-        return token;
+    public String getUuidToken() {
+        return uuidToken;
     }
 
-    public void setToken(Long token) {
-        this.token = token;
+    public void setUuidToken(String uuidToken) {
+        this.uuidToken = uuidToken;
     }
 
     public String getNombre() {

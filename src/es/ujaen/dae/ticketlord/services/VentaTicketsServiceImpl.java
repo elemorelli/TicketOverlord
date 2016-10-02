@@ -12,6 +12,7 @@ import es.ujaen.dae.ticketlord.models.Usuario;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 public class VentaTicketsServiceImpl implements VentaTicketsService {
     private List<Evento> eventos;
@@ -53,7 +54,9 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
 
     @Override
     public void agregarUsuario(UsuarioDTO usuario) {
-        usuarios.add(new Usuario(usuario.getToken(), usuario.getNombre(), usuario.getPassword(), null));
+        Usuario nuevoUsuario = new Usuario(usuario.getNombre(), usuario.getPassword());
+        nuevoUsuario.setUuidToken(UUID.randomUUID().toString());
+        usuarios.add(nuevoUsuario);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
 
         List<UsuarioDTO> usuariosDTO = new ArrayList<>();
         for (Usuario usuario : usuarios) {
-            UsuarioDTO dto = new UsuarioDTO(usuario.getToken(), usuario.getNombre(), usuario.getPassword());
+            UsuarioDTO dto = new UsuarioDTO(usuario.getUuidToken(), usuario.getNombre(), usuario.getPassword());
             usuariosDTO.add(dto);
         }
         return usuariosDTO;

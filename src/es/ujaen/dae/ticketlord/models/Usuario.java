@@ -3,7 +3,7 @@ package es.ujaen.dae.ticketlord.models;
 import java.util.List;
 
 public class Usuario {
-    private Long token;
+    private String uuidToken;
     private String nombre;
     private String password;
     private List<Ticket> tickets;
@@ -11,8 +11,13 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long token, String nombre, String password, List<Ticket> tickets) {
-        this.token = token;
+    public Usuario(String nombre, String password) {
+        this.nombre = nombre;
+        this.password = password;
+    }
+
+    public Usuario(String uuidToken, String nombre, String password, List<Ticket> tickets) {
+        this.uuidToken = uuidToken;
         this.nombre = nombre;
         this.password = password;
         this.tickets = tickets;
@@ -21,19 +26,19 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "token=" + token +
+                "uuidToken=" + uuidToken +
                 ", nombre='" + nombre + '\'' +
                 ", password='" + password + '\'' +
                 ", tickets=" + tickets +
                 '}';
     }
 
-    public Long getToken() {
-        return token;
+    public String getUuidToken() {
+        return uuidToken;
     }
 
-    public void setToken(Long token) {
-        this.token = token;
+    public void setUuidToken(String uuidToken) {
+        this.uuidToken = uuidToken;
     }
 
     public String getNombre() {
