@@ -6,4 +6,28 @@ public class TicketDTO {
     private BigDecimal precio;
     private EventoDTO evento;
     private ZonaDTO zona;
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    public EventoDTO getEvento() {
+        return evento;
+    }
+
+    public void setEvento(EventoDTO evento) {
+        this.evento = evento;
+    }
+
+    public ZonaDTO getZona() {
+        return zona;
+    }
+
+    public void setZona(ZonaDTO zona) {
+        this.zona = zona;
+    }
 }

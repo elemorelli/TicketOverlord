@@ -9,4 +9,44 @@ public class EventoDTO {
     private Calendar fecha;
     private RecintoDTO recinto;
     private List<PrecioPorZonaDTO> preciosPorZona;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public Calendar getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Calendar fecha) {
+        this.fecha = fecha;
+    }
+
+    public RecintoDTO getRecinto() {
+        return recinto;
+    }
+
+    public void setRecinto(RecintoDTO recinto) {
+        this.recinto = recinto;
+    }
+
+    public List<PrecioPorZonaDTO> getPreciosPorZona() {
+        return preciosPorZona;
+    }
+
+    public void setPreciosPorZona(List<PrecioPorZonaDTO> preciosPorZona) {
+        this.preciosPorZona = preciosPorZona;
+    }
 }
