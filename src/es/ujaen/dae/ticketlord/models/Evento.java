@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketlord.models;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class Evento {
     private List<PrecioPorZona> preciosPorZona;
 
     public Evento() {
+        this.preciosPorZona = new ArrayList<>();
     }
 
     public Evento(String nombre, String tipo, Calendar fecha, Recinto recinto, List<PrecioPorZona> preciosPorZona) {
@@ -70,5 +72,9 @@ public class Evento {
 
     public void setPreciosPorZona(List<PrecioPorZona> preciosPorZona) {
         this.preciosPorZona = preciosPorZona;
+    }
+
+    public void addPrecioPorZona(PrecioPorZona precioPorZona) {
+        this.preciosPorZona.add(precioPorZona);
     }
 }

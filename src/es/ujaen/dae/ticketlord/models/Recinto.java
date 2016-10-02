@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketlord.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recinto {
@@ -9,6 +10,7 @@ public class Recinto {
     private List<Zona> zonas;
 
     public Recinto() {
+        this.zonas = new ArrayList<>();
     }
 
     public Recinto(String nombre, String localidad, String direccion, List<Zona> zonas) {
@@ -57,5 +59,9 @@ public class Recinto {
 
     public void setZonas(List<Zona> zonas) {
         this.zonas = zonas;
+    }
+
+    public void addZona(Zona zona) {
+        this.zonas.add(zona);
     }
 }

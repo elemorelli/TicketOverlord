@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketlord.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
@@ -9,11 +10,13 @@ public class Usuario {
     private List<Ticket> tickets;
 
     public Usuario() {
+        this.tickets = new ArrayList<>();
     }
 
     public Usuario(String nombre, String password) {
         this.nombre = nombre;
         this.password = password;
+        this.tickets = new ArrayList<>();
     }
 
     public Usuario(String uuidToken, String nombre, String password, List<Ticket> tickets) {
@@ -63,5 +66,9 @@ public class Usuario {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 }

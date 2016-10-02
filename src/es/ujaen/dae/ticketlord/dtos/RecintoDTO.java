@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketlord.dtos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecintoDTO {
@@ -9,12 +10,14 @@ public class RecintoDTO {
     private List<ZonaDTO> zonas;
 
     public RecintoDTO() {
+        this.zonas = new ArrayList<>();
     }
 
     public RecintoDTO(String nombre, String localidad, String direccion) {
         this.nombre = nombre;
         this.localidad = localidad;
         this.direccion = direccion;
+        this.zonas = new ArrayList<>();
     }
 
     public RecintoDTO(String nombre, String localidad, String direccion, List<ZonaDTO> zonas) {
@@ -63,5 +66,9 @@ public class RecintoDTO {
 
     public void setZonas(List<ZonaDTO> zonas) {
         this.zonas = zonas;
+    }
+
+    public void addZona(ZonaDTO zona) {
+        this.zonas.add(zona);
     }
 }
