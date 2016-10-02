@@ -13,10 +13,15 @@ public class SpringMain {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
 
+        System.out.println("-- Usuarios:");
         System.out.println(ventaTicketsService.listarUsuarios());
 
         ventaTicketsService.agregarUsuario(new UsuarioDTO("eleazar", "password"));
 
+        System.out.println("-- Usuarios:");
         System.out.println(ventaTicketsService.listarUsuarios());
+
+        System.out.println("-- Recintos:");
+        System.out.println(ventaTicketsService.listarRecintos());
     }
 }

@@ -24,4 +24,58 @@
         </property>
     </bean>
 
+    <bean id="recintosTest" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <bean class="es.ujaen.dae.ticketlord.models.Recinto">
+                    <property name="nombre" value="IFEJA, Ferias Jaén"/>
+                    <property name="localidad" value="Jaén, Jaén"/>
+                    <property name="direccion" value="Prolongación Carretera Granada S/N"/>
+                    <property name="zonas">
+                        <list>
+                            <bean class="es.ujaen.dae.ticketlord.models.Zona">
+                                <property name="nombre" value="A"/>
+                                <property name="asientos" value="100"/>
+                            </bean>
+                            <bean class="es.ujaen.dae.ticketlord.models.Zona">
+                                <property name="nombre" value="B"/>
+                                <property name="asientos" value="200"/>
+                            </bean>
+                            <bean class="es.ujaen.dae.ticketlord.models.Zona">
+                                <property name="nombre" value="C"/>
+                                <property name="asientos" value="300"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+
+                <bean class="es.ujaen.dae.ticketlord.models.Recinto">
+                    <property name="nombre" value="Plaza de Toros de Jaén"/>
+                    <property name="localidad" value="Jaén, Jaén"/>
+                    <property name="direccion" value="Alameda de Capuchinos S/N"/>
+                    <property name="zonas">
+                        <list>
+                            <bean class="es.ujaen.dae.ticketlord.models.Zona">
+                                <property name="nombre" value="A"/>
+                                <property name="asientos" value="200"/>
+                            </bean>
+                            <bean class="es.ujaen.dae.ticketlord.models.Zona">
+                                <property name="nombre" value="B"/>
+                                <property name="asientos" value="200"/>
+                            </bean>
+                            <bean class="es.ujaen.dae.ticketlord.models.Zona">
+                                <property name="nombre" value="C"/>
+                                <property name="asientos" value="300"/>
+                            </bean>
+                            <bean class="es.ujaen.dae.ticketlord.models.Zona">
+                                <property name="nombre" value="D"/>
+                                <property name="asientos" value="300"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
 </beans>

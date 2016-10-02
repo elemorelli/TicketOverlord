@@ -1,13 +1,7 @@
 package es.ujaen.dae.ticketlord.services;
 
-import es.ujaen.dae.ticketlord.dtos.EventoDTO;
-import es.ujaen.dae.ticketlord.dtos.TicketDTO;
-import es.ujaen.dae.ticketlord.dtos.UsuarioDTO;
-import es.ujaen.dae.ticketlord.dtos.ZonaDTO;
-import es.ujaen.dae.ticketlord.models.Evento;
-import es.ujaen.dae.ticketlord.models.Recinto;
-import es.ujaen.dae.ticketlord.models.Ticket;
-import es.ujaen.dae.ticketlord.models.Usuario;
+import es.ujaen.dae.ticketlord.dtos.*;
+import es.ujaen.dae.ticketlord.models.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,12 +56,27 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     @Override
     public List<UsuarioDTO> listarUsuarios() {
 
-        List<UsuarioDTO> usuariosDTO = new ArrayList<>();
-        for (Usuario usuario : usuarios) {
+        List<UsuarioDTO> usuarios = new ArrayList<>();
+        for (Usuario usuario : this.usuarios) {
             UsuarioDTO dto = new UsuarioDTO(usuario.getUuidToken(), usuario.getNombre(), usuario.getPassword());
-            usuariosDTO.add(dto);
+            usuarios.add(dto);
         }
-        return usuariosDTO;
+        return usuarios;
+    }
+
+    @Override
+    public List<RecintoDTO> listarRecintos() {
+
+        List<RecintoDTO> recintos = new ArrayList<>();
+        for (Recinto recinto : this.recintos) {
+            RecintoDTO dto = new RecintoDTO(recinto.getNombre(), recinto.getLocalidad(), recinto.getDireccion());
+            for (Zona zona : recinto.getZonas()) {
+                ZonaDTO dtoZona = new ZonaDTO(zona.getNombre(), zona.getAsientos());
+                dto.addZona(dtoZona);
+            }
+            recintos.add(dto);
+        }
+        return recintos;
     }
 
     @Override

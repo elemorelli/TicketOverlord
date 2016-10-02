@@ -6,6 +6,7 @@
 
     <bean id="ventaTickets" class="es.ujaen.dae.ticketlord.services.VentaTicketsServiceImpl">
         <property name="usuarios" ref="usuariosTest"/>
+        <property name="recintos" ref="recintosTest"/>
     </bean>
 
 </beans>
