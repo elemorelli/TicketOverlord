@@ -1,4 +1,4 @@
-package es.ujaen.dae.ticketlord.models;
+package es.ujaen.dae.ticketoverlord.models;
 
 import java.util.ArrayList;
 import java.util.List;

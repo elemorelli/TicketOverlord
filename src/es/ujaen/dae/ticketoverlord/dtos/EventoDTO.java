@@ -1,21 +1,29 @@
-package es.ujaen.dae.ticketlord.models;
+package es.ujaen.dae.ticketoverlord.dtos;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class Evento {
+public class EventoDTO {
     private String nombre;
     private String tipo;
     private Calendar fecha;
-    private Recinto recinto;
-    private List<PrecioPorZona> preciosPorZona;
+    private RecintoDTO recinto;
+    private List<PrecioPorZonaDTO> preciosPorZona;
 
-    public Evento() {
+    public EventoDTO() {
         this.preciosPorZona = new ArrayList<>();
     }
 
-    public Evento(String nombre, String tipo, Calendar fecha, Recinto recinto, List<PrecioPorZona> preciosPorZona) {
+    public EventoDTO(String nombre, String tipo, Calendar fecha, RecintoDTO recinto) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.fecha = fecha;
+        this.recinto = recinto;
+        this.preciosPorZona = new ArrayList<>();
+    }
+
+    public EventoDTO(String nombre, String tipo, Calendar fecha, RecintoDTO recinto, List<PrecioPorZonaDTO> preciosPorZona) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.fecha = fecha;
@@ -25,7 +33,7 @@ public class Evento {
 
     @Override
     public String toString() {
-        return "Evento{" +
+        return "EventoDTO{" +
                 "nombre='" + nombre + '\'' +
                 ", tipo='" + tipo + '\'' +
                 ", fecha=" + fecha +
@@ -58,23 +66,23 @@ public class Evento {
         this.fecha = fecha;
     }
 
-    public Recinto getRecinto() {
+    public RecintoDTO getRecinto() {
         return recinto;
     }
 
-    public void setRecinto(Recinto recinto) {
+    public void setRecinto(RecintoDTO recinto) {
         this.recinto = recinto;
     }
 
-    public List<PrecioPorZona> getPreciosPorZona() {
+    public List<PrecioPorZonaDTO> getPreciosPorZona() {
         return preciosPorZona;
     }
 
-    public void setPreciosPorZona(List<PrecioPorZona> preciosPorZona) {
+    public void setPreciosPorZona(List<PrecioPorZonaDTO> preciosPorZona) {
         this.preciosPorZona = preciosPorZona;
     }
 
-    public void addPrecioPorZona(PrecioPorZona precioPorZona) {
+    public void addPrecioPorZona(PrecioPorZonaDTO precioPorZona) {
         this.preciosPorZona.add(precioPorZona);
     }
 }

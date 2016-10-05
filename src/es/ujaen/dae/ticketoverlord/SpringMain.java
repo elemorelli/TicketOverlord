@@ -1,7 +1,7 @@
-package es.ujaen.dae.ticketlord;
+package es.ujaen.dae.ticketoverlord;
 
-import es.ujaen.dae.ticketlord.dtos.UsuarioDTO;
-import es.ujaen.dae.ticketlord.services.VentaTicketsService;
+import es.ujaen.dae.ticketoverlord.dtos.UsuarioDTO;
+import es.ujaen.dae.ticketoverlord.services.VentaTicketsService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

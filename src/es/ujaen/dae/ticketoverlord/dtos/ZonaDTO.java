@@ -1,4 +1,4 @@
-package es.ujaen.dae.ticketlord.dtos;
+package es.ujaen.dae.ticketoverlord.dtos;
 
 public class ZonaDTO {
     private Character nombre;

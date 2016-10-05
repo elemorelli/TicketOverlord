@@ -1,6 +1,6 @@
-package es.ujaen.dae.ticketlord.services;
+package es.ujaen.dae.ticketoverlord.services;
 
-import es.ujaen.dae.ticketlord.dtos.*;
+import es.ujaen.dae.ticketoverlord.dtos.*;
 
 import java.util.Calendar;
 import java.util.List;

@@ -1,19 +1,26 @@
-package es.ujaen.dae.ticketlord.models;
+package es.ujaen.dae.ticketoverlord.dtos;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Recinto {
+public class RecintoDTO {
     private String nombre;
     private String localidad;
     private String direccion;
-    private List<Zona> zonas;
+    private List<ZonaDTO> zonas;
 
-    public Recinto() {
+    public RecintoDTO() {
         this.zonas = new ArrayList<>();
     }
 
-    public Recinto(String nombre, String localidad, String direccion, List<Zona> zonas) {
+    public RecintoDTO(String nombre, String localidad, String direccion) {
+        this.nombre = nombre;
+        this.localidad = localidad;
+        this.direccion = direccion;
+        this.zonas = new ArrayList<>();
+    }
+
+    public RecintoDTO(String nombre, String localidad, String direccion, List<ZonaDTO> zonas) {
         this.nombre = nombre;
         this.localidad = localidad;
         this.direccion = direccion;
@@ -22,7 +29,7 @@ public class Recinto {
 
     @Override
     public String toString() {
-        return "Recinto{" +
+        return "RecintoDTO{" +
                 "localidad='" + localidad + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", zonas=" + zonas +
@@ -53,15 +60,15 @@ public class Recinto {
         this.direccion = direccion;
     }
 
-    public List<Zona> getZonas() {
+    public List<ZonaDTO> getZonas() {
         return zonas;
     }
 
-    public void setZonas(List<Zona> zonas) {
+    public void setZonas(List<ZonaDTO> zonas) {
         this.zonas = zonas;
     }
 
-    public void addZona(Zona zona) {
+    public void addZona(ZonaDTO zona) {
         this.zonas.add(zona);
     }
 }

@@ -4,7 +4,7 @@
 
     <import resource="testData.xml"/>
 
-    <bean id="ventaTickets" class="es.ujaen.dae.ticketlord.services.VentaTicketsServiceImpl">
+    <bean id="ventaTickets" class="es.ujaen.dae.ticketoverlord.services.VentaTicketsServiceImpl">
         <property name="usuarios" ref="usuariosTest"/>
         <property name="recintos" ref="recintosTest"/>
     </bean>

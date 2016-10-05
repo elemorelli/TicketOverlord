@@ -1,22 +1,22 @@
-package es.ujaen.dae.ticketlord.models;
+package es.ujaen.dae.ticketoverlord.dtos;
 
 import java.math.BigDecimal;
 
-public class PrecioPorZona {
+public class PrecioPorZonaDTO {
     private BigDecimal precio;
-    private Zona zona;
+    private ZonaDTO zona;
 
-    public PrecioPorZona() {
+    public PrecioPorZonaDTO() {
     }
 
-    public PrecioPorZona(BigDecimal precio, Zona zona) {
+    public PrecioPorZonaDTO(BigDecimal precio, ZonaDTO zona) {
         this.precio = precio;
         this.zona = zona;
     }
 
     @Override
     public String toString() {
-        return "PrecioPorZona{" +
+        return "PrecioPorZonaDTO{" +
                 "precio=" + precio +
                 ", zona=" + zona +
                 '}';
@@ -30,11 +30,11 @@ public class PrecioPorZona {
         this.precio = precio;
     }
 
-    public Zona getZona() {
+    public ZonaDTO getZona() {
         return zona;
     }
 
-    public void setZona(Zona zona) {
+    public void setZona(ZonaDTO zona) {
         this.zona = zona;
     }
 }
