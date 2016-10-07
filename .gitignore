@@ -16,7 +16,8 @@ out/
 lib/
 
 # Build tools
-.gradle
+.gradle/
+build/
 
 # Specific IDE files
 .idea/
