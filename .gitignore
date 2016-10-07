@@ -15,6 +15,9 @@ hs_err_pid*
 out/
 lib/
 
+# Build tools
+.gradle
+
 # Specific IDE files
 .idea/
 *.iml
