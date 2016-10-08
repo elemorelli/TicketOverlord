@@ -6,7 +6,11 @@ import java.util.Calendar;
 import java.util.List;
 
 public interface VentaTicketsService {
-    void agregarUsuario(UsuarioDTO usuario);
+    void agregarUsuario(UsuarioDTO usuarioAAgregar);
+
+    Boolean existeUsuario(UsuarioDTO usuarioAComprobar);
+
+    UsuarioDTO getDatosUsuario(UsuarioDTO usuarioAObtener);
 
     List<UsuarioDTO> listarUsuarios();
 

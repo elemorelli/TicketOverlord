@@ -47,10 +47,34 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     }
 
     @Override
-    public void agregarUsuario(UsuarioDTO usuario) {
-        Usuario nuevoUsuario = new Usuario(usuario.getNombre(), usuario.getPassword());
+    public void agregarUsuario(UsuarioDTO usuarioAAgregar) {
+
+        Usuario nuevoUsuario = new Usuario(usuarioAAgregar.getNombre(), usuarioAAgregar.getPassword());
         nuevoUsuario.setUuidToken(UUID.randomUUID().toString());
         usuarios.add(nuevoUsuario);
+    }
+
+    @Override
+    public Boolean existeUsuario(UsuarioDTO usuarioAComprobar) {
+
+        for (Usuario usuario : this.usuarios) {
+            if (usuario.getNombre().equals(usuarioAComprobar.getNombre())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public UsuarioDTO getDatosUsuario(UsuarioDTO usuarioAObtener) {
+
+        for (Usuario usuario : this.usuarios) {
+            if (usuario.getNombre().equals(usuarioAObtener.getNombre())) {
+                return new UsuarioDTO(usuario.getNombre(), usuario.getPassword());
+            }
+        }
+
+        return null;
     }
 
     @Override
