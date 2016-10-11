@@ -1,5 +1,7 @@
 package es.ujaen.dae.ticketoverlord.client;
 
+import es.ujaen.dae.ticketoverlord.dtos.EventoDTO;
+import es.ujaen.dae.ticketoverlord.dtos.PrecioPorZonaDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UsuarioDTO;
 import es.ujaen.dae.ticketoverlord.services.VentaTicketsService;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -9,11 +11,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class ConsoleClient {
     private static InputStreamReader isr = new InputStreamReader(System.in);
     private static BufferedReader br = new BufferedReader(isr);
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MMM dd");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private static AbstractApplicationContext appContext = null;
 
     public static void main(String[] args) {
@@ -50,7 +53,7 @@ public class ConsoleClient {
             case 2:
                 UsuarioDTO usuarioLogueado = autenticar();
                 if (usuarioLogueado != null) do {
-                    if (false) { // TODO: Falta algo en el DTO que le diga facil si es Admin o no
+                    if (usuarioLogueado.isAdmin()) {
                         op = imprimirMenuAdmin(op, usuarioLogueado);
                         parsearOpcionAdmin(op);
                     } else {
@@ -85,9 +88,37 @@ public class ConsoleClient {
     }
 
     private static void parsearOpcionUsuario(int op) {
+        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+
         switch (op) {
             case 1:
                 System.out.println("1.- Buscar eventos por nombre");
+                System.out.println("Ingrese el nombre del evento:");
+                String nombreEvento = readString();
+                // TODO: Deberia ser una lista? Puede no ser unico
+                // List<EventoDTO> eventos = ventaTicketsService.buscarEventoPorNombre(nombreEvento);
+                EventoDTO evento = ventaTicketsService.buscarEventoPorNombre(nombreEvento);
+                if (evento != null) {
+                    System.out.println("Evento \"" + evento.getNombre() + "\"");
+                    System.out.println("Tipo: " + evento.getTipo());
+                    System.out.println("Fecha: " + dateFormat.format(evento.getFecha().getTime()));
+                    System.out.println("Recinto: " + evento.getRecinto().getNombre());
+                    System.out.println("Localidad: " + evento.getRecinto().getLocalidad());
+
+                    List<PrecioPorZonaDTO> precios = evento.getPreciosPorZona();
+                    if (!precios.isEmpty()) {
+                        System.out.println("Precios:");
+                        for (PrecioPorZonaDTO precioPorZona : precios) {
+                            System.out.println("  Zona '" + precioPorZona.getZona().getNombre()
+                                    + "' - $" + precioPorZona.getPrecio());
+                        }
+                    } else {
+                        System.out.println("Todavía no se ha asignado los precios");
+                    }
+                } else {
+                    System.out.println("No se ha encontrado el evento");
+                }
+
                 break;
             case 2:
                 System.out.println("2.- Buscar eventos por nombre y localidad");
@@ -164,7 +195,7 @@ public class ConsoleClient {
             UsuarioDTO usuarioAValidar = ventaTicketsService.getDatosUsuario(usuarioAAutenticar);
             if (usuarioAValidar.getPassword().equals(usuarioAAutenticar.getPassword())) {
                 System.out.println("Autenticación correcta");
-                return usuarioAAutenticar;
+                return usuarioAValidar;
             } else {
                 System.err.println("Password incorrecto");
                 return null;
