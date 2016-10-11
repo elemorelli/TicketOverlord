@@ -1,5 +1,7 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import es.ujaen.dae.ticketoverlord.models.Ticket;
+
 import java.math.BigDecimal;
 
 public class TicketDTO {
@@ -10,10 +12,10 @@ public class TicketDTO {
     public TicketDTO() {
     }
 
-    public TicketDTO(BigDecimal precio, EventoDTO evento, ZonaDTO zona) {
-        this.precio = precio;
-        this.evento = evento;
-        this.zona = zona;
+    public TicketDTO(Ticket ticket) {
+        this.precio = ticket.getPrecio();
+        this.evento = new EventoDTO(ticket.getEvento());
+        this.zona = new ZonaDTO(ticket.getZona());
     }
 
     @Override

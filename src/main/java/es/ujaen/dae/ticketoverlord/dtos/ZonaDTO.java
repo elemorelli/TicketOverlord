@@ -1,5 +1,7 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import es.ujaen.dae.ticketoverlord.models.Zona;
+
 public class ZonaDTO {
     private Character nombre;
     private Integer asientos;
@@ -7,9 +9,9 @@ public class ZonaDTO {
     public ZonaDTO() {
     }
 
-    public ZonaDTO(Character nombre, Integer asientos) {
-        this.nombre = nombre;
-        this.asientos = asientos;
+    public ZonaDTO(Zona zona) {
+        this.nombre = zona.getNombre();
+        this.asientos = zona.getAsientos();
     }
 
     @Override

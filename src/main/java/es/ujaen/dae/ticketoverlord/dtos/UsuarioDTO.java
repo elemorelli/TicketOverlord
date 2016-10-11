@@ -4,6 +4,7 @@ public class UsuarioDTO {
     private String uuidToken;
     private String nombre;
     private String password;
+    private boolean isAdmin;
 
     public UsuarioDTO() {
     }
@@ -22,9 +23,10 @@ public class UsuarioDTO {
     @Override
     public String toString() {
         return "UsuarioDTO{" +
-                "uuidToken=" + uuidToken +
+                "uuidToken='" + uuidToken + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", password='" + password + '\'' +
+                ", isAdmin=" + isAdmin +
                 '}';
     }
 
@@ -50,5 +52,13 @@ public class UsuarioDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

@@ -1,7 +1,10 @@
 package es.ujaen.dae.ticketoverlord.services;
 
 import es.ujaen.dae.ticketoverlord.dtos.*;
-import es.ujaen.dae.ticketoverlord.models.*;
+import es.ujaen.dae.ticketoverlord.models.Evento;
+import es.ujaen.dae.ticketoverlord.models.Recinto;
+import es.ujaen.dae.ticketoverlord.models.Ticket;
+import es.ujaen.dae.ticketoverlord.models.Usuario;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +61,7 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     public Boolean existeUsuario(UsuarioDTO usuarioAComprobar) {
 
         for (Usuario usuario : this.usuarios) {
-            if (usuario.getNombre().equals(usuarioAComprobar.getNombre())) {
+            if (usuario.getNombre().equalsIgnoreCase(usuarioAComprobar.getNombre())) {
                 return true;
             }
         }
@@ -69,11 +72,14 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     public UsuarioDTO getDatosUsuario(UsuarioDTO usuarioAObtener) {
 
         for (Usuario usuario : this.usuarios) {
-            if (usuario.getNombre().equals(usuarioAObtener.getNombre())) {
-                return new UsuarioDTO(usuario.getNombre(), usuario.getPassword());
+            if (usuario.getNombre().equalsIgnoreCase(usuarioAObtener.getNombre())) {
+                UsuarioDTO usuarioLogueado = new UsuarioDTO(usuario.getNombre(), usuario.getPassword());
+                if (usuarioLogueado.getNombre().equalsIgnoreCase("Administrador")) {
+                    usuarioLogueado.setAdmin(true);
+                }
+                return usuarioLogueado;
             }
         }
-
         return null;
     }
 
@@ -93,18 +99,20 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
 
         List<RecintoDTO> recintos = new ArrayList<>();
         for (Recinto recinto : this.recintos) {
-            RecintoDTO dto = new RecintoDTO(recinto.getNombre(), recinto.getLocalidad(), recinto.getDireccion());
-            for (Zona zona : recinto.getZonas()) {
-                ZonaDTO dtoZona = new ZonaDTO(zona.getNombre(), zona.getAsientos());
-                dto.addZona(dtoZona);
-            }
-            recintos.add(dto);
+            recintos.add(new RecintoDTO(recinto));
         }
         return recintos;
     }
 
     @Override
     public EventoDTO buscarEventoPorNombre(String nombre) {
+
+        for (Evento evento : this.eventos) {
+            // TODO: Replace with containsIgnoreCase
+            if (evento.getNombre().toUpperCase().contains(nombre.toUpperCase())) {
+                return new EventoDTO(evento);
+            }
+        }
         return null;
     }
 

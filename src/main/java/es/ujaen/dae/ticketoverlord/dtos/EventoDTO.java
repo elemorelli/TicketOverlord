@@ -1,5 +1,8 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import es.ujaen.dae.ticketoverlord.models.Evento;
+import es.ujaen.dae.ticketoverlord.models.PrecioPorZona;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -15,12 +18,15 @@ public class EventoDTO {
         this.preciosPorZona = new ArrayList<>();
     }
 
-    public EventoDTO(String nombre, String tipo, Calendar fecha, RecintoDTO recinto) {
-        this.nombre = nombre;
-        this.tipo = tipo;
-        this.fecha = fecha;
-        this.recinto = recinto;
+    public EventoDTO(Evento evento) {
+        this.nombre = evento.getNombre();
+        this.tipo = evento.getTipo();
+        this.fecha = evento.getFecha();
+        this.recinto = new RecintoDTO(evento.getRecinto());
         this.preciosPorZona = new ArrayList<>();
+        for (PrecioPorZona precio : evento.getPreciosPorZona()) {
+            this.preciosPorZona.add(new PrecioPorZonaDTO(precio));
+        }
     }
 
     public EventoDTO(String nombre, String tipo, Calendar fecha, RecintoDTO recinto, List<PrecioPorZonaDTO> preciosPorZona) {

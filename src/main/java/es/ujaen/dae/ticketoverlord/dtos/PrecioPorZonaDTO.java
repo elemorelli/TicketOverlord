@@ -1,5 +1,7 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import es.ujaen.dae.ticketoverlord.models.PrecioPorZona;
+
 import java.math.BigDecimal;
 
 public class PrecioPorZonaDTO {
@@ -9,9 +11,9 @@ public class PrecioPorZonaDTO {
     public PrecioPorZonaDTO() {
     }
 
-    public PrecioPorZonaDTO(BigDecimal precio, ZonaDTO zona) {
-        this.precio = precio;
-        this.zona = zona;
+    public PrecioPorZonaDTO(PrecioPorZona precio) {
+        this.precio = precio.getPrecio();
+        this.zona = new ZonaDTO(precio.getZona());
     }
 
     @Override
