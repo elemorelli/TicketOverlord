@@ -2,11 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="testData.xml"/>
+    <import resource="testData/testData.xml"/>
 
     <bean id="ventaTickets" class="es.ujaen.dae.ticketoverlord.services.VentaTicketsServiceImpl">
-        <property name="usuarios" ref="usuariosTest"/>
-        <property name="recintos" ref="recintosTest"/>
+        <property name="usuarios" ref="usuariosTestData"/>
+        <property name="recintos" ref="recintosTestData"/>
+        <property name="eventos" ref="eventosTestData"/>
     </bean>
 
 </beans>
