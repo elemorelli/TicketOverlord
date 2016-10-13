@@ -8,14 +8,7 @@ import es.ujaen.dae.ticketoverlord.dtos.ZoneDTO;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface VentaTicketsService {
-    void addNewUser(UserDTO user);
-
-    Boolean userExists(UserDTO user);
-
-    boolean authenticateUser(UserDTO user);
-
-    UserDTO getUserData(UserDTO user);
+public interface EventsService {
 
     List<EventDTO> findEventsByName(String name);
 
@@ -24,10 +17,6 @@ public interface VentaTicketsService {
     List<EventDTO> findEventsByDateAndType(LocalDate date, String type);
 
     List<EventDTO> findEventsByDateTypeAndCity(LocalDate date, String type, String city);
-
-    void buyTicket(EventDTO event, ZoneDTO zone);
-
-    List<TicketDTO> listTickets(UserDTO user);
 
     void addNewEvent(EventDTO event);
 }

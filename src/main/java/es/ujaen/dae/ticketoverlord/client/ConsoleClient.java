@@ -3,7 +3,9 @@ package es.ujaen.dae.ticketoverlord.client;
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
-import es.ujaen.dae.ticketoverlord.services.VentaTicketsService;
+import es.ujaen.dae.ticketoverlord.services.EventsService;
+import es.ujaen.dae.ticketoverlord.services.TicketsService;
+import es.ujaen.dae.ticketoverlord.services.UsersService;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -114,10 +116,10 @@ public class ConsoleClient {
 
     private static void findEventsByName() {
 
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         System.out.println("Ingrese el nombre del evento:");
         String eventName = readText();
-        List<EventDTO> events = ventaTicketsService.findEventsByName(eventName);
+        List<EventDTO> events = eventsService.findEventsByName(eventName);
         if (!events.isEmpty()) {
             printEventList(events);
         } else {
@@ -127,12 +129,12 @@ public class ConsoleClient {
 
     private static void findEventsByNameAndCity() {
 
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         System.out.println("Ingrese el nombre del evento:");
         String eventName = readText();
         System.out.println("Ingrese la localidad");
         String eventCity = readText();
-        List<EventDTO> events = ventaTicketsService.findEventsByNameAndCity(eventName, eventCity);
+        List<EventDTO> events = eventsService.findEventsByNameAndCity(eventName, eventCity);
         if (!events.isEmpty()) {
             printEventList(events);
         } else {
@@ -142,12 +144,12 @@ public class ConsoleClient {
 
     private static void findEventsByDateAndType() {
 
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         LocalDate eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
         String eventType = readText();
-        List<EventDTO> events = ventaTicketsService.findEventsByDateAndType(eventDate, eventType);
+        List<EventDTO> events = eventsService.findEventsByDateAndType(eventDate, eventType);
         if (!events.isEmpty()) {
             printEventList(events);
         } else {
@@ -157,14 +159,14 @@ public class ConsoleClient {
 
     private static void findEventsByDateTypeAndCity() {
 
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         LocalDate eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
         String eventType = readText();
         System.out.println("Ingrese la localidad");
         String eventCity = readText();
-        List<EventDTO> events = ventaTicketsService.findEventsByDateTypeAndCity(eventDate, eventType, eventCity);
+        List<EventDTO> events = eventsService.findEventsByDateTypeAndCity(eventDate, eventType, eventCity);
         if (!events.isEmpty()) {
             printEventList(events);
         } else {
@@ -197,14 +199,14 @@ public class ConsoleClient {
 
     private static void buyTickets() {
         // TODO
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
-        ventaTicketsService.buyTicket(null, null);
+        TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
+        ticketsService.buyTicket(null, null);
     }
 
     private static void listTickets() {
         // TODO
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
-        ventaTicketsService.listTickets(authenticatedUser);
+        TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
+        ticketsService.listTickets(authenticatedUser);
     }
 
     private static int printAdminMenu() {
@@ -232,23 +234,23 @@ public class ConsoleClient {
 
     private static void addNewEvent() {
         // TODO
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
-        ventaTicketsService.addNewEvent(null);
+        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
+        eventsService.addNewEvent(null);
     }
 
     private static void registerUser() {
 
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        UsersService usersService = (UsersService) appContext.getBean("usersService");
         UserDTO userDTO = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
         String userName = readText();
         userDTO.setName(userName);
 
-        if (!ventaTicketsService.userExists(userDTO)) {
+        if (!usersService.userExists(userDTO)) {
             System.out.println("Introduzca la contraseña");
             String password = readText();
             userDTO.setPassword(password);
-            ventaTicketsService.addNewUser(userDTO);
+            usersService.addNewUser(userDTO);
             System.out.println("El usuario " + userName + " ha sido registrado");
         } else {
             System.out.println("Nombre de usuario no disponible");
@@ -257,20 +259,20 @@ public class ConsoleClient {
 
     private static void authenticateUser() {
 
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        UsersService usersService = (UsersService) appContext.getBean("usersService");
         UserDTO user = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
         String userName = readText();
         user.setName(userName);
 
-        if (ventaTicketsService.userExists(user)) {
+        if (usersService.userExists(user)) {
             System.out.println("Introduzca la contraseña");
             String password = readText();
             user.setPassword(password);
 
-            if (ventaTicketsService.authenticateUser(user)) {
+            if (usersService.authenticateUser(user)) {
                 System.out.println("Autenticación correcta");
-                authenticatedUser = ventaTicketsService.getUserData(user);
+                authenticatedUser = usersService.getUserData(user);
             } else {
                 System.err.println("Password incorrecto");
                 authenticatedUser = null;

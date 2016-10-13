@@ -4,10 +4,19 @@
 
     <import resource="testData/testData.xml"/>
 
-    <bean id="ventaTickets" class="es.ujaen.dae.ticketoverlord.services.VentaTicketsServiceImpl">
-        <property name="users" ref="usuariosTestData"/>
-        <property name="venues" ref="recintosTestData"/>
+    <bean id="eventsService" class="es.ujaen.dae.ticketoverlord.services.EventsServiceImpl">
         <property name="events" ref="eventosTestData"/>
+    </bean>
+
+    <bean id="ticketsService" class="es.ujaen.dae.ticketoverlord.services.TicketsServiceImpl">
+    </bean>
+
+    <bean id="usersService" class="es.ujaen.dae.ticketoverlord.services.UsersServiceImpl">
+        <property name="users" ref="usuariosTestData"/>
+    </bean>
+
+    <bean id="venuesService" class="es.ujaen.dae.ticketoverlord.services.VenuesServiceImpl">
+        <property name="venues" ref="recintosTestData"/>
     </bean>
 
 </beans>
