@@ -5,6 +5,7 @@ import es.ujaen.dae.ticketoverlord.models.Evento;
 import es.ujaen.dae.ticketoverlord.models.Recinto;
 import es.ujaen.dae.ticketoverlord.models.Ticket;
 import es.ujaen.dae.ticketoverlord.models.Usuario;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -105,30 +106,53 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     }
 
     @Override
-    public EventoDTO buscarEventoPorNombre(String nombre) {
+    public List<EventoDTO> buscarEventosPorNombre(String nombre) {
 
+        List<EventoDTO> eventosEncontrados = new ArrayList<>();
         for (Evento evento : this.eventos) {
-            // TODO: Replace with containsIgnoreCase
-            if (evento.getNombre().toUpperCase().contains(nombre.toUpperCase())) {
-                return new EventoDTO(evento);
+            if (StringUtils.containsIgnoreCase(evento.getNombre(), nombre)) {
+                eventosEncontrados.add(new EventoDTO(evento));
             }
         }
-        return null;
+        return eventosEncontrados;
     }
 
     @Override
-    public EventoDTO buscarEventoPorNombreYLocalidad(String nombre, String localidad) {
-        return null;
+    public List<EventoDTO> buscarEventosPorNombreYLocalidad(String nombre, String localidad) {
+
+        List<EventoDTO> eventosEncontrados = new ArrayList<>();
+        for (Evento evento : this.eventos) {
+            if (StringUtils.containsIgnoreCase(evento.getNombre(), nombre)
+                    && StringUtils.containsIgnoreCase(evento.getRecinto().getLocalidad(), localidad)) {
+                eventosEncontrados.add(new EventoDTO(evento));
+            }
+        }
+        return eventosEncontrados;
     }
 
     @Override
-    public EventoDTO buscarEventoPorFechaYTipo(Calendar fecha, String tipo) {
-        return null;
+    public List<EventoDTO> buscarEventosPorFechaYTipo(Calendar fecha, String tipo) {
+
+        List<EventoDTO> eventosEncontrados = new ArrayList<>();
+        for (Evento evento : this.eventos) {
+            if (evento.getFecha().equals(fecha)) {
+                eventosEncontrados.add(new EventoDTO(evento));
+            }
+        }
+        return eventosEncontrados;
     }
 
     @Override
-    public EventoDTO buscarEventoPorFechaTipoYLocalidad(Calendar fecha, String tipo, String localidad) {
-        return null;
+    public List<EventoDTO> buscarEventosPorFechaTipoYLocalidad(Calendar fecha, String tipo, String localidad) {
+
+        List<EventoDTO> eventosEncontrados = new ArrayList<>();
+        for (Evento evento : this.eventos) {
+            if (evento.getFecha().equals(fecha)
+                    && StringUtils.containsIgnoreCase(evento.getRecinto().getLocalidad(), localidad)) {
+                eventosEncontrados.add(new EventoDTO(evento));
+            }
+        }
+        return eventosEncontrados;
     }
 
     @Override

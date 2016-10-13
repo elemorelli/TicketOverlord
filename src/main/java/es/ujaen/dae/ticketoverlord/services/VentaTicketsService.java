@@ -16,13 +16,13 @@ public interface VentaTicketsService {
 
     List<RecintoDTO> listarRecintos();
 
-    EventoDTO buscarEventoPorNombre(String nombre);
+    List<EventoDTO> buscarEventosPorNombre(String nombre);
 
-    EventoDTO buscarEventoPorNombreYLocalidad(String nombre, String localidad);
+    List<EventoDTO> buscarEventosPorNombreYLocalidad(String nombre, String localidad);
 
-    EventoDTO buscarEventoPorFechaYTipo(Calendar fecha, String tipo);
+    List<EventoDTO> buscarEventosPorFechaYTipo(Calendar fecha, String tipo);
 
-    EventoDTO buscarEventoPorFechaTipoYLocalidad(Calendar fecha, String tipo, String localidad);
+    List<EventoDTO> buscarEventosPorFechaTipoYLocalidad(Calendar fecha, String tipo, String localidad);
 
     void adquirirTicket(EventoDTO evento, ZonaDTO zona);
 

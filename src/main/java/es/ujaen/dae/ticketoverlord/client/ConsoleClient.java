@@ -10,7 +10,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class ConsoleClient {
@@ -25,7 +27,6 @@ public class ConsoleClient {
         appContext.registerShutdownHook();
 
         int op;
-
         do {
             op = imprimirMenuPrincipal();
             op = parsearOpcion(op);
@@ -40,7 +41,7 @@ public class ConsoleClient {
             System.out.println("1.- Registrarse");
             System.out.println("2.- Login");
             System.out.println("0.- Salir");
-            op = readInt();
+            op = ingresarNumero();
         } while (op < 0 || op > 2);
         return op;
     }
@@ -81,53 +82,26 @@ public class ConsoleClient {
                 System.out.println("5.- Adquirir tickets");
                 System.out.println("6.- Consultar Tickets adquiridos");
                 System.out.println("0.- Logout");
-                op = readInt();
+                op = ingresarNumero();
             }
         } while (op < 0 || op > 4);
         return op;
     }
 
     private static void parsearOpcionUsuario(int op) {
-        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
 
         switch (op) {
             case 1:
-                System.out.println("1.- Buscar eventos por nombre");
-                System.out.println("Ingrese el nombre del evento:");
-                String nombreEvento = readString();
-                // TODO: Deberia ser una lista? Puede no ser unico
-                // List<EventoDTO> eventos = ventaTicketsService.buscarEventoPorNombre(nombreEvento);
-                EventoDTO evento = ventaTicketsService.buscarEventoPorNombre(nombreEvento);
-                if (evento != null) {
-                    System.out.println("Evento \"" + evento.getNombre() + "\"");
-                    System.out.println("Tipo: " + evento.getTipo());
-                    System.out.println("Fecha: " + dateFormat.format(evento.getFecha().getTime()));
-                    System.out.println("Recinto: " + evento.getRecinto().getNombre());
-                    System.out.println("Localidad: " + evento.getRecinto().getLocalidad());
-
-                    List<PrecioPorZonaDTO> precios = evento.getPreciosPorZona();
-                    if (!precios.isEmpty()) {
-                        System.out.println("Precios:");
-                        for (PrecioPorZonaDTO precioPorZona : precios) {
-                            System.out.println("  Zona '" + precioPorZona.getZona().getNombre()
-                                    + "' - $" + precioPorZona.getPrecio());
-                        }
-                    } else {
-                        System.out.println("Todavía no se ha asignado los precios");
-                    }
-                } else {
-                    System.out.println("No se ha encontrado el evento");
-                }
-
+                buscarEventosPorNombre();
                 break;
             case 2:
-                System.out.println("2.- Buscar eventos por nombre y localidad");
+                buscarEventosPorNombreYLocalidad();
                 break;
             case 3:
-                System.out.println("3.- Buscar eventos por fecha y tipo de evento");
+                buscarEventosPorFechaYTipo();
                 break;
             case 4:
-                System.out.println("4.- Buscar eventos por fecha, tipo de evento y localidad");
+                buscarEventosPorFechaTipoYLocalidad();
                 break;
             case 5:
                 System.out.println("5.- Adquirir tickets");
@@ -138,13 +112,97 @@ public class ConsoleClient {
         }
     }
 
+    private static void buscarEventosPorNombre() {
+
+        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        System.out.println("Ingrese el nombre del evento:");
+        String nombreEvento = ingresarTexto();
+        List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorNombre(nombreEvento);
+        if (!eventos.isEmpty()) {
+            imprimirListaDeEventos(eventos);
+        } else {
+            System.out.println("No se han encontrado eventos con ese nombre");
+        }
+    }
+
+    private static void buscarEventosPorNombreYLocalidad() {
+
+        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        System.out.println("Ingrese el nombre del evento:");
+        String nombreEvento = ingresarTexto();
+        System.out.println("Ingrese la localidad");
+        String localidadEvento = ingresarTexto();
+        List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorNombreYLocalidad(nombreEvento, localidadEvento);
+        if (!eventos.isEmpty()) {
+            imprimirListaDeEventos(eventos);
+        } else {
+            System.out.println("No se han encontrado eventos con ese nombre en esa localidad");
+        }
+    }
+
+    private static void buscarEventosPorFechaYTipo() {
+
+        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
+        Calendar fechaEvento = ingresarFecha();
+        System.out.println("Ingrese el tipo de evento:");
+        String tipoEvento = ingresarTexto();
+        List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorFechaYTipo(fechaEvento, tipoEvento);
+        if (!eventos.isEmpty()) {
+            imprimirListaDeEventos(eventos);
+        } else {
+            System.out.println("No se han encontrado eventos de ese tipo en esa fecha");
+        }
+    }
+
+    private static void buscarEventosPorFechaTipoYLocalidad() {
+
+        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
+        Calendar fechaEvento = ingresarFecha();
+        System.out.println("Ingrese el tipo de evento:");
+        String tipoEvento = ingresarTexto();
+        System.out.println("Ingrese la localidad");
+        String localidadEvento = ingresarTexto();
+        List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorFechaTipoYLocalidad(fechaEvento, tipoEvento,
+                localidadEvento);
+        if (!eventos.isEmpty()) {
+            imprimirListaDeEventos(eventos);
+        } else {
+            System.out.println("No se han encontrado eventos de ese tipo en esa fecha y en esa localidad");
+        }
+    }
+
+    private static void imprimirListaDeEventos(List<EventoDTO> eventos) {
+
+        System.out.println("Evento encontrados:");
+        for (EventoDTO evento : eventos) {
+            System.out.println(" \"" + evento.getNombre() + "\"");
+            System.out.println("    Tipo: " + evento.getTipo());
+            System.out.println("    Fecha: " + dateFormat.format(evento.getFecha().getTime()));
+            System.out.println("    Recinto: " + evento.getRecinto().getNombre());
+            System.out.println("    Localidad: " + evento.getRecinto().getLocalidad());
+
+            List<PrecioPorZonaDTO> precios = evento.getPreciosPorZona();
+            if (!precios.isEmpty()) {
+                System.out.println("    Precios:");
+                for (PrecioPorZonaDTO precioPorZona : precios) {
+                    System.out.println("      Zona '" + precioPorZona.getZona().getNombre()
+                            + "' - $" + precioPorZona.getPrecio());
+                }
+            } else {
+                System.out.println("    Todavía no se ha asignado los precios");
+            }
+        }
+    }
+
     private static int imprimirMenuAdmin(int op, UsuarioDTO usuarioLogueado) {
         do {
             if (usuarioLogueado != null) {
                 System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
                 System.out.println("1.- Buscar eventos por nombre");
                 System.out.println("0.- Logout");
-                op = readInt();
+                op = ingresarNumero();
             }
         } while (op < 0 || op > 4);
         return op;
@@ -163,10 +221,10 @@ public class ConsoleClient {
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
 
         System.out.println("Introduzca el nombre de usuario");
-        String nombreUsuario = readString();
+        String nombreUsuario = ingresarTexto();
 
         System.out.println("Introduzca la contraseña");
-        String password = readString();
+        String password = ingresarTexto();
 
         UsuarioDTO usuarioDTO = new UsuarioDTO(nombreUsuario, password);
 
@@ -183,10 +241,10 @@ public class ConsoleClient {
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
 
         System.out.println("Introduzca el nombre de usuario");
-        String nombreUsuario = readString();
+        String nombreUsuario = ingresarTexto();
 
         System.out.println("Introduzca la contraseña");
-        String password = readString();
+        String password = ingresarTexto();
 
         UsuarioDTO usuarioAAutenticar = new UsuarioDTO(nombreUsuario, password);
 
@@ -206,21 +264,46 @@ public class ConsoleClient {
         }
     }
 
-    private static Integer readInt() {
-        try {
-            return Integer.parseInt(br.readLine());
-        } catch (IOException | NumberFormatException e) {
-            System.err.println("Error leyendo comando");
-        }
-        return -1;
+    private static Integer ingresarNumero() {
+
+        Integer number;
+        do {
+            try {
+                number = Integer.parseInt(br.readLine());
+                break;
+            } catch (IOException | NumberFormatException e) {
+                System.err.println("Error leyendo número ingresado");
+            }
+        } while (true);
+        return number;
     }
 
-    private static String readString() {
-        try {
-            return br.readLine();
-        } catch (IOException | NumberFormatException e) {
-            System.err.println("Error leyendo comando");
-        }
-        return "";
+    private static String ingresarTexto() {
+
+        String texto;
+        do {
+            try {
+                texto = br.readLine();
+                break;
+            } catch (IOException e) {
+                System.err.println("Error leyendo texto ingresado");
+            }
+        } while (true);
+        return texto;
+    }
+
+    private static Calendar ingresarFecha() {
+
+        Calendar fechaParseada = Calendar.getInstance();
+        do {
+            try {
+                String fecha = br.readLine();
+                fechaParseada.setTime(dateFormat.parse(fecha));
+                break;
+            } catch (ParseException | IOException e) {
+                System.err.println("Error en el formato de ingreso de la fecha");
+            }
+        } while (true);
+        return fechaParseada;
     }
 }
