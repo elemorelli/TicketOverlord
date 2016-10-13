@@ -1,5 +1,7 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import es.ujaen.dae.ticketoverlord.models.Usuario;
+
 public class UsuarioDTO {
     private String uuidToken;
     private String nombre;
@@ -9,15 +11,9 @@ public class UsuarioDTO {
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(String nombre, String password) {
-        this.nombre = nombre;
-        this.password = password;
-    }
-
-    public UsuarioDTO(String uuidToken, String nombre, String password) {
-        this.uuidToken = uuidToken;
-        this.nombre = nombre;
-        this.password = password;
+    public UsuarioDTO(Usuario usuario) {
+        this.nombre = usuario.getNombre();
+        this.uuidToken = usuario.getUuidToken();
     }
 
     @Override
@@ -25,7 +21,6 @@ public class UsuarioDTO {
         return "UsuarioDTO{" +
                 "uuidToken='" + uuidToken + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", password='" + password + '\'' +
                 ", isAdmin=" + isAdmin +
                 '}';
     }

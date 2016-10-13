@@ -1,6 +1,9 @@
 package es.ujaen.dae.ticketoverlord.services;
 
-import es.ujaen.dae.ticketoverlord.dtos.*;
+import es.ujaen.dae.ticketoverlord.dtos.EventoDTO;
+import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
+import es.ujaen.dae.ticketoverlord.dtos.UsuarioDTO;
+import es.ujaen.dae.ticketoverlord.dtos.ZonaDTO;
 import es.ujaen.dae.ticketoverlord.models.Evento;
 import es.ujaen.dae.ticketoverlord.models.Recinto;
 import es.ujaen.dae.ticketoverlord.models.Ticket;
@@ -51,9 +54,9 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     }
 
     @Override
-    public void agregarUsuario(UsuarioDTO usuarioAAgregar) {
+    public void agregarUsuario(UsuarioDTO usuario) {
 
-        Usuario nuevoUsuario = new Usuario(usuarioAAgregar.getNombre(), usuarioAAgregar.getPassword());
+        Usuario nuevoUsuario = new Usuario(usuario.getNombre(), usuario.getPassword());
         nuevoUsuario.setUuidToken(UUID.randomUUID().toString());
         usuarios.add(nuevoUsuario);
     }
@@ -70,11 +73,22 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     }
 
     @Override
+    public boolean autenticarUsuario(UsuarioDTO usuarioAValidar) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNombre().equalsIgnoreCase(usuarioAValidar.getNombre())
+                    && usuario.getPassword().equals(usuarioAValidar.getPassword())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public UsuarioDTO getDatosUsuario(UsuarioDTO usuarioAObtener) {
 
         for (Usuario usuario : this.usuarios) {
             if (usuario.getNombre().equalsIgnoreCase(usuarioAObtener.getNombre())) {
-                UsuarioDTO usuarioLogueado = new UsuarioDTO(usuario.getNombre(), usuario.getPassword());
+                UsuarioDTO usuarioLogueado = new UsuarioDTO(usuario);
                 if (usuarioLogueado.getNombre().equalsIgnoreCase("Administrador")) {
                     usuarioLogueado.setAdmin(true);
                 }
@@ -82,27 +96,6 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
             }
         }
         return null;
-    }
-
-    @Override
-    public List<UsuarioDTO> listarUsuarios() {
-
-        List<UsuarioDTO> usuarios = new ArrayList<>();
-        for (Usuario usuario : this.usuarios) {
-            UsuarioDTO dto = new UsuarioDTO(usuario.getUuidToken(), usuario.getNombre(), usuario.getPassword());
-            usuarios.add(dto);
-        }
-        return usuarios;
-    }
-
-    @Override
-    public List<RecintoDTO> listarRecintos() {
-
-        List<RecintoDTO> recintos = new ArrayList<>();
-        for (Recinto recinto : this.recintos) {
-            recintos.add(new RecintoDTO(recinto));
-        }
-        return recintos;
     }
 
     @Override

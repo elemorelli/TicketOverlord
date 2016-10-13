@@ -19,6 +19,7 @@ public class ConsoleClient {
     private static BufferedReader br = new BufferedReader(isr);
     private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static AbstractApplicationContext appContext = null;
+    private static UsuarioDTO usuarioLogueado = null;
 
     public static void main(String[] args) {
 
@@ -47,13 +48,13 @@ public class ConsoleClient {
                 registrarUsuario();
                 break;
             case 2:
-                UsuarioDTO usuarioLogueado = autenticar();
+                autenticar();
                 if (usuarioLogueado != null) do {
                     if (usuarioLogueado.isAdmin()) {
-                        op = imprimirMenuAdmin(usuarioLogueado);
+                        op = imprimirMenuAdmin();
                         parsearOpcionAdmin(op);
                     } else {
-                        op = imprimirMenuUsuario(usuarioLogueado);
+                        op = imprimirMenuUsuario();
                         parsearOpcionUsuario(op);
                     }
                 } while (op != 0);
@@ -67,7 +68,7 @@ public class ConsoleClient {
         }
     }
 
-    private static int imprimirMenuUsuario(UsuarioDTO usuarioLogueado) {
+    private static int imprimirMenuUsuario() {
         System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
         System.out.println("1.- Buscar eventos por nombre");
         System.out.println("2.- Buscar eventos por nombre y localidad");
@@ -102,6 +103,7 @@ public class ConsoleClient {
                 break;
             case 0:
                 System.out.println("Se ha deslogueado correctamente");
+                usuarioLogueado = null;
                 break;
             default:
                 System.err.println("Opción inválida");
@@ -199,7 +201,7 @@ public class ConsoleClient {
         // TODO
     }
 
-    private static int imprimirMenuAdmin(UsuarioDTO usuarioLogueado) {
+    private static int imprimirMenuAdmin() {
         System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
         System.out.println("1.- Añadir nuevo evento");
         System.out.println("0.- Logout");
@@ -213,6 +215,7 @@ public class ConsoleClient {
                 break;
             case 0:
                 System.out.println("Se ha deslogueado correctamente");
+                usuarioLogueado = null;
                 break;
             default:
                 System.err.println("Opción inválida");
@@ -226,16 +229,15 @@ public class ConsoleClient {
     private static void registrarUsuario() {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
-
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
         System.out.println("Introduzca el nombre de usuario");
         String nombreUsuario = ingresarTexto();
-
-        System.out.println("Introduzca la contraseña");
-        String password = ingresarTexto();
-
-        UsuarioDTO usuarioDTO = new UsuarioDTO(nombreUsuario, password);
+        usuarioDTO.setNombre(nombreUsuario);
 
         if (!ventaTicketsService.existeUsuario(usuarioDTO)) {
+            System.out.println("Introduzca la contraseña");
+            String password = ingresarTexto();
+            usuarioDTO.setPassword(password);
             ventaTicketsService.agregarUsuario(usuarioDTO);
             System.out.println("El usuario " + nombreUsuario + " ha sido registrado");
         } else {
@@ -243,31 +245,29 @@ public class ConsoleClient {
         }
     }
 
-    private static UsuarioDTO autenticar() {
+    private static void autenticar() {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
-
+        UsuarioDTO usuario = new UsuarioDTO();
         System.out.println("Introduzca el nombre de usuario");
         String nombreUsuario = ingresarTexto();
+        usuario.setNombre(nombreUsuario);
 
-        System.out.println("Introduzca la contraseña");
-        String password = ingresarTexto();
+        if (ventaTicketsService.existeUsuario(usuario)) {
+            System.out.println("Introduzca la contraseña");
+            String password = ingresarTexto();
+            usuario.setPassword(password);
 
-        UsuarioDTO usuarioAAutenticar = new UsuarioDTO(nombreUsuario, password);
-
-        if (ventaTicketsService.existeUsuario(usuarioAAutenticar)) {
-
-            UsuarioDTO usuarioAValidar = ventaTicketsService.getDatosUsuario(usuarioAAutenticar);
-            if (usuarioAValidar.getPassword().equals(usuarioAAutenticar.getPassword())) {
+            if (ventaTicketsService.autenticarUsuario(usuario)) {
                 System.out.println("Autenticación correcta");
-                return usuarioAValidar;
+                usuarioLogueado = ventaTicketsService.getDatosUsuario(usuario);
             } else {
                 System.err.println("Password incorrecto");
-                return null;
+                usuarioLogueado = null;
             }
         } else {
             System.err.println("El usuario no existe");
-            return null;
+            usuarioLogueado = null;
         }
     }
 
