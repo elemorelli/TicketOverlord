@@ -95,10 +95,10 @@ public class ConsoleClient {
                 buscarEventosPorFechaTipoYLocalidad();
                 break;
             case 5:
-                System.out.println("5.- Adquirir tickets");
+                adquirirTickets();
                 break;
             case 6:
-                System.out.println("6.- Consultar Tickets adquiridos");
+                consultarTicketsAdquiridos();
                 break;
             case 0:
                 System.out.println("Se ha deslogueado correctamente");
@@ -191,9 +191,17 @@ public class ConsoleClient {
         }
     }
 
+    private static void adquirirTickets() {
+        // TODO
+    }
+
+    private static void consultarTicketsAdquiridos() {
+        // TODO
+    }
+
     private static int imprimirMenuAdmin(UsuarioDTO usuarioLogueado) {
         System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
-        System.out.println("1.- Buscar eventos por nombre");
+        System.out.println("1.- Añadir nuevo evento");
         System.out.println("0.- Logout");
         return ingresarNumero();
     }
@@ -201,7 +209,7 @@ public class ConsoleClient {
     private static void parsearOpcionAdmin(int op) {
         switch (op) {
             case 1:
-                System.out.println("1.- Buscar eventos por nombre");
+                anadirNuevoEvento();
                 break;
             case 0:
                 System.out.println("Se ha deslogueado correctamente");
@@ -209,6 +217,10 @@ public class ConsoleClient {
             default:
                 System.err.println("Opción inválida");
         }
+    }
+
+    private static void anadirNuevoEvento() {
+        // TODO
     }
 
     private static void registrarUsuario() {
