@@ -158,6 +158,6 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     }
 
     @Override
-    public void addEvent(EventDTO event) {
+    public void addNewEvent(EventDTO event) {
     }
 }

@@ -43,6 +43,7 @@ public class ConsoleClient {
     }
 
     private static void parseMainMenuOption(int op) {
+
         switch (op) {
             case 1:
                 registerUser();
@@ -69,6 +70,7 @@ public class ConsoleClient {
     }
 
     private static int printUserMenu() {
+
         System.out.println("Bienvenido " + authenticatedUser.getName() + ". Elija una opción:");
         System.out.println("1.- Buscar eventos por nombre");
         System.out.println("2.- Buscar eventos por nombre y localidad");
@@ -154,6 +156,7 @@ public class ConsoleClient {
     }
 
     private static void findEventsByDateTypeAndCity() {
+
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         LocalDate eventDate = readDate();
@@ -194,13 +197,18 @@ public class ConsoleClient {
 
     private static void buyTickets() {
         // TODO
+        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        ventaTicketsService.buyTicket(null, null);
     }
 
     private static void listTickets() {
         // TODO
+        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        ventaTicketsService.listTickets(authenticatedUser);
     }
 
     private static int printAdminMenu() {
+
         System.out.println("Bienvenido " + authenticatedUser.getName() + ". Elija una opción:");
         System.out.println("1.- Añadir nuevo evento");
         System.out.println("0.- Logout");
@@ -208,6 +216,7 @@ public class ConsoleClient {
     }
 
     private static void parseAdminMenuOption(int op) {
+
         switch (op) {
             case 1:
                 addNewEvent();
@@ -223,6 +232,8 @@ public class ConsoleClient {
 
     private static void addNewEvent() {
         // TODO
+        VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
+        ventaTicketsService.addNewEvent(null);
     }
 
     private static void registerUser() {
@@ -294,7 +305,6 @@ public class ConsoleClient {
 
     private static LocalDate readDate() {
 
-        LocalDate parsedDate;
         do {
             try {
                 String date = br.readLine();

@@ -29,5 +29,5 @@ public interface VentaTicketsService {
 
     List<TicketDTO> listTickets(UserDTO user);
 
-    void addEvent(EventDTO event);
+    void addNewEvent(EventDTO event);
 }
