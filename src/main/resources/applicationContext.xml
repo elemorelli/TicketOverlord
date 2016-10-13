@@ -5,9 +5,9 @@
     <import resource="testData/testData.xml"/>
 
     <bean id="ventaTickets" class="es.ujaen.dae.ticketoverlord.services.VentaTicketsServiceImpl">
-        <property name="usuarios" ref="usuariosTestData"/>
-        <property name="recintos" ref="recintosTestData"/>
-        <property name="eventos" ref="eventosTestData"/>
+        <property name="users" ref="usuariosTestData"/>
+        <property name="venues" ref="recintosTestData"/>
+        <property name="events" ref="eventosTestData"/>
     </bean>
 
 </beans>

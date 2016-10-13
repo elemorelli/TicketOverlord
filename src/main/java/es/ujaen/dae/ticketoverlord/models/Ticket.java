@@ -3,49 +3,49 @@ package es.ujaen.dae.ticketoverlord.models;
 import java.math.BigDecimal;
 
 public class Ticket {
-    private Evento evento;
-    private Zona zona;
-    private BigDecimal precio;
+    private Event event;
+    private Zone zone;
+    private BigDecimal price;
 
     public Ticket() {
     }
 
-    public Ticket(Evento evento, Zona zona, BigDecimal precio) {
-        this.evento = evento;
-        this.zona = zona;
-        this.precio = precio;
+    public Ticket(Event event, Zone zone, BigDecimal price) {
+        this.event = event;
+        this.zone = zone;
+        this.price = price;
     }
 
     @Override
     public String toString() {
         return "Ticket{" +
-                "evento=" + evento +
-                ", zona=" + zona +
-                ", precio=" + precio +
+                "event=" + event +
+                ", zone=" + zone +
+                ", price=" + price +
                 '}';
     }
 
-    public Evento getEvento() {
-        return evento;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setEvento(Evento evento) {
-        this.evento = evento;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public Zona getZona() {
-        return zona;
+    public Zone getZone() {
+        return zone;
     }
 
-    public void setZona(Zona zona) {
-        this.zona = zona;
+    public void setZone(Zone zone) {
+        this.zone = zone;
     }
 
-    public BigDecimal getPrecio() {
-        return precio;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setPrecio(BigDecimal precio) {
-        this.precio = precio;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

@@ -1,28 +1,23 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
-import es.ujaen.dae.ticketoverlord.models.Ticket;
-
 import java.math.BigDecimal;
 
-public class TicketDTO {
+public class PricePerZoneDTO {
     private BigDecimal price;
-    private EventDTO event;
     private ZoneDTO zone;
 
-    public TicketDTO() {
+    public PricePerZoneDTO() {
     }
 
-    public TicketDTO(Ticket ticket) {
-        this.price = ticket.getPrice();
-        this.event = new EventDTO(ticket.getEvent());
-        this.zone = new ZoneDTO(ticket.getZone());
+    public PricePerZoneDTO(es.ujaen.dae.ticketoverlord.models.PricePerZone price) {
+        this.price = price.getPrice();
+        this.zone = new ZoneDTO(price.getZone());
     }
 
     @Override
     public String toString() {
-        return "TicketDTO{" +
+        return "PricePerZoneDTO{" +
                 "price=" + price +
-                ", event=" + event +
                 ", zone=" + zone +
                 '}';
     }
@@ -33,14 +28,6 @@ public class TicketDTO {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public EventDTO getEvent() {
-        return event;
-    }
-
-    public void setEvent(EventDTO event) {
-        this.event = event;
     }
 
     public ZoneDTO getZone() {

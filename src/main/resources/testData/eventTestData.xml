@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="eventoFerial1" class="es.ujaen.dae.ticketoverlord.models.Event">
+        <property name="name" value="Feria de San Lucas 2016"/>
+        <property name="date"
+                  value="#{ T(java.time.LocalDate).parse('08-10-2016', T(java.time.format.DateTimeFormatter).ofPattern('dd-MM-yyyy')) }"/>
+        <property name="venue" ref="recintoFerialJaen"/>
+        <property name="type" value="Todo"/>
+        <property name="pricePerZones">
+            <list>
+                <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
+                    <property name="zone" ref="recintoFerialJaenZonaA"/>
+                    <property name="price" value="20"/>
+                </bean>
+                <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
+                    <property name="zone" ref="recintoFerialJaenZonaA"/>
+                    <property name="price" value="10"/>
+                </bean>
+                <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
+                    <property name="zone" ref="recintoFerialJaenZonaA"/>
+                    <property name="price" value="5"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="eventoFerial2" class="es.ujaen.dae.ticketoverlord.models.Event">
+        <property name="name" value="Noches andaluces"/>
+        <property name="date"
+                  value="#{ T(java.time.LocalDate).parse('20-10-2016', T(java.time.format.DateTimeFormatter).ofPattern('dd-MM-yyyy')) }"/>
+        <property name="venue" ref="recintoFerialJaen"/>
+        <property name="type" value="Concierto"/>
+        <property name="pricePerZones">
+            <list></list>
+        </property>
+    </bean>
+
+
+    <bean id="eventosTestData" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <ref bean="eventoFerial1"/>
+                <ref bean="eventoFerial2"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

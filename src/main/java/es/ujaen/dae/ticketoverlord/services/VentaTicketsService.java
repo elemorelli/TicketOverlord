@@ -1,33 +1,33 @@
 package es.ujaen.dae.ticketoverlord.services;
 
-import es.ujaen.dae.ticketoverlord.dtos.EventoDTO;
+import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
-import es.ujaen.dae.ticketoverlord.dtos.UsuarioDTO;
-import es.ujaen.dae.ticketoverlord.dtos.ZonaDTO;
+import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
+import es.ujaen.dae.ticketoverlord.dtos.ZoneDTO;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface VentaTicketsService {
-    void agregarUsuario(UsuarioDTO usuario);
+    void addNewUser(UserDTO user);
 
-    Boolean existeUsuario(UsuarioDTO usuario);
+    Boolean userExists(UserDTO user);
 
-    boolean autenticarUsuario(UsuarioDTO usuario);
+    boolean authenticateUser(UserDTO user);
 
-    UsuarioDTO getDatosUsuario(UsuarioDTO usuario);
+    UserDTO getUserData(UserDTO user);
 
-    List<EventoDTO> buscarEventosPorNombre(String nombre);
+    List<EventDTO> findEventsByName(String name);
 
-    List<EventoDTO> buscarEventosPorNombreYLocalidad(String nombre, String localidad);
+    List<EventDTO> findEventsByNameAndCity(String name, String city);
 
-    List<EventoDTO> buscarEventosPorFechaYTipo(LocalDate fecha, String tipo);
+    List<EventDTO> findEventsByDateAndType(LocalDate date, String type);
 
-    List<EventoDTO> buscarEventosPorFechaTipoYLocalidad(LocalDate fecha, String tipo, String localidad);
+    List<EventDTO> findEventsByDateTypeAndCity(LocalDate date, String type, String city);
 
-    void adquirirTicket(EventoDTO evento, ZonaDTO zona);
+    void buyTicket(EventDTO event, ZoneDTO zone);
 
-    List<TicketDTO> consultarTicketsAdquiridosPorUsuario(UsuarioDTO usuario);
+    List<TicketDTO> listTickets(UserDTO user);
 
-    void crearEvento(EventoDTO evento);
+    void addEvent(EventDTO event);
 }

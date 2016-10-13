@@ -1,8 +1,8 @@
 package es.ujaen.dae.ticketoverlord.client;
 
-import es.ujaen.dae.ticketoverlord.dtos.EventoDTO;
-import es.ujaen.dae.ticketoverlord.dtos.PrecioPorZonaDTO;
-import es.ujaen.dae.ticketoverlord.dtos.UsuarioDTO;
+import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
+import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
+import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.services.VentaTicketsService;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -19,7 +19,7 @@ public class ConsoleClient {
     private static BufferedReader br = new BufferedReader(isr);
     private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static AbstractApplicationContext appContext = null;
-    private static UsuarioDTO usuarioLogueado = null;
+    private static UserDTO authenticatedUser = null;
 
     public static void main(String[] args) {
 
@@ -28,34 +28,34 @@ public class ConsoleClient {
 
         int op;
         do {
-            op = imprimirMenuPrincipal();
-            parsearOpcion(op);
+            op = printMainMenu();
+            parseMainMenuOption(op);
         } while (op != 0);
     }
 
-    private static int imprimirMenuPrincipal() {
+    private static int printMainMenu() {
         System.out.println();
         System.out.println("Elija una opción:");
         System.out.println("1.- Registrarse");
         System.out.println("2.- Login");
         System.out.println("0.- Salir");
-        return ingresarNumero();
+        return readNumber();
     }
 
-    private static void parsearOpcion(int op) {
+    private static void parseMainMenuOption(int op) {
         switch (op) {
             case 1:
-                registrarUsuario();
+                registerUser();
                 break;
             case 2:
-                autenticar();
-                if (usuarioLogueado != null) do {
-                    if (usuarioLogueado.isAdmin()) {
-                        op = imprimirMenuAdmin();
-                        parsearOpcionAdmin(op);
+                authenticateUser();
+                if (authenticatedUser != null) do {
+                    if (authenticatedUser.isAdmin()) {
+                        op = printAdminMenu();
+                        parseAdminMenuOption(op);
                     } else {
-                        op = imprimirMenuUsuario();
-                        parsearOpcionUsuario(op);
+                        op = printUserMenu();
+                        printUserMenuOption(op);
                     }
                 } while (op != 0);
                 break;
@@ -68,8 +68,8 @@ public class ConsoleClient {
         }
     }
 
-    private static int imprimirMenuUsuario() {
-        System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
+    private static int printUserMenu() {
+        System.out.println("Bienvenido " + authenticatedUser.getName() + ". Elija una opción:");
         System.out.println("1.- Buscar eventos por nombre");
         System.out.println("2.- Buscar eventos por nombre y localidad");
         System.out.println("3.- Buscar eventos por fecha y tipo de evento");
@@ -77,115 +77,114 @@ public class ConsoleClient {
         System.out.println("5.- Adquirir tickets");
         System.out.println("6.- Consultar Tickets adquiridos");
         System.out.println("0.- Logout");
-        return ingresarNumero();
+        return readNumber();
     }
 
-    private static void parsearOpcionUsuario(int op) {
+    private static void printUserMenuOption(int op) {
 
         switch (op) {
             case 1:
-                buscarEventosPorNombre();
+                findEventsByName();
                 break;
             case 2:
-                buscarEventosPorNombreYLocalidad();
+                findEventsByNameAndCity();
                 break;
             case 3:
-                buscarEventosPorFechaYTipo();
+                findEventsByDateAndType();
                 break;
             case 4:
-                buscarEventosPorFechaTipoYLocalidad();
+                findEventsByDateTypeAndCity();
                 break;
             case 5:
-                adquirirTickets();
+                buyTickets();
                 break;
             case 6:
-                consultarTicketsAdquiridos();
+                listTickets();
                 break;
             case 0:
                 System.out.println("Se ha deslogueado correctamente");
-                usuarioLogueado = null;
+                authenticatedUser = null;
                 break;
             default:
                 System.err.println("Opción inválida");
         }
     }
 
-    private static void buscarEventosPorNombre() {
+    private static void findEventsByName() {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
         System.out.println("Ingrese el nombre del evento:");
-        String nombreEvento = ingresarTexto();
-        List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorNombre(nombreEvento);
-        if (!eventos.isEmpty()) {
-            imprimirListaDeEventos(eventos);
+        String eventName = readText();
+        List<EventDTO> events = ventaTicketsService.findEventsByName(eventName);
+        if (!events.isEmpty()) {
+            printEventList(events);
         } else {
             System.out.println("No se han encontrado eventos con ese nombre");
         }
     }
 
-    private static void buscarEventosPorNombreYLocalidad() {
+    private static void findEventsByNameAndCity() {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
         System.out.println("Ingrese el nombre del evento:");
-        String nombreEvento = ingresarTexto();
+        String eventName = readText();
         System.out.println("Ingrese la localidad");
-        String localidadEvento = ingresarTexto();
-        List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorNombreYLocalidad(nombreEvento, localidadEvento);
-        if (!eventos.isEmpty()) {
-            imprimirListaDeEventos(eventos);
+        String eventCity = readText();
+        List<EventDTO> events = ventaTicketsService.findEventsByNameAndCity(eventName, eventCity);
+        if (!events.isEmpty()) {
+            printEventList(events);
         } else {
             System.out.println("No se han encontrado eventos con ese nombre en esa localidad");
         }
     }
 
-    private static void buscarEventosPorFechaYTipo() {
+    private static void findEventsByDateAndType() {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        LocalDate fechaEvento = ingresarFecha();
+        LocalDate eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
-        String tipoEvento = ingresarTexto();
-        List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorFechaYTipo(fechaEvento, tipoEvento);
-        if (!eventos.isEmpty()) {
-            imprimirListaDeEventos(eventos);
+        String eventType = readText();
+        List<EventDTO> events = ventaTicketsService.findEventsByDateAndType(eventDate, eventType);
+        if (!events.isEmpty()) {
+            printEventList(events);
         } else {
             System.out.println("No se han encontrado eventos de ese tipo en esa fecha");
         }
     }
 
-    private static void buscarEventosPorFechaTipoYLocalidad() {
+    private static void findEventsByDateTypeAndCity() {
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        LocalDate fechaEvento = ingresarFecha();
+        LocalDate eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
-        String tipoEvento = ingresarTexto();
+        String eventType = readText();
         System.out.println("Ingrese la localidad");
-        String localidadEvento = ingresarTexto();
-        List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorFechaTipoYLocalidad(fechaEvento, tipoEvento,
-                localidadEvento);
-        if (!eventos.isEmpty()) {
-            imprimirListaDeEventos(eventos);
+        String eventCity = readText();
+        List<EventDTO> events = ventaTicketsService.findEventsByDateTypeAndCity(eventDate, eventType, eventCity);
+        if (!events.isEmpty()) {
+            printEventList(events);
         } else {
             System.out.println("No se han encontrado eventos de ese tipo en esa fecha y en esa localidad");
         }
     }
 
-    private static void imprimirListaDeEventos(List<EventoDTO> eventos) {
+    private static void printEventList(List<EventDTO> events) {
 
-        System.out.println("Evento encontrados:");
-        for (EventoDTO evento : eventos) {
-            System.out.println(" \"" + evento.getNombre() + "\"");
-            System.out.println("    Tipo: " + evento.getTipo());
-            System.out.println("    Fecha: " + evento.getFecha().format(dateFormatter));
-            System.out.println("    Recinto: " + evento.getRecinto().getNombre());
-            System.out.println("    Localidad: " + evento.getRecinto().getLocalidad());
+        System.out.println("Event encontrados:");
+        for (EventDTO event : events) {
+            System.out.println(" \"" + event.getName() + "\"");
+            System.out.println("    Tipo: " + event.getType());
+            System.out.println("    Fecha: " + event.getDate().format(dateFormatter));
+            System.out.println("    Venue: " + event.getVenue().getName());
+            System.out.println("    Localidad: " + event.getVenue().getCity());
 
-            List<PrecioPorZonaDTO> precios = evento.getPreciosPorZona();
-            if (!precios.isEmpty()) {
+            List<PricePerZoneDTO> pricesPerZone = event.getPricesPerZone();
+            if (!pricesPerZone.isEmpty()) {
                 System.out.println("    Precios:");
-                for (PrecioPorZonaDTO precioPorZona : precios) {
-                    System.out.println("      Zona '" + precioPorZona.getZona().getNombre()
-                            + "' - $" + precioPorZona.getPrecio());
+                for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone) {
+                    System.out.println("      Zone '" + pricePerZoneDTO.getZone().getName()
+                            + "' - $" + pricePerZoneDTO.getPrice());
                 }
             } else {
                 System.out.println("    Todavía no se ha asignado los precios");
@@ -193,124 +192,116 @@ public class ConsoleClient {
         }
     }
 
-    private static void adquirirTickets() {
+    private static void buyTickets() {
         // TODO
     }
 
-    private static void consultarTicketsAdquiridos() {
+    private static void listTickets() {
         // TODO
     }
 
-    private static int imprimirMenuAdmin() {
-        System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
+    private static int printAdminMenu() {
+        System.out.println("Bienvenido " + authenticatedUser.getName() + ". Elija una opción:");
         System.out.println("1.- Añadir nuevo evento");
         System.out.println("0.- Logout");
-        return ingresarNumero();
+        return readNumber();
     }
 
-    private static void parsearOpcionAdmin(int op) {
+    private static void parseAdminMenuOption(int op) {
         switch (op) {
             case 1:
-                anadirNuevoEvento();
+                addNewEvent();
                 break;
             case 0:
                 System.out.println("Se ha deslogueado correctamente");
-                usuarioLogueado = null;
+                authenticatedUser = null;
                 break;
             default:
                 System.err.println("Opción inválida");
         }
     }
 
-    private static void anadirNuevoEvento() {
+    private static void addNewEvent() {
         // TODO
     }
 
-    private static void registrarUsuario() {
+    private static void registerUser() {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        UserDTO userDTO = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
-        String nombreUsuario = ingresarTexto();
-        usuarioDTO.setNombre(nombreUsuario);
+        String userName = readText();
+        userDTO.setName(userName);
 
-        if (!ventaTicketsService.existeUsuario(usuarioDTO)) {
+        if (!ventaTicketsService.userExists(userDTO)) {
             System.out.println("Introduzca la contraseña");
-            String password = ingresarTexto();
-            usuarioDTO.setPassword(password);
-            ventaTicketsService.agregarUsuario(usuarioDTO);
-            System.out.println("El usuario " + nombreUsuario + " ha sido registrado");
+            String password = readText();
+            userDTO.setPassword(password);
+            ventaTicketsService.addNewUser(userDTO);
+            System.out.println("El usuario " + userName + " ha sido registrado");
         } else {
             System.out.println("Nombre de usuario no disponible");
         }
     }
 
-    private static void autenticar() {
+    private static void authenticateUser() {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
-        UsuarioDTO usuario = new UsuarioDTO();
+        UserDTO user = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
-        String nombreUsuario = ingresarTexto();
-        usuario.setNombre(nombreUsuario);
+        String userName = readText();
+        user.setName(userName);
 
-        if (ventaTicketsService.existeUsuario(usuario)) {
+        if (ventaTicketsService.userExists(user)) {
             System.out.println("Introduzca la contraseña");
-            String password = ingresarTexto();
-            usuario.setPassword(password);
+            String password = readText();
+            user.setPassword(password);
 
-            if (ventaTicketsService.autenticarUsuario(usuario)) {
+            if (ventaTicketsService.authenticateUser(user)) {
                 System.out.println("Autenticación correcta");
-                usuarioLogueado = ventaTicketsService.getDatosUsuario(usuario);
+                authenticatedUser = ventaTicketsService.getUserData(user);
             } else {
                 System.err.println("Password incorrecto");
-                usuarioLogueado = null;
+                authenticatedUser = null;
             }
         } else {
             System.err.println("El usuario no existe");
-            usuarioLogueado = null;
+            authenticatedUser = null;
         }
     }
 
-    private static Integer ingresarNumero() {
+    private static Integer readNumber() {
 
-        Integer number;
         do {
             try {
-                number = Integer.parseInt(br.readLine());
-                break;
+                return Integer.parseInt(br.readLine());
             } catch (IOException | NumberFormatException e) {
                 System.err.println("Error leyendo número ingresado");
             }
         } while (true);
-        return number;
     }
 
-    private static String ingresarTexto() {
+    private static String readText() {
 
-        String texto;
         do {
             try {
-                texto = br.readLine();
-                break;
+                return br.readLine();
             } catch (IOException e) {
                 System.err.println("Error leyendo texto ingresado");
             }
         } while (true);
-        return texto;
     }
 
-    private static LocalDate ingresarFecha() {
+    private static LocalDate readDate() {
 
-        LocalDate fechaParseada;
+        LocalDate parsedDate;
         do {
             try {
-                String fecha = br.readLine();
-                fechaParseada = LocalDate.parse(fecha, dateFormatter);
-                break;
+                String date = br.readLine();
+                return LocalDate.parse(date, dateFormatter);
             } catch (IOException e) {
                 System.err.println("Error en el formato de ingreso de la fecha");
             }
         } while (true);
-        return fechaParseada;
     }
 }

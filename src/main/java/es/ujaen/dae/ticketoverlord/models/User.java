@@ -3,34 +3,34 @@ package es.ujaen.dae.ticketoverlord.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Usuario {
+public class User {
     private String uuidToken;
-    private String nombre;
+    private String name;
     private String password;
     private List<Ticket> tickets;
 
-    public Usuario() {
+    public User() {
         this.tickets = new ArrayList<>();
     }
 
-    public Usuario(String nombre, String password) {
-        this.nombre = nombre;
+    public User(String name, String password) {
+        this.name = name;
         this.password = password;
         this.tickets = new ArrayList<>();
     }
 
-    public Usuario(String uuidToken, String nombre, String password, List<Ticket> tickets) {
+    public User(String uuidToken, String name, String password, List<Ticket> tickets) {
         this.uuidToken = uuidToken;
-        this.nombre = nombre;
+        this.name = name;
         this.password = password;
         this.tickets = tickets;
     }
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "User{" +
                 "uuidToken=" + uuidToken +
-                ", nombre='" + nombre + '\'' +
+                ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", tickets=" + tickets +
                 '}';
@@ -44,12 +44,12 @@ public class Usuario {
         this.uuidToken = uuidToken;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
