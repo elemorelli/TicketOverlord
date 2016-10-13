@@ -10,15 +10,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ConsoleClient {
     private static InputStreamReader isr = new InputStreamReader(System.in);
     private static BufferedReader br = new BufferedReader(isr);
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static AbstractApplicationContext appContext = null;
 
     public static void main(String[] args) {
@@ -144,7 +143,7 @@ public class ConsoleClient {
 
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        Calendar fechaEvento = ingresarFecha();
+        LocalDate fechaEvento = ingresarFecha();
         System.out.println("Ingrese el tipo de evento:");
         String tipoEvento = ingresarTexto();
         List<EventoDTO> eventos = ventaTicketsService.buscarEventosPorFechaYTipo(fechaEvento, tipoEvento);
@@ -156,10 +155,9 @@ public class ConsoleClient {
     }
 
     private static void buscarEventosPorFechaTipoYLocalidad() {
-
         VentaTicketsService ventaTicketsService = (VentaTicketsService) appContext.getBean("ventaTickets");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        Calendar fechaEvento = ingresarFecha();
+        LocalDate fechaEvento = ingresarFecha();
         System.out.println("Ingrese el tipo de evento:");
         String tipoEvento = ingresarTexto();
         System.out.println("Ingrese la localidad");
@@ -179,7 +177,7 @@ public class ConsoleClient {
         for (EventoDTO evento : eventos) {
             System.out.println(" \"" + evento.getNombre() + "\"");
             System.out.println("    Tipo: " + evento.getTipo());
-            System.out.println("    Fecha: " + dateFormat.format(evento.getFecha().getTime()));
+            System.out.println("    Fecha: " + evento.getFecha().format(dateFormatter));
             System.out.println("    Recinto: " + evento.getRecinto().getNombre());
             System.out.println("    Localidad: " + evento.getRecinto().getLocalidad());
 
@@ -292,15 +290,15 @@ public class ConsoleClient {
         return texto;
     }
 
-    private static Calendar ingresarFecha() {
+    private static LocalDate ingresarFecha() {
 
-        Calendar fechaParseada = Calendar.getInstance();
+        LocalDate fechaParseada;
         do {
             try {
                 String fecha = br.readLine();
-                fechaParseada.setTime(dateFormat.parse(fecha));
+                fechaParseada = LocalDate.parse(fecha, dateFormatter);
                 break;
-            } catch (ParseException | IOException e) {
+            } catch (IOException e) {
                 System.err.println("Error en el formato de ingreso de la fecha");
             }
         } while (true);

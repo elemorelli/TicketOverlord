@@ -2,7 +2,7 @@ package es.ujaen.dae.ticketoverlord.services;
 
 import es.ujaen.dae.ticketoverlord.dtos.*;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface VentaTicketsService {
@@ -20,9 +20,9 @@ public interface VentaTicketsService {
 
     List<EventoDTO> buscarEventosPorNombreYLocalidad(String nombre, String localidad);
 
-    List<EventoDTO> buscarEventosPorFechaYTipo(Calendar fecha, String tipo);
+    List<EventoDTO> buscarEventosPorFechaYTipo(LocalDate fecha, String tipo);
 
-    List<EventoDTO> buscarEventosPorFechaTipoYLocalidad(Calendar fecha, String tipo, String localidad);
+    List<EventoDTO> buscarEventosPorFechaTipoYLocalidad(LocalDate fecha, String tipo, String localidad);
 
     void adquirirTicket(EventoDTO evento, ZonaDTO zona);
 

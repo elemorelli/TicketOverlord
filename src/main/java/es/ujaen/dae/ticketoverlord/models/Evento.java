@@ -1,13 +1,13 @@
 package es.ujaen.dae.ticketoverlord.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class Evento {
     private String nombre;
     private String tipo;
-    private Calendar fecha;
+    private LocalDate fecha;
     private Recinto recinto;
     private List<PrecioPorZona> preciosPorZona;
 
@@ -15,7 +15,7 @@ public class Evento {
         this.preciosPorZona = new ArrayList<>();
     }
 
-    public Evento(String nombre, String tipo, Calendar fecha, Recinto recinto, List<PrecioPorZona> preciosPorZona) {
+    public Evento(String nombre, String tipo, LocalDate fecha, Recinto recinto, List<PrecioPorZona> preciosPorZona) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.fecha = fecha;
@@ -50,11 +50,11 @@ public class Evento {
         this.tipo = tipo;
     }
 
-    public Calendar getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Calendar fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

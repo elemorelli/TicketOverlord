@@ -3,14 +3,14 @@ package es.ujaen.dae.ticketoverlord.dtos;
 import es.ujaen.dae.ticketoverlord.models.Evento;
 import es.ujaen.dae.ticketoverlord.models.PrecioPorZona;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class EventoDTO {
     private String nombre;
     private String tipo;
-    private Calendar fecha;
+    private LocalDate fecha;
     private RecintoDTO recinto;
     private List<PrecioPorZonaDTO> preciosPorZona;
 
@@ -27,14 +27,6 @@ public class EventoDTO {
         for (PrecioPorZona precio : evento.getPreciosPorZona()) {
             this.preciosPorZona.add(new PrecioPorZonaDTO(precio));
         }
-    }
-
-    public EventoDTO(String nombre, String tipo, Calendar fecha, RecintoDTO recinto, List<PrecioPorZonaDTO> preciosPorZona) {
-        this.nombre = nombre;
-        this.tipo = tipo;
-        this.fecha = fecha;
-        this.recinto = recinto;
-        this.preciosPorZona = preciosPorZona;
     }
 
     @Override
@@ -64,11 +56,11 @@ public class EventoDTO {
         this.tipo = tipo;
     }
 
-    public Calendar getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Calendar fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

@@ -7,8 +7,8 @@ import es.ujaen.dae.ticketoverlord.models.Ticket;
 import es.ujaen.dae.ticketoverlord.models.Usuario;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -131,7 +131,7 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     }
 
     @Override
-    public List<EventoDTO> buscarEventosPorFechaYTipo(Calendar fecha, String tipo) {
+    public List<EventoDTO> buscarEventosPorFechaYTipo(LocalDate fecha, String tipo) {
 
         List<EventoDTO> eventosEncontrados = new ArrayList<>();
         for (Evento evento : this.eventos) {
@@ -143,7 +143,7 @@ public class VentaTicketsServiceImpl implements VentaTicketsService {
     }
 
     @Override
-    public List<EventoDTO> buscarEventosPorFechaTipoYLocalidad(Calendar fecha, String tipo, String localidad) {
+    public List<EventoDTO> buscarEventosPorFechaTipoYLocalidad(LocalDate fecha, String tipo, String localidad) {
 
         List<EventoDTO> eventosEncontrados = new ArrayList<>();
         for (Evento evento : this.eventos) {

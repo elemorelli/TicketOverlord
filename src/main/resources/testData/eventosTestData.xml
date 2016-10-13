@@ -2,16 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
     <bean id="eventoFerial1" class="es.ujaen.dae.ticketoverlord.models.Evento">
         <property name="nombre" value="Feria de San Lucas 2016"/>
-        <property name="fecha">
-            <bean class="java.util.GregorianCalendar">
-                <constructor-arg value="2016"/>
-                <constructor-arg value="9"/>
-                <constructor-arg value="8"/>
-            </bean>
-        </property>
+        <property name="fecha"
+                  value="#{ T(java.time.LocalDate).parse('08-10-2016', T(java.time.format.DateTimeFormatter).ofPattern('dd-MM-yyyy')) }"/>
         <property name="recinto" ref="recintoFerialJaen"/>
         <property name="tipo" value="Todo"/>
         <property name="preciosPorZona">
@@ -34,13 +28,8 @@
 
     <bean id="eventoFerial2" class="es.ujaen.dae.ticketoverlord.models.Evento">
         <property name="nombre" value="Noches andaluces"/>
-        <property name="fecha">
-            <bean class="java.util.GregorianCalendar">
-                <constructor-arg value="2016"/>
-                <constructor-arg value="9"/>
-                <constructor-arg value="20"/>
-            </bean>
-        </property>
+        <property name="fecha"
+                  value="#{ T(java.time.LocalDate).parse('20-10-2016', T(java.time.format.DateTimeFormatter).ofPattern('dd-MM-yyyy')) }"/>
         <property name="recinto" ref="recintoFerialJaen"/>
         <property name="tipo" value="Concierto"/>
         <property name="preciosPorZona">
