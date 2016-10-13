@@ -28,24 +28,20 @@ public class ConsoleClient {
         int op;
         do {
             op = imprimirMenuPrincipal();
-            op = parsearOpcion(op);
+            parsearOpcion(op);
         } while (op != 0);
     }
 
     private static int imprimirMenuPrincipal() {
-        int op;
-        do {
-            System.out.println();
-            System.out.println("Elija una opción:");
-            System.out.println("1.- Registrarse");
-            System.out.println("2.- Login");
-            System.out.println("0.- Salir");
-            op = ingresarNumero();
-        } while (op < 0 || op > 2);
-        return op;
+        System.out.println();
+        System.out.println("Elija una opción:");
+        System.out.println("1.- Registrarse");
+        System.out.println("2.- Login");
+        System.out.println("0.- Salir");
+        return ingresarNumero();
     }
 
-    private static int parsearOpcion(int op) {
+    private static void parsearOpcion(int op) {
         switch (op) {
             case 1:
                 registrarUsuario();
@@ -54,37 +50,33 @@ public class ConsoleClient {
                 UsuarioDTO usuarioLogueado = autenticar();
                 if (usuarioLogueado != null) do {
                     if (usuarioLogueado.isAdmin()) {
-                        op = imprimirMenuAdmin(op, usuarioLogueado);
+                        op = imprimirMenuAdmin(usuarioLogueado);
                         parsearOpcionAdmin(op);
                     } else {
-                        op = imprimirMenuUsuario(op, usuarioLogueado);
+                        op = imprimirMenuUsuario(usuarioLogueado);
                         parsearOpcionUsuario(op);
                     }
                 } while (op != 0);
-                op = -1;
                 break;
-
+            case 0:
+                System.out.println("Gracias por utilizar el sistema TicketLord. ¡Hasta pronto!");
+                break;
             default:
+                System.err.println("Opción inválida");
                 break;
         }
-        return op;
     }
 
-    private static int imprimirMenuUsuario(int op, UsuarioDTO usuarioLogueado) {
-        do {
-            if (usuarioLogueado != null) {
-                System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
-                System.out.println("1.- Buscar eventos por nombre");
-                System.out.println("2.- Buscar eventos por nombre y localidad");
-                System.out.println("3.- Buscar eventos por fecha y tipo de evento");
-                System.out.println("4.- Buscar eventos por fecha, tipo de evento y localidad");
-                System.out.println("5.- Adquirir tickets");
-                System.out.println("6.- Consultar Tickets adquiridos");
-                System.out.println("0.- Logout");
-                op = ingresarNumero();
-            }
-        } while (op < 0 || op > 4);
-        return op;
+    private static int imprimirMenuUsuario(UsuarioDTO usuarioLogueado) {
+        System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
+        System.out.println("1.- Buscar eventos por nombre");
+        System.out.println("2.- Buscar eventos por nombre y localidad");
+        System.out.println("3.- Buscar eventos por fecha y tipo de evento");
+        System.out.println("4.- Buscar eventos por fecha, tipo de evento y localidad");
+        System.out.println("5.- Adquirir tickets");
+        System.out.println("6.- Consultar Tickets adquiridos");
+        System.out.println("0.- Logout");
+        return ingresarNumero();
     }
 
     private static void parsearOpcionUsuario(int op) {
@@ -108,6 +100,11 @@ public class ConsoleClient {
             case 6:
                 System.out.println("6.- Consultar Tickets adquiridos");
                 break;
+            case 0:
+                System.out.println("Se ha deslogueado correctamente");
+                break;
+            default:
+                System.err.println("Opción inválida");
         }
     }
 
@@ -194,16 +191,11 @@ public class ConsoleClient {
         }
     }
 
-    private static int imprimirMenuAdmin(int op, UsuarioDTO usuarioLogueado) {
-        do {
-            if (usuarioLogueado != null) {
-                System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
-                System.out.println("1.- Buscar eventos por nombre");
-                System.out.println("0.- Logout");
-                op = ingresarNumero();
-            }
-        } while (op < 0 || op > 4);
-        return op;
+    private static int imprimirMenuAdmin(UsuarioDTO usuarioLogueado) {
+        System.out.println("Bienvenido " + usuarioLogueado.getNombre() + ". Elija una opción:");
+        System.out.println("1.- Buscar eventos por nombre");
+        System.out.println("0.- Logout");
+        return ingresarNumero();
     }
 
     private static void parsearOpcionAdmin(int op) {
@@ -211,6 +203,11 @@ public class ConsoleClient {
             case 1:
                 System.out.println("1.- Buscar eventos por nombre");
                 break;
+            case 0:
+                System.out.println("Se ha deslogueado correctamente");
+                break;
+            default:
+                System.err.println("Opción inválida");
         }
     }
 
