@@ -23,6 +23,14 @@ public class ConsoleClient {
     private static AbstractApplicationContext appContext = null;
     private static UserDTO authenticatedUser = null;
 
+    public static UserDTO getAuthenticatedUser() {
+        return authenticatedUser;
+    }
+
+    public static AbstractApplicationContext getAppContext() {
+        return appContext;
+    }
+
     public static void main(String[] args) {
 
         appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -63,7 +71,7 @@ public class ConsoleClient {
                 } while (op != 0);
                 break;
             case 0:
-                System.out.println("Gracias por utilizar el sistema TicketLord. ¡Hasta pronto!");
+                System.out.println("Gracias por utilizar el sistema TicketOverlord. ¡Hasta pronto!");
                 break;
             default:
                 System.err.println("Opción inválida");
@@ -106,8 +114,7 @@ public class ConsoleClient {
                 listTickets();
                 break;
             case 0:
-                System.out.println("Se ha deslogueado correctamente");
-                authenticatedUser = null;
+                logout();
                 break;
             default:
                 System.err.println("Opción inválida");
@@ -224,8 +231,7 @@ public class ConsoleClient {
                 addNewEvent();
                 break;
             case 0:
-                System.out.println("Se ha deslogueado correctamente");
-                authenticatedUser = null;
+                logout();
                 break;
             default:
                 System.err.println("Opción inválida");
@@ -281,6 +287,14 @@ public class ConsoleClient {
             System.err.println("El usuario no existe");
             authenticatedUser = null;
         }
+    }
+
+    private static void logout() {
+
+        UsersService usersService = (UsersService) appContext.getBean("usersService");
+        usersService.logoutUser(authenticatedUser);
+        authenticatedUser = null;
+        System.out.println("Se ha deslogueado correctamente");
     }
 
     private static Integer readNumber() {

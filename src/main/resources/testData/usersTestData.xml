@@ -7,17 +7,17 @@
             <list>
                 <bean class="es.ujaen.dae.ticketoverlord.models.User">
                     <property name="uuidToken" value="3842affe-750b-4fa1-8120-0433a21a2f74"/>
-                    <property name="name" value="Administrador"/>
+                    <property name="name" value="Ele"/>
                     <property name="password" value="admin"/>
                 </bean>
                 <bean class="es.ujaen.dae.ticketoverlord.models.User">
                     <property name="uuidToken" value="1588204b-bce1-4afb-81b4-74140049c150"/>
-                    <property name="name" value="alessandro"/>
+                    <property name="name" value="Alessandro"/>
                     <property name="password" value="intrigante"/>
                 </bean>
                 <bean class="es.ujaen.dae.ticketoverlord.models.User">
                     <property name="uuidToken" value="89b42c9a-0ad9-42c5-86a9-a89945404038"/>
-                    <property name="name" value="egle"/>
+                    <property name="name" value="Egle"/>
                     <property name="password" value="minkia"/>
                 </bean>
             </list>

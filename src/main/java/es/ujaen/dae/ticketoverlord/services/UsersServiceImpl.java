@@ -1,13 +1,20 @@
 package es.ujaen.dae.ticketoverlord.services;
 
+import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.models.User;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class UsersServiceImpl implements UsersService {
     private List<User> users;
+    private Set<String> authenticatedUsers;
+    private String adminToken = "3842affe-750b-4fa1-8120-0433a21a2f74";
+
+    public UsersServiceImpl() {
+        users = new ArrayList<>();
+        authenticatedUsers = new HashSet<>();
+    }
 
     public List<User> getUsers() {
         return users;
@@ -41,6 +48,7 @@ public class UsersServiceImpl implements UsersService {
         for (User user : users) {
             if (user.getName().equalsIgnoreCase(userToValidate.getName())
                     && user.getPassword().equals(userToValidate.getPassword())) {
+                authenticatedUsers.add(user.getUuidToken());
                 return true;
             }
         }
@@ -48,12 +56,30 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public boolean isUserAuthenticated(UserDTO user) {
+        return authenticatedUsers.contains(user.getUuidToken());
+    }
+
+    @Override
+    @LoggedUserOperation
+    public void logoutUser(UserDTO user) {
+        authenticatedUsers.remove(user.getUuidToken());
+    }
+
+    @Override
+    @LoggedUserOperation
+    public boolean isAdmin(UserDTO user) {
+        return user.getUuidToken().equals(this.adminToken);
+    }
+
+    @Override
+    // @LoggedUserOperation
     public UserDTO getUserData(UserDTO userToQuery) {
 
         for (User user : this.users) {
             if (user.getName().equalsIgnoreCase(userToQuery.getName())) {
                 UserDTO foundUser = new UserDTO(user);
-                if (foundUser.getName().equalsIgnoreCase("Administrador")) {
+                if (isAdmin(foundUser)) {
                     foundUser.setAdmin(true);
                 }
                 return foundUser;

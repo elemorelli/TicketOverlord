@@ -7,7 +7,9 @@
                 http://www.springframework.org/schema/aop
                 http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean id="logger" class="es.ujaen.dae.ticketoverlord.aspect.GeneralLogger"/>
+    <bean id="logg  er" class="es.ujaen.dae.ticketoverlord.aspect.GeneralLogger"/>
+
+    <bean id="userValidator" class="es.ujaen.dae.ticketoverlord.aspect.UserValidator"/>
 
     <aop:config>
         <aop:aspect ref="logger">
@@ -17,6 +19,12 @@
             <aop:after-throwing pointcut="execution(* es.ujaen.dae.ticketoverlord..* (..))"
                                 method="logAfterException"
                                 throwing="exception"/>
+        </aop:aspect>
+        <aop:aspect ref="userValidator">
+            <aop:around pointcut="@annotation(es.ujaen.dae.ticketoverlord.annotations.AdminOperation)"
+                        method="verifyAdminOnly"/>
+            <aop:around pointcut="@annotation(es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation)"
+                        method="verifyLoggedUser"/>
         </aop:aspect>
     </aop:config>
 </beans>

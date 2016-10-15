@@ -1,5 +1,7 @@
 package es.ujaen.dae.ticketoverlord.services;
 
+import es.ujaen.dae.ticketoverlord.annotations.AdminOperation;
+import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +22,7 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
+    @LoggedUserOperation
     public List<EventDTO> findEventsByName(String name) {
 
         List<EventDTO> events = new ArrayList<>();
@@ -32,6 +35,7 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
+    @LoggedUserOperation
     public List<EventDTO> findEventsByNameAndCity(String name, String city) {
 
         List<EventDTO> events = new ArrayList<>();
@@ -45,6 +49,7 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
+    @LoggedUserOperation
     public List<EventDTO> findEventsByDateAndType(LocalDate date, String type) {
 
         List<EventDTO> events = new ArrayList<>();
@@ -57,6 +62,7 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
+    @LoggedUserOperation
     public List<EventDTO> findEventsByDateTypeAndCity(LocalDate date, String type, String city) {
 
         List<EventDTO> events = new ArrayList<>();
@@ -70,6 +76,7 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
+    @AdminOperation
     public void addNewEvent(EventDTO event) {
     }
 }

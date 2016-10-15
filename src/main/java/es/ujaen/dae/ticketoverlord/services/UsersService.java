@@ -9,5 +9,11 @@ public interface UsersService {
 
     boolean authenticateUser(UserDTO user);
 
+    boolean isUserAuthenticated(UserDTO user);
+
+    void logoutUser(UserDTO user);
+
+    boolean isAdmin(UserDTO user);
+
     UserDTO getUserData(UserDTO user);
 }

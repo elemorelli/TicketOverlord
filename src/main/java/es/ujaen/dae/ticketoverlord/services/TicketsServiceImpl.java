@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketoverlord.services;
 
+import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
@@ -20,10 +21,12 @@ public class TicketsServiceImpl implements TicketsService {
     }
 
     @Override
+    @LoggedUserOperation
     public void buyTicket(EventDTO event, ZoneDTO zone) {
     }
 
     @Override
+    @LoggedUserOperation
     public List<TicketDTO> listTickets(UserDTO user) {
         return null;
     }
