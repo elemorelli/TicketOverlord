@@ -15,11 +15,11 @@
                     <property name="price" value="20"/>
                 </bean>
                 <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
-                    <property name="zone" ref="recintoFerialJaenZonaA"/>
+                    <property name="zone" ref="recintoFerialJaenZonaB"/>
                     <property name="price" value="10"/>
                 </bean>
                 <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
-                    <property name="zone" ref="recintoFerialJaenZonaA"/>
+                    <property name="zone" ref="recintoFerialJaenZonaC"/>
                     <property name="price" value="5"/>
                 </bean>
             </list>

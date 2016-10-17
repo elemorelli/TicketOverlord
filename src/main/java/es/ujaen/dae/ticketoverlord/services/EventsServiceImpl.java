@@ -17,6 +17,10 @@ public class EventsServiceImpl implements EventsService {
         return events;
     }
 
+    public EventsServiceImpl() {
+        this.events = new ArrayList<>();
+    }
+
     public void setEvents(List<Event> events) {
         this.events = events;
     }

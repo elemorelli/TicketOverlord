@@ -2,6 +2,7 @@ package es.ujaen.dae.ticketoverlord.client;
 
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
+import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.services.EventsService;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
@@ -12,8 +13,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConsoleClient {
@@ -86,7 +90,7 @@ public class ConsoleClient {
         System.out.println("2.- Buscar eventos por nombre y localidad");
         System.out.println("3.- Buscar eventos por fecha y tipo de evento");
         System.out.println("4.- Buscar eventos por fecha, tipo de evento y localidad");
-        System.out.println("5.- Adquirir tickets");
+//        System.out.println("5.- Adquirir tickets");
         System.out.println("6.- Consultar Tickets adquiridos");
         System.out.println("0.- Logout");
         return readNumber();
@@ -107,9 +111,9 @@ public class ConsoleClient {
             case 4:
                 findEventsByDateTypeAndCity();
                 break;
-            case 5:
-                buyTickets();
-                break;
+//            case 5:
+//                buyTicketsFromList();
+//                break;
             case 6:
                 listTickets();
                 break;
@@ -184,8 +188,9 @@ public class ConsoleClient {
     private static void printEventList(List<EventDTO> events) {
 
         System.out.println("Event encontrados:");
+        int eventNumber = 0;
         for (EventDTO event : events) {
-            System.out.println(" \"" + event.getName() + "\"");
+            System.out.println("  Evento " + ++eventNumber + ": \"" + event.getName() + "\"");
             System.out.println("    Tipo: " + event.getType());
             System.out.println("    Fecha: " + event.getDate().format(dateFormatter));
             System.out.println("    Venue: " + event.getVenue().getName());
@@ -202,18 +207,95 @@ public class ConsoleClient {
                 System.out.println("    Todavía no se ha asignado los precios");
             }
         }
+
+        buyTicketsFromList(events);
     }
 
-    private static void buyTickets() {
-        // TODO
-        TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
-        ticketsService.buyTicket(null, null);
+    private static void buyTicketsFromList(List<EventDTO> events) {
+
+        System.out.println("¿Desea comprar tickets para uno de estos eventos? S/N");
+        String input = readText().toUpperCase();
+        List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
+        if (affirmatives.contains(input)) {
+
+            System.out.println("Ingrese el número del evento para el cual desea comprar tickets");
+            int eventNumber;
+            do {
+                eventNumber = readNumber();
+            } while (eventNumber < 1 || eventNumber > events.size());
+
+            EventDTO event = events.get(eventNumber - 1);
+
+            List<PricePerZoneDTO> prices = event.getPricesPerZone();
+            if (prices != null && !prices.isEmpty()) {
+                System.out.println("Seleccione zona a la cual desea asistir:");
+
+                List<Character> availableZones = new ArrayList<>(); // TODO: Cambiar las zonas de lista a mapa
+                for (PricePerZoneDTO price : prices) {
+                    System.out.println("Zona '" + price.getZone().getName() + "' a €" + price.getPrice());
+                    availableZones.add(price.getZone().getName());
+                }
+
+                Character selectedZone;
+                do {
+                    selectedZone = readCharacter();
+                } while (!availableZones.contains(selectedZone));
+
+                PricePerZoneDTO priceToCharge = null;
+                for (PricePerZoneDTO price : prices) {
+                    if (price.getZone().getName().equals(selectedZone)) {
+                        priceToCharge = price;
+                        break;
+                    }
+                }
+
+                Integer ticketsToBuy;
+                do {
+                    System.out.println("Ingrese la cantidad de tickets:");
+                    ticketsToBuy = readNumber();
+                } while (ticketsToBuy <= 0); // TODO: Validar tickets restantes
+
+                System.out.println("Resumen de la compra:");
+                System.out.println("  Evento: " + event.getName());
+                System.out.println("  Fecha: " + event.getDate().format(dateFormatter));
+                System.out.println("  Recinto: " + event.getVenue().getName());
+                System.out.println("  Zona: " + priceToCharge.getZone().getName());
+                System.out.println("  Precio por ticket: " + priceToCharge.getPrice());
+                System.out.println("  Cantidad de tickets: " + ticketsToBuy);
+                System.out.println("  Se le facturará un total de €" + (priceToCharge.getPrice().multiply(new BigDecimal(ticketsToBuy))));
+                System.out.println("  ¿Desea confirmar la operación? S/N");
+
+                input = readText().toUpperCase();
+
+                if (affirmatives.contains(input)) {
+                    TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
+
+                    ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
+                } else {
+                    System.out.println("Operación cancelada");
+                }
+            } else {
+                System.out.println("Todavía no se han asignado los precios para este evento");
+            }
+        }
     }
 
     private static void listTickets() {
-        // TODO
         TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
-        ticketsService.listTickets(authenticatedUser);
+        List<TicketDTO> tickets = ticketsService.listTickets(authenticatedUser);
+
+        if (!tickets.isEmpty()) {
+            System.out.println("Tickets adquiridos: ");
+            for (TicketDTO ticket : tickets) {
+                System.out.println("Evento: " + ticket.getEvent().getName());
+                System.out.println("  Fecha: " + ticket.getEvent().getDate());
+                System.out.println("  Recinto: " + ticket.getEvent().getVenue().getName());
+                System.out.println("  Zona: " + ticket.getZone().getName());
+                System.out.println("  Precio abonado: " + ticket.getPrice());
+            }
+        } else {
+            System.out.println("Usted no hay comprado ningún ticket");
+        }
     }
 
     private static int printAdminMenu() {
@@ -313,6 +395,17 @@ public class ConsoleClient {
         do {
             try {
                 return br.readLine();
+            } catch (IOException e) {
+                System.err.println("Error leyendo texto ingresado");
+            }
+        } while (true);
+    }
+
+    private static Character readCharacter() {
+
+        do {
+            try {
+                return br.readLine().toUpperCase().charAt(0);
             } catch (IOException e) {
                 System.err.println("Error leyendo texto ingresado");
             }
