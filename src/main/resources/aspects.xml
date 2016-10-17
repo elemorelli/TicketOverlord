@@ -7,9 +7,9 @@
                 http://www.springframework.org/schema/aop
                 http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean id="logg  er" class="es.ujaen.dae.ticketoverlord.aspect.GeneralLogger"/>
+    <bean id="logger" class="es.ujaen.dae.ticketoverlord.aspects.GeneralLogger"/>
 
-    <bean id="userValidator" class="es.ujaen.dae.ticketoverlord.aspect.UserValidator"/>
+    <bean id="userValidator" class="es.ujaen.dae.ticketoverlord.aspects.UserValidator"/>
 
     <aop:config>
         <aop:aspect ref="logger">

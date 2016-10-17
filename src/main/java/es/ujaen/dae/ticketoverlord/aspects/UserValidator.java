@@ -1,4 +1,4 @@
-package es.ujaen.dae.ticketoverlord.aspect;
+package es.ujaen.dae.ticketoverlord.aspects;
 
 import es.ujaen.dae.ticketoverlord.client.ConsoleClient;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;

@@ -1,4 +1,4 @@
-package es.ujaen.dae.ticketoverlord.aspect;
+package es.ujaen.dae.ticketoverlord.aspects;
 
 import org.aspectj.lang.JoinPoint;
 import org.slf4j.Logger;
