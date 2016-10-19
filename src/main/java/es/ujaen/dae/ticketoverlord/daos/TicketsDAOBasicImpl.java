@@ -13,16 +13,8 @@ public class TicketsDAOBasicImpl implements TicketsDAO {
         tickets = new ArrayList<>();
     }
 
-    public UsersDAO getUsersDAO() {
-        return usersDAO;
-    }
-
     public void setUsersDAO(UsersDAO usersDAO) {
         this.usersDAO = usersDAO;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
     }
 
     public void setTickets(List<Ticket> tickets) {

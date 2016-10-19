@@ -14,10 +14,6 @@ public class EventsDAOBasicImpl implements EventsDAO {
         this.events = new ArrayList<>();
     }
 
-    public List<Event> getEvents() {
-        return events;
-    }
-
     public void setEvents(List<Event> events) {
         this.events = events;
     }

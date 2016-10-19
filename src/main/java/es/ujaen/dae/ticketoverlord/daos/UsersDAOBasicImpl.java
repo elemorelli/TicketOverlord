@@ -12,10 +12,6 @@ public class UsersDAOBasicImpl implements UsersDAO {
         users = new ArrayList<>();
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
     public void setUsers(List<User> users) {
         this.users = users;
     }
