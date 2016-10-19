@@ -249,11 +249,12 @@ public class ConsoleClient {
                     }
                 }
 
-                Integer ticketsToBuy;
-                do {
-                    System.out.println("Ingrese la cantidad de tickets:");
-                    ticketsToBuy = readNumber();
-                } while (ticketsToBuy <= 0); // TODO: Validar tickets restantes
+                Integer ticketsToBuy = 1;
+                //Integer ticketsToBuy;
+                //do {
+                //System.out.println("Ingrese la cantidad de tickets:");
+                //ticketsToBuy = readNumber();
+                //} while (ticketsToBuy <= 0); // TODO: Validar tickets restantes
 
                 System.out.println("Resumen de la compra:");
                 System.out.println("  Evento: " + event.getName());
@@ -261,7 +262,7 @@ public class ConsoleClient {
                 System.out.println("  Recinto: " + event.getVenue().getName());
                 System.out.println("  Zona: " + priceToCharge.getZone().getName());
                 System.out.println("  Precio por ticket: " + priceToCharge.getPrice());
-                System.out.println("  Cantidad de tickets: " + ticketsToBuy);
+                //System.out.println("  Cantidad de tickets: " + ticketsToBuy);
                 System.out.println("  Se le facturará un total de €" + (priceToCharge.getPrice().multiply(new BigDecimal(ticketsToBuy))));
                 System.out.println("  ¿Desea confirmar la operación? S/N");
 
