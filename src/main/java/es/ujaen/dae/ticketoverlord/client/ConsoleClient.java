@@ -1,12 +1,10 @@
 package es.ujaen.dae.ticketoverlord.client;
 
-import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
-import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
-import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
-import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
+import es.ujaen.dae.ticketoverlord.dtos.*;
 import es.ujaen.dae.ticketoverlord.services.EventsService;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
+import es.ujaen.dae.ticketoverlord.services.VenuesService;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -322,9 +320,63 @@ public class ConsoleClient {
     }
 
     private static void addNewEvent() {
-        // TODO
+
+        EventDTO eventdto = new EventDTO();
+
+        System.out.println("Ingrese el nombre del evento:");
+        eventdto.setName(readText());
+
+        System.out.println("Ingrese el tipo de evento:");
+        eventdto.setType(readText());// TODO: Posible Enum
+
+        System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
+        eventdto.setDate(readDate());
+
+        VenuesService venuesService = (VenuesService) appContext.getBean("venuesService");
+
+        List<VenueDTO> venues = venuesService.getVenues();
+
+        Integer venueNumber = 0;
+        for (VenueDTO venue : venues) {
+            System.out.println("Recinto " + ++venueNumber + ": \"" + venue.getName() + "\"");
+            System.out.println("  Localidad: " + venue.getCity());
+            System.out.println("  Dirección: " + venue.getAddress());
+        }
+
+        System.out.println("Ingrese el número de recinto en el cual se celebra el evento ");
+        do {
+            venueNumber = readNumber();
+        } while (venueNumber < 1 || venueNumber > venues.size());
+
+        VenueDTO venue = venues.get(venueNumber - 1);
+
+        eventdto.setVenue(venue);
+
+        List<ZoneDTO> zones = venue.getZones();
+
+        if (!zones.isEmpty()) {
+
+            System.out.println("Zonas del recinto: ");
+            for (ZoneDTO zone : zones) {
+                System.out.println("  '" + zone.getName() + "' - " + zone.getSeats() + " pax.");
+            }
+
+            System.out.println("Ingrese los precios asignados para las zonas: ");
+            for (ZoneDTO zone : zones) {
+                System.out.println("  Precio para la zona '" + zone.getName() + "': ");
+                BigDecimal price = readDecimalNumber();
+                PricePerZoneDTO pricePerZone = new PricePerZoneDTO();
+                pricePerZone.setZone(zone);
+                pricePerZone.setPrice(price);
+                // pricePerZona.setAvailableSeats(zone.getSeats()) // TODO
+                eventdto.addPricesPerZone(pricePerZone);
+            }
+        } else {
+            System.out.println("El recinto no tiene zonas");
+        }
+
         EventsService eventsService = (EventsService) appContext.getBean("eventsService");
-        eventsService.addNewEvent(null);
+        eventsService.addNewEvent(eventdto);
     }
 
     private static void registerUser() {
@@ -385,6 +437,17 @@ public class ConsoleClient {
         do {
             try {
                 return Integer.parseInt(br.readLine());
+            } catch (IOException | NumberFormatException e) {
+                System.err.println("Error leyendo número ingresado");
+            }
+        } while (true);
+    }
+
+    private static BigDecimal readDecimalNumber() {
+
+        do {
+            try {
+                return new BigDecimal(br.readLine().replace(",", "."));
             } catch (IOException | NumberFormatException e) {
                 System.err.println("Error leyendo número ingresado");
             }

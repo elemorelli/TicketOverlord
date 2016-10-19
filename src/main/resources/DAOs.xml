@@ -16,4 +16,8 @@
         <property name="usersDAO" ref="usersDAO"/>
     </bean>
 
+    <bean id="venuesDAO" class="es.ujaen.dae.ticketoverlord.daos.VenueDAOBasicImpl">
+        <property name="venues" ref="recintosTestData"/>
+    </bean>
+
 </beans>

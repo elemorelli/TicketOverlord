@@ -6,6 +6,7 @@
 
     <bean id="eventsService" class="es.ujaen.dae.ticketoverlord.services.EventsServiceImpl">
         <property name="eventsDAO" ref="eventsDAO"/>
+        <property name="venueDAO" ref="venuesDAO"/>
     </bean>
 
     <bean id="ticketsService" class="es.ujaen.dae.ticketoverlord.services.TicketsServiceImpl">
@@ -19,7 +20,7 @@
     </bean>
 
     <bean id="venuesService" class="es.ujaen.dae.ticketoverlord.services.VenuesServiceImpl">
-        <property name="venues" ref="recintosTestData"/>
+        <property name="venuesDAO" ref="venuesDAO"/>
     </bean>
 
 </beans>
