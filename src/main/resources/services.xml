@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation=
+               "http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="eventsService" class="es.ujaen.dae.ticketoverlord.services.EventsServiceImpl">
+        <property name="eventsDAO" ref="eventsDAO"/>
+    </bean>
+
+    <bean id="ticketsService" class="es.ujaen.dae.ticketoverlord.services.TicketsServiceImpl">
+        <property name="ticketsDAO" ref="ticketsDAO"/>
+        <property name="eventsDAO" ref="eventsDAO"/>
+        <property name="usersDAO" ref="usersDAO"/>
+    </bean>
+
+    <bean id="usersService" class="es.ujaen.dae.ticketoverlord.services.UsersServiceImpl">
+        <property name="usersDAO" ref="usersDAO"/>
+    </bean>
+
+    <bean id="venuesService" class="es.ujaen.dae.ticketoverlord.services.VenuesServiceImpl">
+        <property name="venues" ref="recintosTestData"/>
+    </bean>
+
+</beans>

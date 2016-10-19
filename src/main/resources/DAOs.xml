@@ -1,0 +1,19 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation=
+               "http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="eventsDAO" class="es.ujaen.dae.ticketoverlord.daos.EventsDAOBasicImpl">
+        <property name="events" ref="eventosTestData"/>
+    </bean>
+
+    <bean id="usersDAO" class="es.ujaen.dae.ticketoverlord.daos.UsersDAOBasicImpl">
+        <property name="users" ref="usuariosTestData"/>
+    </bean>
+
+    <bean id="ticketsDAO" class="es.ujaen.dae.ticketoverlord.daos.TicketsDAOBasicImpl">
+        <property name="usersDAO" ref="usersDAO"/>
+    </bean>
+
+</beans>
