@@ -8,19 +8,38 @@
 
     <import resource="aspects.xml"/>
 
+    <!-- Services -->
+
     <bean id="eventsService" class="es.ujaen.dae.ticketoverlord.services.EventsServiceImpl">
-        <property name="events" ref="eventosTestData"/>
+        <property name="eventsDAO" ref="eventsDAO"/>
     </bean>
 
     <bean id="ticketsService" class="es.ujaen.dae.ticketoverlord.services.TicketsServiceImpl">
+        <property name="ticketsDAO" ref="ticketsDAO"/>
+        <property name="eventsDAO" ref="eventsDAO"/>
+        <property name="usersDAO" ref="usersDAO"/>
     </bean>
 
     <bean id="usersService" class="es.ujaen.dae.ticketoverlord.services.UsersServiceImpl">
-        <property name="users" ref="usuariosTestData"/>
+        <property name="usersDAO" ref="usersDAO"/>
     </bean>
 
     <bean id="venuesService" class="es.ujaen.dae.ticketoverlord.services.VenuesServiceImpl">
         <property name="venues" ref="recintosTestData"/>
+    </bean>
+
+    <!-- DAOs -->
+
+    <bean id="eventsDAO" class="es.ujaen.dae.ticketoverlord.daos.EventsDAOBasicImpl">
+        <property name="events" ref="eventosTestData"/>
+    </bean>
+
+    <bean id="usersDAO" class="es.ujaen.dae.ticketoverlord.daos.UsersDAOBasicImpl">
+        <property name="users" ref="usuariosTestData"/>
+    </bean>
+
+    <bean id="ticketsDAO" class="es.ujaen.dae.ticketoverlord.daos.TicketsDAOBasicImpl">
+        <property name="usersDAO" ref="usersDAO"/>
     </bean>
 
 </beans>
