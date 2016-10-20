@@ -50,10 +50,12 @@ public class ConsoleClient {
 
     private static int printMainMenu() {
         System.out.println();
-        System.out.println("Elija una opción:");
-        System.out.println("1.- Registrarse");
-        System.out.println("2.- Login");
-        System.out.println("0.- Salir");
+        System.out.println("-----------------------------------");
+        System.out.println("- Elija una opción:               -");
+        System.out.println("- 1.- Registrarse                 -");
+        System.out.println("- 2.- Login                       -");
+        System.out.println("- 0.- Salir                       -");
+        System.out.println("-----------------------------------");
         return readNumber();
     }
 
@@ -86,14 +88,16 @@ public class ConsoleClient {
 
     private static int printUserMenu() {
 
+        System.out.println();
+        System.out.println("-----------------------------------");
         System.out.println("Bienvenido " + authenticatedUser.getName() + ". Elija una opción:");
         System.out.println("1.- Buscar eventos por nombre");
         System.out.println("2.- Buscar eventos por nombre y localidad");
         System.out.println("3.- Buscar eventos por fecha y tipo de evento");
         System.out.println("4.- Buscar eventos por fecha, tipo de evento y localidad");
-//        System.out.println("5.- Adquirir tickets");
-        System.out.println("6.- Consultar Tickets adquiridos");
+        System.out.println("5.- Consultar Tickets adquiridos");
         System.out.println("0.- Logout");
+        System.out.println("-----------------------------------");
         return readNumber();
     }
 
@@ -112,10 +116,7 @@ public class ConsoleClient {
             case 4:
                 findEventsByDateTypeAndCity();
                 break;
-//            case 5:
-//                buyTicketsFromList();
-//                break;
-            case 6:
+            case 5:
                 listTickets();
                 break;
             case 0:
@@ -188,13 +189,14 @@ public class ConsoleClient {
 
     private static void printEventList(List<EventDTO> events) {
 
-        System.out.println("Event encontrados:");
+        System.out.println("Eventos encontrados:");
         int eventNumber = 0;
         for (EventDTO event : events) {
-            System.out.println("  Evento " + ++eventNumber + ": \"" + event.getName() + "\"");
+            System.out.println();
+            System.out.println("  EVENTO " + ++eventNumber + ": \"" + event.getName() + "\"");
             System.out.println("    Tipo: " + event.getType());
             System.out.println("    Fecha: " + event.getDate().format(dateFormatter));
-            System.out.println("    Venue: " + event.getVenue().getName());
+            System.out.println("    Recinto: " + event.getVenue().getName());
             System.out.println("    Localidad: " + event.getVenue().getCity());
 
             Map<Character, PricePerZoneDTO> pricesPerZone = event.getPricesPerZone();
@@ -203,8 +205,8 @@ public class ConsoleClient {
 
                 for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone.values()) {
                     System.out.println("      Zone '" + pricePerZoneDTO.getZone().getName()
-                            + "' - €" + pricePerZoneDTO.getPrice() +
-                            " (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
+                            + "' - €" + pricePerZoneDTO.getPrice()
+                            + " (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
                 }
             } else {
                 System.out.println("    Todavía no se ha asignado los precios");
@@ -216,6 +218,7 @@ public class ConsoleClient {
 
     private static void buyTicketsFromList(List<EventDTO> events) {
 
+        System.out.println();
         System.out.println("¿Desea comprar tickets para uno de estos eventos? S/N");
         String input = readText().toUpperCase();
         List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
@@ -260,6 +263,8 @@ public class ConsoleClient {
                     ticketsToBuy = readNumber();
                 } while (ticketsToBuy <= 0 || ticketsToBuy > priceToCharge.getAvailableSeats());
 
+                System.out.println();
+                System.out.println("-----------------------------------");
                 System.out.println("Resumen de la compra:");
                 System.out.println("  Evento: " + event.getName());
                 System.out.println("  Fecha: " + event.getDate().format(dateFormatter));
@@ -268,6 +273,8 @@ public class ConsoleClient {
                 System.out.println("  Precio por ticket: €" + priceToCharge.getPrice());
                 System.out.println("  Cantidad de tickets: " + ticketsToBuy);
                 System.out.println("  Se le facturará un total de €" + (priceToCharge.getPrice().multiply(new BigDecimal(ticketsToBuy))));
+                System.out.println("-----------------------------------");
+                System.out.println();
                 System.out.println("  ¿Desea confirmar la operación? S/N");
 
                 input = readText().toUpperCase();
@@ -281,13 +288,13 @@ public class ConsoleClient {
                         System.err.println("Operación cancelada: No hay tickets disponibles");
                     }
                 } else {
-                    System.out.println("Operación cancelada");
+                    System.err.println("Operación cancelada");
                 }
             } else {
-                System.out.println("Todavía no se han asignado los precios para este evento");
+                System.err.println("Todavía no se han asignado los precios para este evento");
             }
         } else {
-            System.out.println("Operación cancelada");
+            System.err.println("Operación cancelada");
         }
     }
 
@@ -296,14 +303,16 @@ public class ConsoleClient {
         List<TicketDTO> tickets = ticketsService.listTickets(authenticatedUser);
 
         if (!tickets.isEmpty()) {
-            System.out.println("Tickets adquiridos: ");
+            System.out.println();
+            System.out.println("Tickets adquiridos por el usuario " + authenticatedUser.getName() + ": ");
+            System.out.println("-----------------------------------");
             for (TicketDTO ticket : tickets) {
                 System.out.println("Evento: " + ticket.getEvent().getName());
-                System.out.println("  Fecha: " + ticket.getEvent().getDate());
-                System.out.println("  Recinto: " + ticket.getEvent().getVenue().getName());
-                System.out.println("  Zona: " + ticket.getZone().getName());
-                System.out.println("  Precio por ticket: " + ticket.getPrice());
-                System.out.println("  Cantidad comprada: " + ticket.getQuantity());
+                System.out.println("    Fecha: " + ticket.getEvent().getDate());
+                System.out.println("    Recinto: " + ticket.getEvent().getVenue().getName());
+                System.out.println("    Zona: " + ticket.getZone().getName());
+                System.out.println("    Precio por ticket: " + ticket.getPrice());
+                System.out.println("    Cantidad comprada: " + ticket.getQuantity());
             }
         } else {
             System.out.println("Usted no hay comprado ningún ticket");
@@ -312,9 +321,12 @@ public class ConsoleClient {
 
     private static int printAdminMenu() {
 
+        System.out.println();
+        System.out.println("-----------------------------------");
         System.out.println("Bienvenido " + authenticatedUser.getName() + ". Elija una opción:");
         System.out.println("1.- Añadir nuevo evento");
         System.out.println("0.- Logout");
+        System.out.println("-----------------------------------");
         return readNumber();
     }
 
@@ -332,6 +344,7 @@ public class ConsoleClient {
         }
     }
 
+    @AdminOperation
     private static void addNewEvent() {
 
         EventDTO eventdto = new EventDTO();
@@ -340,7 +353,7 @@ public class ConsoleClient {
         eventdto.setName(readText());
 
         System.out.println("Ingrese el tipo de evento:");
-        eventdto.setType(readText());// TODO: Posible Enum
+        eventdto.setType(readText()); // TODO: Posible Enum y mostrarlo como lista?
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         eventdto.setDate(readDate());
@@ -381,7 +394,6 @@ public class ConsoleClient {
                 PricePerZoneDTO pricePerZone = new PricePerZoneDTO();
                 pricePerZone.setZone(zone);
                 pricePerZone.setPrice(price);
-                // pricePerZona.setAvailableSeats(zone.getSeats()) // TODO
                 eventdto.addPricesPerZone(pricePerZone);
             }
         } else {
@@ -390,6 +402,7 @@ public class ConsoleClient {
 
         EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         eventsService.addNewEvent(eventdto);
+        System.out.println("El evento '" + eventdto.getName() + "' ha sido creado correctamente");
     }
 
     private static void registerUser() {
