@@ -14,6 +14,7 @@ import es.ujaen.dae.ticketoverlord.models.Zone;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class EventsServiceImpl implements EventsService {
     private EventsDAO eventsDAO;
@@ -67,8 +68,8 @@ public class EventsServiceImpl implements EventsService {
         Venue venue = venueDAO.selectVenueByName(eventDTO.getVenue().getName());
         event.setVenue(venue);
 
-        List<PricePerZoneDTO> prices = eventDTO.getPricesPerZone();
-        for (PricePerZoneDTO priceDTO : prices) {
+        Map<Character, PricePerZoneDTO> prices = eventDTO.getPricesPerZone();
+        for (PricePerZoneDTO priceDTO : prices.values()) {
             PricePerZone pricePerZone = new PricePerZone();
             pricePerZone.setPrice(priceDTO.getPrice());
 

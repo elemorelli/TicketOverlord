@@ -44,7 +44,7 @@ public class TicketsServiceImpl implements TicketsService {
         ticket.setEvent(event);
         ticket.setQuantity(ticketsToBuy);
 
-        for (PricePerZone pricePerZone : event.getPricePerZones()) {
+        for (PricePerZone pricePerZone : event.getPricePerZones().values()) {
             if (pricePerZone.getZone().getName().equals(priceDTO.getZone().getName())) {
                 ticket.setZone(pricePerZone.getZone());
                 ticket.setPrice(pricePerZone.getPrice());

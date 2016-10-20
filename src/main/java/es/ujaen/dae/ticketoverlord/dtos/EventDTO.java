@@ -4,18 +4,18 @@ import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EventDTO {
     private String name;
     private String type;
     private LocalDate date;
     private VenueDTO venue;
-    private List<PricePerZoneDTO> pricesPerZone;
+    private Map<Character, PricePerZoneDTO> pricesPerZone;
 
     public EventDTO() {
-        this.pricesPerZone = new ArrayList<>();
+        this.pricesPerZone = new HashMap<>();
     }
 
     public EventDTO(Event event) {
@@ -23,9 +23,9 @@ public class EventDTO {
         this.type = event.getType();
         this.date = event.getDate();
         this.venue = new VenueDTO(event.getVenue());
-        this.pricesPerZone = new ArrayList<>();
-        for (PricePerZone price : event.getPricePerZones()) {
-            this.pricesPerZone.add(new PricePerZoneDTO(price));
+        this.pricesPerZone = new HashMap<>();
+        for (PricePerZone price : event.getPricePerZones().values()) {
+            this.pricesPerZone.put(price.getZone().getName(), new PricePerZoneDTO(price));
         }
     }
 
@@ -72,15 +72,15 @@ public class EventDTO {
         this.venue = venue;
     }
 
-    public List<PricePerZoneDTO> getPricesPerZone() {
+    public Map<Character, PricePerZoneDTO> getPricesPerZone() {
         return pricesPerZone;
     }
 
-    public void setPricesPerZone(List<PricePerZoneDTO> pricesPerZone) {
+    public void setPricesPerZone(Map<Character, PricePerZoneDTO> pricesPerZone) {
         this.pricesPerZone = pricesPerZone;
     }
 
     public void addPricesPerZone(PricePerZoneDTO pricePerZoneDTO) {
-        this.pricesPerZone.add(pricePerZoneDTO);
+        this.pricesPerZone.put(pricePerZoneDTO.getZone().getName(), pricePerZoneDTO);
     }
 }

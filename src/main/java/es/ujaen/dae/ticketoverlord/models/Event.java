@@ -1,21 +1,21 @@
 package es.ujaen.dae.ticketoverlord.models;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Event {
     private String name;
     private String type;
     private LocalDate date;
     private Venue venue;
-    private List<PricePerZone> pricePerZones;
+    private Map<Character, PricePerZone> pricePerZones;
 
     public Event() {
-        this.pricePerZones = new ArrayList<>();
+        this.pricePerZones = new HashMap<>();
     }
 
-    public Event(String name, String type, LocalDate date, Venue venue, List<PricePerZone> pricePerZones) {
+    public Event(String name, String type, LocalDate date, Venue venue, Map<Character, PricePerZone> pricePerZones) {
         this.name = name;
         this.type = type;
         this.date = date;
@@ -66,15 +66,15 @@ public class Event {
         this.venue = venue;
     }
 
-    public List<PricePerZone> getPricePerZones() {
+    public Map<Character, PricePerZone> getPricePerZones() {
         return pricePerZones;
     }
 
-    public void setPricePerZones(List<PricePerZone> pricePerZones) {
+    public void setPricePerZones(Map<Character, PricePerZone> pricePerZones) {
         this.pricePerZones = pricePerZones;
     }
 
     public void addPricePerZones(PricePerZone pricePerZone) {
-        this.pricePerZones.add(pricePerZone);
+        this.pricePerZones.put(pricePerZone.getZone().getName(), pricePerZone);
     }
 }
