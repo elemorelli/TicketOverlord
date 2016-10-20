@@ -1,6 +1,7 @@
 package es.ujaen.dae.ticketoverlord.client;
 
 import es.ujaen.dae.ticketoverlord.dtos.*;
+import es.ujaen.dae.ticketoverlord.exceptions.NoTicketsAvailableException;
 import es.ujaen.dae.ticketoverlord.services.EventsService;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
@@ -199,7 +200,8 @@ public class ConsoleClient {
                 System.out.println("    Precios:");
                 for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone) {
                     System.out.println("      Zone '" + pricePerZoneDTO.getZone().getName()
-                            + "' - $" + pricePerZoneDTO.getPrice());
+                            + "' - €" + pricePerZoneDTO.getPrice() +
+                            " (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
                 }
             } else {
                 System.out.println("    Todavía no se ha asignado los precios");
@@ -227,32 +229,34 @@ public class ConsoleClient {
             List<PricePerZoneDTO> prices = event.getPricesPerZone();
             if (prices != null && !prices.isEmpty()) {
                 System.out.println("Seleccione zona a la cual desea asistir:");
-
+                
                 List<Character> availableZones = new ArrayList<>(); // TODO: Cambiar las zonas de lista a mapa
-                for (PricePerZoneDTO price : prices) {
-                    System.out.println("Zona '" + price.getZone().getName() + "' a €" + price.getPrice());
-                    availableZones.add(price.getZone().getName());
+                for (PricePerZoneDTO pricePerZoneDTO : prices) {
+                    System.out.println("Zona '" + pricePerZoneDTO.getZone().getName()
+                            + "' a €" + pricePerZoneDTO.getPrice()
+                            + "(" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
+                    availableZones.add(pricePerZoneDTO.getZone().getName());
                 }
 
                 Character selectedZone;
                 do {
                     selectedZone = readCharacter();
-                } while (!availableZones.contains(selectedZone));
+                }
+                while (!availableZones.contains(selectedZone)); // TODO: Validar que no elija zona sin asientos disponibles
 
                 PricePerZoneDTO priceToCharge = null;
-                for (PricePerZoneDTO price : prices) {
-                    if (price.getZone().getName().equals(selectedZone)) {
-                        priceToCharge = price;
+                for (PricePerZoneDTO pricePerZoneDTO : prices) {
+                    if (pricePerZoneDTO.getZone().getName().equals(selectedZone)) {
+                        priceToCharge = pricePerZoneDTO;
                         break;
                     }
                 }
 
-                Integer ticketsToBuy = 1;
-                //Integer ticketsToBuy;
-                //do {
-                //System.out.println("Ingrese la cantidad de tickets:");
-                //ticketsToBuy = readNumber();
-                //} while (ticketsToBuy <= 0); // TODO: Validar tickets restantes
+                Integer ticketsToBuy;
+                do {
+                    System.out.println("Ingrese la cantidad de tickets (" + priceToCharge.getAvailableSeats() + " tickets disponibles):");
+                    ticketsToBuy = readNumber();
+                } while (ticketsToBuy <= 0 || ticketsToBuy > priceToCharge.getAvailableSeats());
 
                 System.out.println("Resumen de la compra:");
                 System.out.println("  Evento: " + event.getName());
@@ -260,7 +264,7 @@ public class ConsoleClient {
                 System.out.println("  Recinto: " + event.getVenue().getName());
                 System.out.println("  Zona: " + priceToCharge.getZone().getName());
                 System.out.println("  Precio por ticket: " + priceToCharge.getPrice());
-                //System.out.println("  Cantidad de tickets: " + ticketsToBuy);
+                System.out.println("  Cantidad de tickets: " + ticketsToBuy);
                 System.out.println("  Se le facturará un total de €" + (priceToCharge.getPrice().multiply(new BigDecimal(ticketsToBuy))));
                 System.out.println("  ¿Desea confirmar la operación? S/N");
 
@@ -269,13 +273,19 @@ public class ConsoleClient {
                 if (affirmatives.contains(input)) {
                     TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
 
-                    ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
+                    try {
+                        ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
+                    } catch (NoTicketsAvailableException e) {
+                        System.err.println("Operación cancelada: No hay tickets disponibles");
+                    }
                 } else {
                     System.out.println("Operación cancelada");
                 }
             } else {
                 System.out.println("Todavía no se han asignado los precios para este evento");
             }
+        } else {
+            System.out.println("Operación cancelada");
         }
     }
 
@@ -290,7 +300,8 @@ public class ConsoleClient {
                 System.out.println("  Fecha: " + ticket.getEvent().getDate());
                 System.out.println("  Recinto: " + ticket.getEvent().getVenue().getName());
                 System.out.println("  Zona: " + ticket.getZone().getName());
-                System.out.println("  Precio abonado: " + ticket.getPrice());
+                System.out.println("  Precio por ticket: " + ticket.getPrice());
+                System.out.println("  Cantidad comprada: " + ticket.getQuantity());
             }
         } else {
             System.out.println("Usted no hay comprado ningún ticket");

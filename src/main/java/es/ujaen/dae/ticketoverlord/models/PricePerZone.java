@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class PricePerZone {
     private BigDecimal price;
     private Zone zone;
+    private Integer availableSeats;
 
     public PricePerZone() {
     }
@@ -16,9 +17,10 @@ public class PricePerZone {
 
     @Override
     public String toString() {
-        return "PricePerZoneDTO{" +
+        return "PricePerZone{" +
                 "price=" + price +
                 ", zone=" + zone +
+                ", availableSeats=" + availableSeats +
                 '}';
     }
 
@@ -36,5 +38,13 @@ public class PricePerZone {
 
     public void setZone(Zone zone) {
         this.zone = zone;
+    }
+
+    public Integer getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public void setAvailableSeats(Integer availableSeats) {
+        this.availableSeats = availableSeats;
     }
 }

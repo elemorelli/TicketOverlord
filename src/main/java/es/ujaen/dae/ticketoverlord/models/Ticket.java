@@ -6,15 +6,7 @@ public class Ticket {
     private Event event;
     private Zone zone;
     private BigDecimal price;
-
-    public Ticket() {
-    }
-
-    public Ticket(Event event, Zone zone, BigDecimal price) {
-        this.event = event;
-        this.zone = zone;
-        this.price = price;
-    }
+    private Integer quantity;
 
     @Override
     public String toString() {
@@ -22,6 +14,7 @@ public class Ticket {
                 "event=" + event +
                 ", zone=" + zone +
                 ", price=" + price +
+                ", quantity=" + quantity +
                 '}';
     }
 
@@ -47,5 +40,13 @@ public class Ticket {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

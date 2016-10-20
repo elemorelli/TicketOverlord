@@ -13,14 +13,17 @@
                 <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
                     <property name="zone" ref="recintoFerialJaenZonaA"/>
                     <property name="price" value="20"/>
+                    <property name="availableSeats" value="5"/>
                 </bean>
                 <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
                     <property name="zone" ref="recintoFerialJaenZonaB"/>
                     <property name="price" value="10"/>
+                    <property name="availableSeats" value="5"/>
                 </bean>
                 <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
                     <property name="zone" ref="recintoFerialJaenZonaC"/>
                     <property name="price" value="5"/>
+                    <property name="availableSeats" value="10"/>
                 </bean>
             </list>
         </property>

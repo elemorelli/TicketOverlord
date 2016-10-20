@@ -69,17 +69,17 @@ public class EventsServiceImpl implements EventsService {
 
         List<PricePerZoneDTO> prices = eventDTO.getPricesPerZone();
         for (PricePerZoneDTO priceDTO : prices) {
-            PricePerZone price = new PricePerZone();
-            price.setPrice(priceDTO.getPrice());
-            // pricePerZone.setAvailableSeats() // TODO
+            PricePerZone pricePerZone = new PricePerZone();
+            pricePerZone.setPrice(priceDTO.getPrice());
 
             for (Zone zone : venue.getZones()) {
                 if (zone.getName().equals(priceDTO.getZone().getName())) {
-                    price.setZone(zone);
+                    pricePerZone.setZone(zone);
+                    pricePerZone.setAvailableSeats(zone.getSeats());
                     break;
                 }
             }
-            event.addPricePerZones(price);
+            event.addPricePerZones(pricePerZone);
         }
 
         eventsDAO.insertEvent(event);

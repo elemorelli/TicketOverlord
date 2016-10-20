@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class PricePerZoneDTO {
     private BigDecimal price;
     private ZoneDTO zone;
+    private Integer availableSeats;
 
     public PricePerZoneDTO() {
     }
@@ -12,6 +13,7 @@ public class PricePerZoneDTO {
     public PricePerZoneDTO(es.ujaen.dae.ticketoverlord.models.PricePerZone price) {
         this.price = price.getPrice();
         this.zone = new ZoneDTO(price.getZone());
+        this.availableSeats = price.getAvailableSeats();
     }
 
     @Override
@@ -19,6 +21,7 @@ public class PricePerZoneDTO {
         return "PricePerZoneDTO{" +
                 "price=" + price +
                 ", zone=" + zone +
+                ", availableSeats=" + availableSeats +
                 '}';
     }
 
@@ -36,5 +39,13 @@ public class PricePerZoneDTO {
 
     public void setZone(ZoneDTO zone) {
         this.zone = zone;
+    }
+
+    public Integer getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public void setAvailableSeats(Integer availableSeats) {
+        this.availableSeats = availableSeats;
     }
 }

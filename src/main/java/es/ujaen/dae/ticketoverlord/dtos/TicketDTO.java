@@ -8,6 +8,7 @@ public class TicketDTO {
     private BigDecimal price;
     private EventDTO event;
     private ZoneDTO zone;
+    private Integer quantity;
 
     public TicketDTO() {
     }
@@ -16,6 +17,7 @@ public class TicketDTO {
         this.price = ticket.getPrice();
         this.event = new EventDTO(ticket.getEvent());
         this.zone = new ZoneDTO(ticket.getZone());
+        this.quantity = ticket.getQuantity();
     }
 
     @Override
@@ -24,6 +26,7 @@ public class TicketDTO {
                 "price=" + price +
                 ", event=" + event +
                 ", zone=" + zone +
+                ", quantity=" + quantity +
                 '}';
     }
 
@@ -49,5 +52,13 @@ public class TicketDTO {
 
     public void setZone(ZoneDTO zone) {
         this.zone = zone;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
