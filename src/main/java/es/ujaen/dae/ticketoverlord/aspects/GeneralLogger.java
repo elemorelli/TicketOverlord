@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GeneralLogger {
-    private Logger log;
+    private final Logger log;
 
     public GeneralLogger() {
         log = LoggerFactory.getLogger(GeneralLogger.class);

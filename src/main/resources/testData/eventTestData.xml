@@ -42,7 +42,7 @@
         <property name="venue" ref="recintoFerialJaen"/>
         <property name="type" value="Concierto"/>
         <property name="pricePerZones">
-            <map></map>
+            <map/>
         </property>
     </bean>
 

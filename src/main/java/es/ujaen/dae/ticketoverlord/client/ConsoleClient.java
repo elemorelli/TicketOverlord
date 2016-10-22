@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ConsoleClient {
-    private static InputStreamReader isr = new InputStreamReader(System.in);
-    private static BufferedReader br = new BufferedReader(isr);
-    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final InputStreamReader isr = new InputStreamReader(System.in);
+    private static final BufferedReader br = new BufferedReader(isr);
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static AbstractApplicationContext appContext = null;
     private static UserDTO authenticatedUser = null;
 
@@ -68,7 +68,7 @@ public class ConsoleClient {
             case 2:
                 authenticateUser();
                 if (authenticatedUser != null) do {
-                    if (authenticatedUser.isAdmin()) {
+                    if (true) {
                         op = printAdminMenu();
                         parseAdminMenuOption(op);
                     } else {

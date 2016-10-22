@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public class UsersServiceImpl implements UsersService {
     private UsersDAO usersDAO;
-    private Set<String> authenticatedUsers;
-    private String adminToken = "3842affe-750b-4fa1-8120-0433a21a2f74";
+    private final Set<String> authenticatedUsers;
+    private final String adminToken = "3842affe-750b-4fa1-8120-0433a21a2f74";
 
     public UsersServiceImpl() {
         authenticatedUsers = new HashSet<>();
@@ -33,11 +33,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Boolean userExists(UserDTO userToQuery) {
 
-        if (usersDAO.selectUserByName(userToQuery.getName()) != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return usersDAO.selectUserByName(userToQuery.getName()) != null;
     }
 
     @Override
@@ -71,7 +67,6 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    // @LoggedUserOperation
     public UserDTO getUserData(UserDTO userToQuery) {
 
         User user = usersDAO.selectUserByName(userToQuery.getName());
