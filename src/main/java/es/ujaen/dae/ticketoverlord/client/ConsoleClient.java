@@ -16,7 +16,10 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class ConsoleClient {
     private static InputStreamReader isr = new InputStreamReader(System.in);
@@ -233,12 +236,10 @@ public class ConsoleClient {
             if (prices != null && !prices.isEmpty()) {
                 System.out.println("Seleccione zona a la cual desea asistir:");
 
-                List<Character> availableZones = new ArrayList<>();
                 for (PricePerZoneDTO pricePerZoneDTO : prices.values()) {
                     System.out.println("Zona '" + pricePerZoneDTO.getZone().getName()
                             + "' a €" + pricePerZoneDTO.getPrice()
                             + " (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
-                    availableZones.add(pricePerZoneDTO.getZone().getName());
                 }
 
                 Character selectedZone;
@@ -505,7 +506,7 @@ public class ConsoleClient {
             try {
                 String date = br.readLine();
                 return LocalDate.parse(date, dateFormatter);
-            } catch (IOException e) {
+            } catch (DateTimeParseException | IOException e) {
                 System.err.println("Error en el formato de ingreso de la fecha");
             }
         } while (true);
