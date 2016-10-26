@@ -21,10 +21,11 @@
                                 throwing="exception"/>
         </aop:aspect>
         <aop:aspect ref="userValidator">
-            <aop:around pointcut="@annotation(es.ujaen.dae.ticketoverlord.annotations.AdminOperation)"
+            <aop:around pointcut="@annotation(es.ujaen.dae.ticketoverlord.annotations.AdminOperation) and args(user)"
                         method="verifyAdminOnly"/>
-            <aop:around pointcut="@annotation(es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation)"
-                        method="verifyLoggedUser"/>
+            <aop:around
+                    pointcut="@annotation(es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation) and args(user)"
+                    method="verifyLoggedUser"/>
         </aop:aspect>
     </aop:config>
 </beans>

@@ -1,17 +1,18 @@
 package es.ujaen.dae.ticketoverlord.aspects;
 
-import es.ujaen.dae.ticketoverlord.client.ConsoleClient;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.UnauthorizedAccessException;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserValidator {
-    public Object verifyLoggedUser(ProceedingJoinPoint joinPoint) throws UnauthorizedAccessException {
-        UserDTO user = ConsoleClient.getAuthenticatedUser();
+    @Autowired
+    private UsersService usersService;
+
+    public Object verifyLoggedUser(ProceedingJoinPoint joinPoint, UserDTO user) throws UnauthorizedAccessException {
 
         if (user != null) {
-            UsersService usersService = (UsersService) ConsoleClient.getAppContext().getBean("usersService");
             if (usersService.isUserAuthenticated(user)) {
                 try {
                     return joinPoint.proceed();
@@ -26,11 +27,9 @@ public class UserValidator {
         }
     }
 
-    public Object verifyAdminOnly(ProceedingJoinPoint joinPoint) throws UnauthorizedAccessException {
-        UserDTO user = ConsoleClient.getAuthenticatedUser();
+    public Object verifyAdminOnly(ProceedingJoinPoint joinPoint, UserDTO user) throws UnauthorizedAccessException {
 
         if (user != null) {
-            UsersService usersService = (UsersService) ConsoleClient.getAppContext().getBean("usersService");
             if (usersService.isUserAuthenticated(user) && usersService.isAdmin(user)) {
                 try {
                     return joinPoint.proceed();

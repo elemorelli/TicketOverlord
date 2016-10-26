@@ -28,14 +28,6 @@ public class ConsoleClient {
     private static AbstractApplicationContext appContext = null;
     private static UserDTO authenticatedUser = null;
 
-    public static UserDTO getAuthenticatedUser() {
-        return authenticatedUser;
-    }
-
-    public static AbstractApplicationContext getAppContext() {
-        return appContext;
-    }
-
     public static void main(String[] args) {
 
         appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
