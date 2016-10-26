@@ -16,7 +16,6 @@ public class VenuesServiceImpl implements VenuesService {
     }
 
     @Override
-    @LoggedUserOperation
     public List<VenueDTO> getVenues() {
 
         List<VenueDTO> venueDTOs = new ArrayList<>();

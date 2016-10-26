@@ -29,28 +29,24 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
-    @LoggedUserOperation
     public List<EventDTO> findEventsByName(String name) {
 
         return getEventDTOs(eventsDAO.selectEventsByName(name));
     }
 
     @Override
-    @LoggedUserOperation
     public List<EventDTO> findEventsByNameAndCity(String name, String city) {
 
         return getEventDTOs(eventsDAO.selectEventsByNameAndCity(name, city));
     }
 
     @Override
-    @LoggedUserOperation
     public List<EventDTO> findEventsByDateAndType(LocalDate date, String type) {
 
         return getEventDTOs(eventsDAO.selectEventsByDateAndType(date, type));
     }
 
     @Override
-    @LoggedUserOperation
     public List<EventDTO> findEventsByDateTypeAndCity(LocalDate date, String type, String city) {
 
         return getEventDTOs(eventsDAO.selectEventsByDateTypeAndCity(date, type, city));
