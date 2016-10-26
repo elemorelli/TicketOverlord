@@ -68,7 +68,7 @@ public class ConsoleClient {
             case 2:
                 authenticateUser();
                 if (authenticatedUser != null) do {
-                    if (true) {
+                    if (authenticatedUser.isAdmin()) {
                         op = printAdminMenu();
                         parseAdminMenuOption(op);
                     } else {
