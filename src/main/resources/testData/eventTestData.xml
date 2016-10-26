@@ -46,6 +46,25 @@
         </property>
     </bean>
 
+    <bean id="eventoJubilados1" class="es.ujaen.dae.ticketoverlord.models.Event">
+        <property name="name" value="Al ritmo del bandoneón"/>
+        <property name="date"
+                  value="#{ T(java.time.LocalDate).parse('01-01-2020', T(java.time.format.DateTimeFormatter).ofPattern('dd-MM-yyyy')) }"/>
+        <property name="venue" ref="recintoCentroJubilados"/>
+        <property name="type" value="Concierto"/>
+        <property name="pricePerZones">
+            <map>
+                <entry key="A">
+                    <bean class="es.ujaen.dae.ticketoverlord.models.PricePerZone">
+                        <property name="zone" ref="recintoCentroJubiladosZonaA"/>
+                        <property name="price" value="20"/>
+                        <property name="availableSeats" value="10"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
 
     <bean id="eventosTestData" class="org.springframework.beans.factory.config.ListFactoryBean">
         <property name="sourceList">
