@@ -64,13 +64,13 @@
             </map>
         </property>
     </bean>
-
-
+    
     <bean id="eventosTestData" class="org.springframework.beans.factory.config.ListFactoryBean">
         <property name="sourceList">
             <list>
                 <ref bean="eventoFerial1"/>
                 <ref bean="eventoFerial2"/>
+                <ref bean="eventoJubilados1"/>
             </list>
         </property>
     </bean>
