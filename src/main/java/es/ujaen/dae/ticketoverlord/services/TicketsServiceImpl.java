@@ -70,7 +70,7 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @LoggedUserOperation
-    public List<TicketDTO> listTickets(UserDTO user) {
+    public List<TicketDTO> listTicketsByUser(UserDTO user) {
 
         List<TicketDTO> ticketDTOs = new ArrayList<>();
         for (Ticket ticket : ticketsDAO.selectTicketsByUser(user.getName())) {

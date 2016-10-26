@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public class UsersServiceImpl implements UsersService {
     private UsersDAO usersDAO;
-    private final Set<String> authenticatedUsers;
-    private final String adminToken = "3842affe-750b-4fa1-8120-0433a21a2f74";
+    private final Set<String> authenticatedUsers; // TODO: Es una pseudo-sesión. Hay que removerla del servicio
+    private final String adminToken = "3842affe-750b-4fa1-8120-0433a21a2f74"; // TODO: Debe estar en la DB
 
     public UsersServiceImpl() {
         authenticatedUsers = new HashSet<>();
@@ -31,7 +31,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Boolean userExists(UserDTO userToQuery) {
+    public boolean userExists(UserDTO userToQuery) {
 
         return usersDAO.selectUserByName(userToQuery.getName()) != null;
     }

@@ -11,5 +11,5 @@ import java.util.List;
 public interface TicketsService {
     void buyTicket(UserDTO user, EventDTO event, PricePerZoneDTO price, Integer ticketsToBuy) throws NoTicketsAvailableException;
 
-    List<TicketDTO> listTickets(UserDTO user);
+    List<TicketDTO> listTicketsByUser(UserDTO user);
 }

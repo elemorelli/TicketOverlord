@@ -298,7 +298,7 @@ public class ConsoleClient {
 
     private static void listTickets() {
         TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
-        List<TicketDTO> tickets = ticketsService.listTickets(authenticatedUser);
+        List<TicketDTO> tickets = ticketsService.listTicketsByUser(authenticatedUser);
 
         if (!tickets.isEmpty()) {
             System.out.println();
