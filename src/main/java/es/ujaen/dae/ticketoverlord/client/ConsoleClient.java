@@ -1,6 +1,5 @@
 package es.ujaen.dae.ticketoverlord.client;
 
-import es.ujaen.dae.ticketoverlord.annotations.AdminOperation;
 import es.ujaen.dae.ticketoverlord.dtos.*;
 import es.ujaen.dae.ticketoverlord.exceptions.NoTicketsAvailableException;
 import es.ujaen.dae.ticketoverlord.services.EventsService;
@@ -22,17 +21,30 @@ import java.util.List;
 import java.util.Map;
 
 public class ConsoleClient {
-    private static final InputStreamReader isr = new InputStreamReader(System.in);
-    private static final BufferedReader br = new BufferedReader(isr);
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static AbstractApplicationContext appContext = null;
-    private static UserDTO authenticatedUser = null;
+    private final InputStreamReader isr = new InputStreamReader(System.in);
+    private final BufferedReader br = new BufferedReader(isr);
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private UserDTO authenticatedUser = null;
+    private EventsService eventsService;
+    private TicketsService ticketsService;
+    private UsersService usersService;
+    private VenuesService venuesService;
 
     public static void main(String[] args) {
 
-        appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        AbstractApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         appContext.registerShutdownHook();
 
+        ConsoleClient client = new ConsoleClient();
+        client.eventsService = (EventsService) appContext.getBean("EventsService");
+        client.ticketsService = (TicketsService) appContext.getBean("TicketsService");
+        client.usersService = (UsersService) appContext.getBean("UsersService");
+        client.venuesService = (VenuesService) appContext.getBean("VenuesService");
+
+        client.mainLoop();
+    }
+
+    private void mainLoop() {
         int op;
         do {
             op = printMainMenu();
@@ -40,7 +52,7 @@ public class ConsoleClient {
         } while (op != 0);
     }
 
-    private static int printMainMenu() {
+    private int printMainMenu() {
         System.out.println();
         System.out.println("-----------------------------------");
         System.out.println("- Elija una opción:               -");
@@ -51,7 +63,7 @@ public class ConsoleClient {
         return readNumber();
     }
 
-    private static void parseMainMenuOption(int op) {
+    private void parseMainMenuOption(int op) {
 
         switch (op) {
             case 1:
@@ -78,7 +90,7 @@ public class ConsoleClient {
         }
     }
 
-    private static int printUserMenu() {
+    private int printUserMenu() {
 
         System.out.println();
         System.out.println("-----------------------------------");
@@ -93,7 +105,7 @@ public class ConsoleClient {
         return readNumber();
     }
 
-    private static void printUserMenuOption(int op) {
+    private void printUserMenuOption(int op) {
 
         switch (op) {
             case 1:
@@ -119,9 +131,8 @@ public class ConsoleClient {
         }
     }
 
-    private static void findEventsByName() {
+    private void findEventsByName() {
 
-        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         System.out.println("Ingrese el nombre del evento:");
         String eventName = readText();
         List<EventDTO> events = eventsService.findEventsByName(eventName);
@@ -132,9 +143,8 @@ public class ConsoleClient {
         }
     }
 
-    private static void findEventsByNameAndCity() {
+    private void findEventsByNameAndCity() {
 
-        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         System.out.println("Ingrese el nombre del evento:");
         String eventName = readText();
         System.out.println("Ingrese la localidad");
@@ -147,9 +157,8 @@ public class ConsoleClient {
         }
     }
 
-    private static void findEventsByDateAndType() {
+    private void findEventsByDateAndType() {
 
-        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         LocalDate eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
@@ -162,9 +171,8 @@ public class ConsoleClient {
         }
     }
 
-    private static void findEventsByDateTypeAndCity() {
+    private void findEventsByDateTypeAndCity() {
 
-        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         LocalDate eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
@@ -179,7 +187,7 @@ public class ConsoleClient {
         }
     }
 
-    private static void printEventList(List<EventDTO> events) {
+    private void printEventList(List<EventDTO> events) {
 
         System.out.println("Eventos encontrados:");
         int eventNumber = 0;
@@ -208,7 +216,7 @@ public class ConsoleClient {
         buyTicketsFromList(events);
     }
 
-    private static void buyTicketsFromList(List<EventDTO> events) {
+    private void buyTicketsFromList(List<EventDTO> events) {
 
         System.out.println();
         System.out.println("¿Desea comprar tickets para uno de estos eventos? S/N");
@@ -270,8 +278,6 @@ public class ConsoleClient {
                 input = readText().toUpperCase();
 
                 if (affirmatives.contains(input)) {
-                    TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
-
                     try {
                         ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
                     } catch (NoTicketsAvailableException e) {
@@ -288,8 +294,7 @@ public class ConsoleClient {
         }
     }
 
-    private static void listTickets() {
-        TicketsService ticketsService = (TicketsService) appContext.getBean("ticketsService");
+    private void listTickets() {
         List<TicketDTO> tickets = ticketsService.listTicketsByUser(authenticatedUser);
 
         if (!tickets.isEmpty()) {
@@ -309,7 +314,7 @@ public class ConsoleClient {
         }
     }
 
-    private static int printAdminMenu() {
+    private int printAdminMenu() {
 
         System.out.println();
         System.out.println("-----------------------------------");
@@ -320,7 +325,7 @@ public class ConsoleClient {
         return readNumber();
     }
 
-    private static void parseAdminMenuOption(int op) {
+    private void parseAdminMenuOption(int op) {
 
         switch (op) {
             case 1:
@@ -334,8 +339,7 @@ public class ConsoleClient {
         }
     }
 
-    @AdminOperation
-    private static void addNewEvent() {
+    private void addNewEvent() {
 
         EventDTO eventdto = new EventDTO();
 
@@ -347,8 +351,6 @@ public class ConsoleClient {
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         eventdto.setDate(readDate());
-
-        VenuesService venuesService = (VenuesService) appContext.getBean("venuesService");
 
         List<VenueDTO> venues = venuesService.getVenues();
 
@@ -390,14 +392,12 @@ public class ConsoleClient {
             System.out.println("El recinto no tiene zonas");
         }
 
-        EventsService eventsService = (EventsService) appContext.getBean("eventsService");
         eventsService.addNewEvent(eventdto);
         System.out.println("El evento '" + eventdto.getName() + "' ha sido creado correctamente");
     }
 
-    private static void registerUser() {
+    private void registerUser() {
 
-        UsersService usersService = (UsersService) appContext.getBean("usersService");
         UserDTO userDTO = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
         String userName = readText();
@@ -414,9 +414,8 @@ public class ConsoleClient {
         }
     }
 
-    private static void authenticateUser() {
+    private void authenticateUser() {
 
-        UsersService usersService = (UsersService) appContext.getBean("usersService");
         UserDTO user = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
         String userName = readText();
@@ -440,15 +439,14 @@ public class ConsoleClient {
         }
     }
 
-    private static void logout() {
+    private void logout() {
 
-        UsersService usersService = (UsersService) appContext.getBean("usersService");
         usersService.logoutUser(authenticatedUser);
         authenticatedUser = null;
         System.out.println("Se ha deslogueado correctamente");
     }
 
-    private static Integer readNumber() {
+    private Integer readNumber() {
 
         do {
             try {
@@ -459,7 +457,7 @@ public class ConsoleClient {
         } while (true);
     }
 
-    private static BigDecimal readDecimalNumber() {
+    private BigDecimal readDecimalNumber() {
 
         do {
             try {
@@ -470,7 +468,7 @@ public class ConsoleClient {
         } while (true);
     }
 
-    private static String readText() {
+    private String readText() {
 
         do {
             try {
@@ -481,7 +479,7 @@ public class ConsoleClient {
         } while (true);
     }
 
-    private static Character readCharacter() {
+    private Character readCharacter() {
 
         do {
             try {
@@ -492,7 +490,7 @@ public class ConsoleClient {
         } while (true);
     }
 
-    private static LocalDate readDate() {
+    private LocalDate readDate() {
 
         do {
             try {
