@@ -1,7 +1,6 @@
 package es.ujaen.dae.ticketoverlord.services;
 
 import es.ujaen.dae.ticketoverlord.annotations.AdminOperation;
-import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
@@ -10,23 +9,20 @@ import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Venue;
 import es.ujaen.dae.ticketoverlord.models.Zone;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("EventsService")
 public class EventsServiceImpl implements EventsService {
+    @Autowired
     private EventsDAO eventsDAO;
+    @Autowired
     private VenueDAO venueDAO;
-
-    public void setEventsDAO(EventsDAO eventsDAO) {
-        this.eventsDAO = eventsDAO;
-    }
-
-    public void setVenueDAO(VenueDAO venueDAO) {
-        this.venueDAO = venueDAO;
-    }
 
     @Override
     public List<EventDTO> findEventsByName(String name) {

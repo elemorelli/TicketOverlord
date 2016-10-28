@@ -4,22 +4,22 @@ import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Component("UsersService")
 public class UsersServiceImpl implements UsersService {
+    @Autowired
     private UsersDAO usersDAO;
     private final Set<String> authenticatedUsers; // TODO: Es una pseudo-sesión. Hay que removerla del servicio
     private final String adminToken = "3842affe-750b-4fa1-8120-0433a21a2f74"; // TODO: Debe estar en la DB
 
     public UsersServiceImpl() {
         authenticatedUsers = new HashSet<>();
-    }
-
-    public void setUsersDAO(UsersDAO usersDAO) {
-        this.usersDAO = usersDAO;
     }
 
     @Override

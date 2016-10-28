@@ -13,26 +13,20 @@ import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Ticket;
 import es.ujaen.dae.ticketoverlord.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component("TicketsService")
 public class TicketsServiceImpl implements TicketsService {
+    @Autowired
     private TicketsDAO ticketsDAO;
+    @Autowired
     private UsersDAO usersDAO;
+    @Autowired
     private EventsDAO eventsDAO;
-
-    public void setTicketsDAO(TicketsDAO ticketsDAO) {
-        this.ticketsDAO = ticketsDAO;
-    }
-
-    public void setUsersDAO(UsersDAO usersDAO) {
-        this.usersDAO = usersDAO;
-    }
-
-    public void setEventsDAO(EventsDAO eventsDAO) {
-        this.eventsDAO = eventsDAO;
-    }
 
     @Override
     @LoggedUserOperation

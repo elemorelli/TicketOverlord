@@ -1,19 +1,18 @@
 package es.ujaen.dae.ticketoverlord.services;
 
-import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
 import es.ujaen.dae.ticketoverlord.dtos.VenueDTO;
 import es.ujaen.dae.ticketoverlord.models.Venue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component("VenuesService")
 public class VenuesServiceImpl implements VenuesService {
+    @Autowired
     private VenueDAO venuesDAO;
-
-    public void setVenuesDAO(VenueDAO venuesDAO) {
-        this.venuesDAO = venuesDAO;
-    }
 
     @Override
     public List<VenueDTO> getVenues() {

@@ -16,8 +16,6 @@
 
     <import resource="aspects.xml"/>
 
-    <import resource="services.xml"/>
-
     <import resource="DAOs.xml"/>
 
 </beans>
