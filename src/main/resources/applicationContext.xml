@@ -10,14 +10,11 @@
                 http://www.springframework.org/schema/aop
                 http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-
     <context:annotation-config/>
     <context:component-scan base-package="es.ujaen.dae.ticketoverlord"/>
 
     <aop:aspectj-autoproxy/>
 
     <import resource="testData/testData.xml"/>
-
-    <import resource="DAOs.xml"/>
 
 </beans>

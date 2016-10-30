@@ -1,19 +1,19 @@
 package es.ujaen.dae.ticketoverlord.daos;
 
 import es.ujaen.dae.ticketoverlord.models.Venue;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class VenueDAOBasicImpl implements VenueDAO {
+    @Resource(name = "recintosTestData")
     private List<Venue> venues;
 
     public VenueDAOBasicImpl() {
         this.venues = new ArrayList<>();
-    }
-
-    public void setVenues(List<Venue> venues) {
-        this.venues = venues;
     }
 
     @Override
