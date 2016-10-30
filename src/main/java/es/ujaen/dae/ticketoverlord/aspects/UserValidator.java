@@ -60,7 +60,6 @@ public class UserValidator {
         UserDTO user = null;
         Object[] signatureArgs = joinPoint.getArgs();
         for (Object signatureArg : signatureArgs) {
-            System.out.println("Arg: " + signatureArg);
             if (signatureArg instanceof UserDTO) {
                 user = (UserDTO) signatureArg;
                 break;

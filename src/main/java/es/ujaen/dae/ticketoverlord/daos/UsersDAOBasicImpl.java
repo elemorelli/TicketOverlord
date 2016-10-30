@@ -1,19 +1,19 @@
 package es.ujaen.dae.ticketoverlord.daos;
 
 import es.ujaen.dae.ticketoverlord.models.User;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component("usersDAO")
 public class UsersDAOBasicImpl implements UsersDAO {
+    @Resource(name = "usuariosTestData")
     private List<User> users;
 
     public UsersDAOBasicImpl() {
         users = new ArrayList<>();
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     @Override
