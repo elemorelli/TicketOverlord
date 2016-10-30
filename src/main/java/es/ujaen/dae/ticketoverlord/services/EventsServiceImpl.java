@@ -5,6 +5,7 @@ import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
+import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Venue;
@@ -50,7 +51,7 @@ public class EventsServiceImpl implements EventsService {
 
     @Override
     @AdminOperation
-    public void addNewEvent(EventDTO eventDTO) {
+    public void addNewEvent(UserDTO user, EventDTO eventDTO) {
 
         Event event = new Event();
         event.setName(eventDTO.getName());
