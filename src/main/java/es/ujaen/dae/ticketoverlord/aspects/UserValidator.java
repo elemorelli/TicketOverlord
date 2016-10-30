@@ -8,8 +8,10 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Aspect
+@Component("UserValidationAspect")
 public class UserValidator {
     @Autowired
     private UsersService usersService;
@@ -68,7 +70,7 @@ public class UserValidator {
         if (user != null) {
             return user;
         } else {
-            throw new AspectException("The method "+ joinPoint.getSignature().toShortString() +  " requires an UserDTO argument to validate");
+            throw new AspectException("The method " + joinPoint.getSignature().toShortString() + " requires an UserDTO argument to validate");
         }
     }
 }
