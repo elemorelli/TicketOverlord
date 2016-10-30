@@ -392,7 +392,7 @@ public class ConsoleClient {
             System.out.println("El recinto no tiene zonas");
         }
 
-        eventsService.addNewEvent(eventdto);
+        eventsService.addNewEvent(authenticatedUser, eventdto);
         System.out.println("El evento '" + eventdto.getName() + "' ha sido creado correctamente");
     }
 

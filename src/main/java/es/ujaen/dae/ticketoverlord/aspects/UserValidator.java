@@ -3,14 +3,21 @@ package es.ujaen.dae.ticketoverlord.aspects;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.UnauthorizedAccessException;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
+import org.aopalliance.aop.AspectException;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Aspect
 public class UserValidator {
     @Autowired
     private UsersService usersService;
 
-    public Object verifyLoggedUser(ProceedingJoinPoint joinPoint, UserDTO user) throws UnauthorizedAccessException {
+    @Around(value = "@annotation(es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation)")
+    public Object verifyLoggedUser(ProceedingJoinPoint joinPoint) throws UnauthorizedAccessException {
+
+        UserDTO user = getUserArgument(joinPoint);
 
         if (user != null) {
             if (usersService.isUserAuthenticated(user)) {
@@ -27,7 +34,10 @@ public class UserValidator {
         }
     }
 
-    public Object verifyAdminOnly(ProceedingJoinPoint joinPoint, UserDTO user) throws UnauthorizedAccessException {
+    @Around(value = "@annotation(es.ujaen.dae.ticketoverlord.annotations.AdminOperation)")
+    public Object verifyAdminOnly(ProceedingJoinPoint joinPoint) throws UnauthorizedAccessException {
+
+        UserDTO user = getUserArgument(joinPoint);
 
         if (user != null) {
             if (usersService.isUserAuthenticated(user) && usersService.isAdmin(user)) {
@@ -41,6 +51,24 @@ public class UserValidator {
             }
         } else {
             throw new UnauthorizedAccessException("Unknown user tried to do an Admininstrator operation");
+        }
+    }
+
+    private UserDTO getUserArgument(ProceedingJoinPoint joinPoint) {
+        UserDTO user = null;
+        Object[] signatureArgs = joinPoint.getArgs();
+        for (Object signatureArg : signatureArgs) {
+            System.out.println("Arg: " + signatureArg);
+            if (signatureArg instanceof UserDTO) {
+                user = (UserDTO) signatureArg;
+                break;
+            }
+        }
+
+        if (user != null) {
+            return user;
+        } else {
+            throw new AspectException("The method "+ joinPoint.getSignature().toShortString() +  " requires an UserDTO argument to validate");
         }
     }
 }
