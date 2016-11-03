@@ -1,9 +1,16 @@
 package es.ujaen.dae.ticketoverlord.models;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
 public class Ticket {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @ManyToOne
     private Event event;
+    @ManyToOne
     private Zone zone;
     private BigDecimal price;
     private Integer quantity;
@@ -11,11 +18,20 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket{" +
-                "event=" + event +
+                "id=" + id +
+                ", event=" + event +
                 ", zone=" + zone +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Event getEvent() {

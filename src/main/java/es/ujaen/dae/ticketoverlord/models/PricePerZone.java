@@ -1,9 +1,15 @@
 package es.ujaen.dae.ticketoverlord.models;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
 public class PricePerZone {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private BigDecimal price;
+    @ManyToOne
     private Zone zone;
     private Integer availableSeats;
 
@@ -18,10 +24,19 @@ public class PricePerZone {
     @Override
     public String toString() {
         return "PricePerZone{" +
-                "price=" + price +
+                "id=" + id +
+                ", price=" + price +
                 ", zone=" + zone +
                 ", availableSeats=" + availableSeats +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public BigDecimal getPrice() {

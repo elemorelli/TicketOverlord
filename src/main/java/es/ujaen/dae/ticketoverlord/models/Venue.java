@@ -1,12 +1,18 @@
 package es.ujaen.dae.ticketoverlord.models;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Venue {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private String name;
     private String city;
     private String address;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Zone> zones;
 
     public Venue() {
@@ -23,10 +29,20 @@ public class Venue {
     @Override
     public String toString() {
         return "Venue{" +
-                "city='" + city + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", city='" + city + '\'' +
                 ", address='" + address + '\'' +
                 ", zones=" + zones +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

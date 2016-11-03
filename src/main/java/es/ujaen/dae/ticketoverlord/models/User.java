@@ -1,12 +1,21 @@
 package es.ujaen.dae.ticketoverlord.models;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Column(unique = true)
     private String uuidToken;
+    @Column(unique = true)
     private String name;
     private String password;
+    //    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 
     public User() {
@@ -29,11 +38,20 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "uuidToken=" + uuidToken +
+                "id=" + id +
+                ", uuidToken='" + uuidToken + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", tickets=" + tickets +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUuidToken() {

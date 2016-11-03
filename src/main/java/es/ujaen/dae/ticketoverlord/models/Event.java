@@ -1,14 +1,22 @@
 package es.ujaen.dae.ticketoverlord.models;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+@Entity
 public class Event {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private String name;
     private String type;
+    //    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate date;
+    @ManyToOne
     private Venue venue;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Map<Character, PricePerZone> pricePerZones;
 
     public Event() {
@@ -26,12 +34,21 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", date=" + date +
                 ", venue=" + venue +
                 ", pricePerZones=" + pricePerZones +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

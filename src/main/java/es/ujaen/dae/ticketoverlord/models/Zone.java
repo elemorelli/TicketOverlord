@@ -1,6 +1,15 @@
 package es.ujaen.dae.ticketoverlord.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Zone {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private Character name;
     private Integer seats;
 
@@ -15,9 +24,18 @@ public class Zone {
     @Override
     public String toString() {
         return "Zone{" +
-                "name=" + name +
+                "id=" + id +
+                ", name=" + name +
                 ", seats=" + seats +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Character getName() {
