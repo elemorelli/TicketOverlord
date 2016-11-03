@@ -17,4 +17,6 @@
 
     <import resource="testData/testData.xml"/>
 
+    <import resource="orm.xml"/>
+
 </beans>
