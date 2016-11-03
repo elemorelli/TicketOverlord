@@ -2,19 +2,19 @@ package es.ujaen.dae.ticketoverlord.daos;
 
 import es.ujaen.dae.ticketoverlord.models.Event;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class EventsDAOBasicImpl implements EventsDAO {
+@Repository("EventsDAO")
+public class EventsDAOHibernateImpl implements EventsDAO {
     @Resource(name = "eventosTestData")
     private List<Event> events;
 
-    public EventsDAOBasicImpl() {
+    public EventsDAOHibernateImpl() {
         this.events = new ArrayList<>();
     }
 
