@@ -33,6 +33,12 @@ public class TestDataCreator {
 
     public void insertTestData() {
 
+        checkAndDeleteUser("Admin");
+        checkAndDeleteUser("Anto");
+        checkAndDeleteUser("Ele");
+        checkAndDeleteUser("Alessandro");
+        checkAndDeleteUser("Egle");
+
         User admin = new User("3842affe-750b-4fa1-8120-0433a21a2f74", "Admin", "admin", new ArrayList<>());
         User user1 = new User("4b955cda-215d-4937-a77c-e5140c6ed0cc", "Anto", "pass", new ArrayList<>());
         User user2 = new User("d18716ed-4f31-4ad5-9a5c-984a81873a68", "Ele", "pass", new ArrayList<>());
@@ -44,7 +50,12 @@ public class TestDataCreator {
         usersDAO.insertUser(user2);
         usersDAO.insertUser(user3);
         usersDAO.insertUser(user4);
+    }
 
-        System.out.println(usersDAO.selectUserByName(""));
+    private void checkAndDeleteUser(String username) {
+        User userToCheck = usersDAO.selectUserByName(username);
+        if (userToCheck != null) {
+            usersDAO.delete(userToCheck);
+        }
     }
 }
