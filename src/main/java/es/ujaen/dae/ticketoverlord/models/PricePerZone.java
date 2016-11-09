@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "PRICESPERZONE")
 public class PricePerZone {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

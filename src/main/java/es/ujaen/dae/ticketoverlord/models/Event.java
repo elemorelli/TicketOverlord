@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
+@Table(name = "EVENTS")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
