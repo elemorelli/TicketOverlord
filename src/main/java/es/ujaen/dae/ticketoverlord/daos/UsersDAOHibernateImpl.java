@@ -1,22 +1,18 @@
 package es.ujaen.dae.ticketoverlord.daos;
 
-import es.ujaen.dae.ticketoverlord.exceptions.UserCreationException;
 import es.ujaen.dae.ticketoverlord.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository("UsersDAO")
 public class UsersDAOHibernateImpl implements UsersDAO {
     private List<User> users;
-    //    @PersistenceContext
-//    private EntityManager em;
-    @Autowired
-    private EntityManagerFactory emf;
+    @PersistenceContext
+    private EntityManager em;
 
     public UsersDAOHibernateImpl() {
         users = new ArrayList<>();
@@ -31,43 +27,12 @@ public class UsersDAOHibernateImpl implements UsersDAO {
             }
         }
         return null;
-
-        // TODO: Ver de donde sale la session
-//        Criteria criteria = session.createCriteria(User.class);
-//        criteria.add(Restrictions.eq("userName", userName));
-//        List<User> users = criteria.list();
-
-//        EntityManager em = emf.createEntityManager();
-//        try {
-//            em.getTransaction().begin();
-//            User user = em.find(User.class, 1);
-//            em.getTransaction().commit();
-//            return user;
-//        } finally {
-//            if (em != null) {
-//                em.close();
-//            }
-//        }
     }
 
     @Override
     public void insertUser(User user) {
 
-        EntityManager em = emf.createEntityManager();
-
-        try {
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive())
-                em.getTransaction().rollback();
-            throw new UserCreationException(e);
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+        em.persist(user);
         users.add(user);
     }
 
