@@ -5,10 +5,14 @@ import es.ujaen.dae.ticketoverlord.daos.TicketsDAO;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
 import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
 import es.ujaen.dae.ticketoverlord.models.User;
+import es.ujaen.dae.ticketoverlord.models.Venue;
+import es.ujaen.dae.ticketoverlord.models.Zone;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class TestDataCreator {
     private EventsDAO eventsDAO;
@@ -33,6 +37,26 @@ public class TestDataCreator {
 
     public void insertTestData() {
 
+        insertVenues();
+
+        insertUsers();
+    }
+
+    private void insertVenues() {
+
+        deleteVenues();
+
+        List<Zone> zonasFerial = new ArrayList<>();
+        zonasFerial.add(new Zone('A', 100));
+        zonasFerial.add(new Zone('B', 200));
+        zonasFerial.add(new Zone('C', 300));
+
+        Venue ferial = new Venue("IFEJA, Ferias Jaén", "Jaén, Jaén", "Prolongación Carretera Granada S/N", zonasFerial);
+
+        venuesDAO.insertVenue(ferial);
+    }
+
+    private void insertUsers() {
         checkAndDeleteUser("Admin");
         checkAndDeleteUser("Anto");
         checkAndDeleteUser("Ele");
@@ -56,6 +80,13 @@ public class TestDataCreator {
         User userToCheck = usersDAO.selectUserByName(username);
         if (userToCheck != null) {
             usersDAO.delete(userToCheck);
+        }
+    }
+
+    private void deleteVenues() {
+        Map<String, Venue> venues = venuesDAO.selectAllVenues();
+        for (Venue venue : venues.values()) {
+            venuesDAO.deleteVenue(venue);
         }
     }
 }

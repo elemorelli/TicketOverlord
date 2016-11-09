@@ -18,7 +18,7 @@ public class VenuesServiceImpl implements VenuesService {
     public List<VenueDTO> getVenues() {
 
         List<VenueDTO> venueDTOs = new ArrayList<>();
-        for (Venue venue : venuesDAO.selectAllVenues()) {
+        for (Venue venue : venuesDAO.selectAllVenues().values()) {
             venueDTOs.add(new VenueDTO(venue));
         }
         return venueDTOs;

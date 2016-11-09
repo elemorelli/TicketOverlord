@@ -2,34 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="recintoFerialJaenZonaA" class="es.ujaen.dae.ticketoverlord.models.Zone">
-        <property name="name" value="A"/>
-        <property name="seats" value="100"/>
-    </bean>
-
-    <bean id="recintoFerialJaenZonaB" class="es.ujaen.dae.ticketoverlord.models.Zone">
-        <property name="name" value="B"/>
-        <property name="seats" value="200"/>
-    </bean>
-
-    <bean id="recintoFerialJaenZonaC" class="es.ujaen.dae.ticketoverlord.models.Zone">
-        <property name="name" value="C"/>
-        <property name="seats" value="300"/>
-    </bean>
-
-    <bean id="recintoFerialJaen" class="es.ujaen.dae.ticketoverlord.models.Venue">
-        <property name="name" value="IFEJA, Ferias Jaén"/>
-        <property name="city" value="Jaén, Jaén"/>
-        <property name="address" value="Prolongación Carretera Granada S/N"/>
-        <property name="zones">
-            <list>
-                <ref bean="recintoFerialJaenZonaA"/>
-                <ref bean="recintoFerialJaenZonaB"/>
-                <ref bean="recintoFerialJaenZonaC"/>
-            </list>
-        </property>
-    </bean>
-
     <bean id="recintoPlazaTorosJaenZonaA" class="es.ujaen.dae.ticketoverlord.models.Zone">
         <property name="name" value="A"/>
         <property name="seats" value="200"/>
@@ -118,7 +90,6 @@
     <bean id="recintosTestData" class="org.springframework.beans.factory.config.ListFactoryBean">
         <property name="sourceList">
             <list>
-                <ref bean="recintoFerialJaen"/>
                 <ref bean="recintoPlazaTorosJaen"/>
                 <ref bean="recintoCentroJubilados"/>
                 <ref bean="recintoTeatroLaGlorieta"/>

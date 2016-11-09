@@ -32,7 +32,7 @@ public class UserValidator {
                 throw new UnauthorizedAccessException("User " + user.getName() + " tried to do an operation that requires authentication");
             }
         } else {
-            throw new UnauthorizedAccessException("Unknown user tried to do an operation that requires authentication");
+            throw new UnauthorizedAccessException("Unknown users tried to do an operation that requires authentication");
         }
     }
 
@@ -52,7 +52,7 @@ public class UserValidator {
                 throw new UnauthorizedAccessException("User " + user.getName() + " tried to do an Admininstrator operation");
             }
         } else {
-            throw new UnauthorizedAccessException("Unknown user tried to do an Admininstrator operation");
+            throw new UnauthorizedAccessException("Unknown users tried to do an Admininstrator operation");
         }
     }
 

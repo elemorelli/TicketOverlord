@@ -1,5 +1,8 @@
 package es.ujaen.dae.ticketoverlord.daos;
 
+import es.ujaen.dae.ticketoverlord.exceptions.dao.users.UserInsertionException;
+import es.ujaen.dae.ticketoverlord.exceptions.dao.users.UserRemovalException;
+import es.ujaen.dae.ticketoverlord.exceptions.dao.users.UserUpdateException;
 import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.stereotype.Repository;
 
@@ -30,9 +33,11 @@ public class UsersDAOHibernateImpl implements UsersDAO {
             return users.get(userName);
         } else {
             try {
-                return em.createQuery("SELECT u FROM User u where u.name = :username", User.class)
+                User user = em.createQuery("SELECT u FROM User u where u.name = :username", User.class)
                         .setParameter("username", userName)
                         .getSingleResult();
+                users.put(user.getName(), user);
+                return user;
             } catch (NoResultException e) {
                 return null;
             }
@@ -41,17 +46,32 @@ public class UsersDAOHibernateImpl implements UsersDAO {
 
     @Override
     public void insertUser(User user) {
-        em.persist(user);
-        users.put(user.getName(), user);
+        try {
+            em.persist(user);
+            users.put(user.getName(), user);
+        } catch (Exception e) {
+            // TODO: Ver de envolver las transacciones en un aspecto que translade las excepciones
+            throw new UserInsertionException(e);
+        }
     }
 
     @Override
     public void updateUser(User user) {
-        em.merge(user);
+        try {
+            em.merge(user);
+        } catch (Exception e) {
+            throw new UserUpdateException(e);
+        }
     }
 
     @Override
     public void delete(User user) {
-        em.remove(em.merge(user));
+        try {
+            em.remove(em.find(User.class, user.getId()));
+            // TODO: Investigar porque no lo elimina así
+            // em.remove(user);
+        } catch (Exception e) {
+            throw new UserRemovalException(e);
+        }
     }
 }
