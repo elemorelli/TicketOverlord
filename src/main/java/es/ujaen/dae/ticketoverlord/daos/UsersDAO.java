@@ -3,6 +3,8 @@ package es.ujaen.dae.ticketoverlord.daos;
 import es.ujaen.dae.ticketoverlord.models.User;
 
 public interface UsersDAO {
+    User selectUserById(Integer id);
+
     User selectUserByName(String userName);
 
     void insertUser(User user);
