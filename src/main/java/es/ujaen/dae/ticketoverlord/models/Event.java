@@ -17,7 +17,7 @@ public class Event {
     private LocalDate date;
     @ManyToOne
     private Venue venue;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Map<Character, PricePerZone> pricePerZones;
 
     public Event() {

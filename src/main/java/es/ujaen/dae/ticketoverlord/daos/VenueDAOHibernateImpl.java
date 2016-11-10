@@ -77,6 +77,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     public void deleteVenue(Venue venue) {
         try {
             em.remove(em.find(Venue.class, venue.getId()));
+            venues.remove(venue.getName());
             // em.remove(venue);
         } catch (Exception e) {
             throw new VenuesRemovalException(e);

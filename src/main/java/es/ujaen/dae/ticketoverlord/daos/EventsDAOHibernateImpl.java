@@ -116,6 +116,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
         try {
             em.remove(em.find(Event.class, event.getId()));
             // em.remove(event);
+            events.remove(event.getName());
         } catch (Exception e) {
             throw new EventRemovalException(e);
         }

@@ -68,6 +68,7 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     public void delete(User user) {
         try {
             em.remove(em.find(User.class, user.getId()));
+            users.remove(user.getId());
             // TODO: Investigar porque no lo elimina así
             // em.remove(user);
         } catch (Exception e) {

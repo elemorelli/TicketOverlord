@@ -1,7 +1,6 @@
 package es.ujaen.dae.ticketoverlord.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ public class Venue {
     private String name;
     private String city;
     private String address;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Map<Character, Zone> zones;
 
     public Venue() {

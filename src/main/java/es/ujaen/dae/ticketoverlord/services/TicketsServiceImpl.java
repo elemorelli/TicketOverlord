@@ -59,6 +59,7 @@ public class TicketsServiceImpl implements TicketsService {
         user.addTicket(ticket);
         usersDAO.updateUser(user);
 
+        // TODO: Revisar porque no actualiza los asientos
         eventsDAO.updateEvent(event);
     }
 
