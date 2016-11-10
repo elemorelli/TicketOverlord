@@ -53,7 +53,34 @@ public class TestDataCreator {
 
         Venue ferial = new Venue("IFEJA, Ferias Jaén", "Jaén, Jaén", "Prolongación Carretera Granada S/N", zonasFerial);
 
+        List<Zone> zonasPlazaToros = new ArrayList<>();
+        zonasPlazaToros.add(new Zone('A', 100));
+        zonasPlazaToros.add(new Zone('B', 200));
+        zonasPlazaToros.add(new Zone('C', 300));
+        zonasPlazaToros.add(new Zone('D', 400));
+
+        Venue plazaToros = new Venue("Plaza de Toros de Jaén", "Jaén, Jaén", "Alameda de Capuchinos S/N", zonasPlazaToros);
+
+        List<Zone> zonasCentroJubilados = new ArrayList<>();
+        zonasCentroJubilados.add(new Zone('A', 10));
+
+        Venue centroJubilados = new Venue("Centro de jubilados \"La edad de oro\"", "Úbeda, Jaén", "Calle del Sabio 23", zonasCentroJubilados);
+
+        List<Zone> zonasGlorieta = new ArrayList<>();
+        zonasGlorieta.add(new Zone('A', 100));
+        zonasGlorieta.add(new Zone('B', 50));
+        zonasGlorieta.add(new Zone('C', 20));
+
+        Venue glorieta = new Venue("Teatro La Glorieta", "Baeza, Jaén", "Calle del Artista 12", zonasGlorieta);
+
+
+        Venue instituto = new Venue("Teatro del instituto", "Jaén, Jaén", "Calle del Estudiante 10", new ArrayList<>());
+
         venuesDAO.insertVenue(ferial);
+        venuesDAO.insertVenue(plazaToros);
+        venuesDAO.insertVenue(centroJubilados);
+        venuesDAO.insertVenue(glorieta);
+        venuesDAO.insertVenue(instituto);
     }
 
     private void insertUsers() {
