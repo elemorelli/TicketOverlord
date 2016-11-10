@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -370,7 +371,7 @@ public class ConsoleClient {
 
         eventdto.setVenue(venue);
 
-        List<ZoneDTO> zones = venue.getZones();
+        Collection<ZoneDTO> zones = venue.getZones().values();
 
         if (!zones.isEmpty()) {
 

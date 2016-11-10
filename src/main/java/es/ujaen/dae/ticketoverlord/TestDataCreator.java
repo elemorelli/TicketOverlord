@@ -4,13 +4,15 @@ import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.TicketsDAO;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
 import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
-import es.ujaen.dae.ticketoverlord.models.User;
-import es.ujaen.dae.ticketoverlord.models.Venue;
-import es.ujaen.dae.ticketoverlord.models.Zone;
+import es.ujaen.dae.ticketoverlord.models.*;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class TestDataCreator {
     private TicketsDAO ticketsDAO;
     private UsersDAO usersDAO;
     private VenueDAO venuesDAO;
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static void main(String[] args) {
 
@@ -37,44 +40,78 @@ public class TestDataCreator {
 
     public void insertTestData() {
 
+        deleteEvents();
+
+        deleteVenues();
+
+        deleteUsers();
+
         insertVenues();
+
+        insertEvents();
 
         insertUsers();
     }
 
+    private void deleteVenues() {
+        Map<String, Venue> venues = venuesDAO.selectAllVenues();
+        for (Venue venue : venues.values()) {
+            venuesDAO.deleteVenue(venue);
+        }
+    }
+
+    private void deleteEvents() {
+        List<Event> events = eventsDAO.selectEventsByName(" ");
+        for (Event event : events) {
+            eventsDAO.deleteEvent(event);
+        }
+    }
+
+    private void deleteUsers() {
+        checkAndDeleteUser("Admin");
+        checkAndDeleteUser("Anto");
+        checkAndDeleteUser("Ele");
+        checkAndDeleteUser("Alessandro");
+        checkAndDeleteUser("Egle");
+    }
+
+    private void checkAndDeleteUser(String username) {
+        User userToCheck = usersDAO.selectUserByName(username);
+        if (userToCheck != null) {
+            usersDAO.delete(userToCheck);
+        }
+    }
+
     private void insertVenues() {
 
-        deleteVenues();
-
-        List<Zone> zonasFerial = new ArrayList<>();
-        zonasFerial.add(new Zone('A', 100));
-        zonasFerial.add(new Zone('B', 200));
-        zonasFerial.add(new Zone('C', 300));
+        Map<Character, Zone> zonasFerial = new HashMap<>();
+        zonasFerial.put('A', new Zone('A', 100));
+        zonasFerial.put('B', new Zone('B', 200));
+        zonasFerial.put('C', new Zone('C', 300));
 
         Venue ferial = new Venue("IFEJA, Ferias Jaén", "Jaén, Jaén", "Prolongación Carretera Granada S/N", zonasFerial);
 
-        List<Zone> zonasPlazaToros = new ArrayList<>();
-        zonasPlazaToros.add(new Zone('A', 100));
-        zonasPlazaToros.add(new Zone('B', 200));
-        zonasPlazaToros.add(new Zone('C', 300));
-        zonasPlazaToros.add(new Zone('D', 400));
+        Map<Character, Zone> zonasPlazaToros = new HashMap<>();
+        zonasPlazaToros.put('A', new Zone('A', 100));
+        zonasPlazaToros.put('B', new Zone('B', 200));
+        zonasPlazaToros.put('C', new Zone('C', 300));
+        zonasPlazaToros.put('D', new Zone('D', 400));
 
         Venue plazaToros = new Venue("Plaza de Toros de Jaén", "Jaén, Jaén", "Alameda de Capuchinos S/N", zonasPlazaToros);
 
-        List<Zone> zonasCentroJubilados = new ArrayList<>();
-        zonasCentroJubilados.add(new Zone('A', 10));
+        Map<Character, Zone> zonasCentroJubilados = new HashMap<>();
+        zonasCentroJubilados.put('A', new Zone('A', 10));
 
         Venue centroJubilados = new Venue("Centro de jubilados \"La edad de oro\"", "Úbeda, Jaén", "Calle del Sabio 23", zonasCentroJubilados);
 
-        List<Zone> zonasGlorieta = new ArrayList<>();
-        zonasGlorieta.add(new Zone('A', 100));
-        zonasGlorieta.add(new Zone('B', 50));
-        zonasGlorieta.add(new Zone('C', 20));
+        Map<Character, Zone> zonasGlorieta = new HashMap<>();
+        zonasGlorieta.put('A', new Zone('A', 100));
+        zonasGlorieta.put('B', new Zone('B', 50));
+        zonasGlorieta.put('C', new Zone('C', 20));
 
         Venue glorieta = new Venue("Teatro La Glorieta", "Baeza, Jaén", "Calle del Artista 12", zonasGlorieta);
 
-
-        Venue instituto = new Venue("Teatro del instituto", "Jaén, Jaén", "Calle del Estudiante 10", new ArrayList<>());
+        Venue instituto = new Venue("Teatro del instituto", "Jaén, Jaén", "Calle del Estudiante 10", new HashMap<>());
 
         venuesDAO.insertVenue(ferial);
         venuesDAO.insertVenue(plazaToros);
@@ -83,12 +120,31 @@ public class TestDataCreator {
         venuesDAO.insertVenue(instituto);
     }
 
+    private void insertEvents() {
+
+        Venue ferial = venuesDAO.selectVenueByName("IFEJA, Ferias Jaén");
+        Venue centroJubilados = venuesDAO.selectVenueByName("Centro de jubilados \"La edad de oro\"");
+
+        Map<Character, PricePerZone> preciosFeriaSanLucas = new HashMap<>();
+        preciosFeriaSanLucas.put('A', new PricePerZone(new BigDecimal(20), 5, ferial.getZones().get('A')));
+        preciosFeriaSanLucas.put('B', new PricePerZone(new BigDecimal(10), 10, ferial.getZones().get('B')));
+        preciosFeriaSanLucas.put('C', new PricePerZone(new BigDecimal(5), 10, ferial.getZones().get('C')));
+
+        Event feriaSanLucas = new Event("Feria de San Lucas 2016", "Todo", LocalDate.parse("08/10/2016", dateFormatter), ferial, preciosFeriaSanLucas);
+
+        Event nochesAndaluces = new Event("Noches andaluces", "Concierto", LocalDate.parse("20/10/2016", dateFormatter), ferial, new HashMap<>());
+
+        Map<Character, PricePerZone> preciosBandoneon = new HashMap<>();
+        preciosBandoneon.put('A', new PricePerZone(new BigDecimal(20), 10, centroJubilados.getZones().get('A')));
+
+        Event bandoneon = new Event("Al ritmo del bandoneón", "Concierto", LocalDate.parse("20/11/2016", dateFormatter), centroJubilados, preciosBandoneon);
+
+        eventsDAO.insertEvent(feriaSanLucas);
+        eventsDAO.insertEvent(nochesAndaluces);
+        eventsDAO.insertEvent(bandoneon);
+    }
+
     private void insertUsers() {
-        checkAndDeleteUser("Admin");
-        checkAndDeleteUser("Anto");
-        checkAndDeleteUser("Ele");
-        checkAndDeleteUser("Alessandro");
-        checkAndDeleteUser("Egle");
 
         User admin = new User("3842affe-750b-4fa1-8120-0433a21a2f74", "Admin", "admin", new ArrayList<>());
         User user1 = new User("4b955cda-215d-4937-a77c-e5140c6ed0cc", "Anto", "pass", new ArrayList<>());
@@ -101,19 +157,5 @@ public class TestDataCreator {
         usersDAO.insertUser(user2);
         usersDAO.insertUser(user3);
         usersDAO.insertUser(user4);
-    }
-
-    private void checkAndDeleteUser(String username) {
-        User userToCheck = usersDAO.selectUserByName(username);
-        if (userToCheck != null) {
-            usersDAO.delete(userToCheck);
-        }
-    }
-
-    private void deleteVenues() {
-        Map<String, Venue> venues = venuesDAO.selectAllVenues();
-        for (Venue venue : venues.values()) {
-            venuesDAO.deleteVenue(venue);
-        }
     }
 }
