@@ -2,7 +2,8 @@ package es.ujaen.dae.ticketoverlord.models;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "VENUES")
@@ -14,13 +15,13 @@ public class Venue {
     private String city;
     private String address;
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Zone> zones;
+    private Map<Character, Zone> zones;
 
     public Venue() {
-        this.zones = new ArrayList<>();
+        this.zones = new HashMap<>();
     }
 
-    public Venue(String name, String city, String address, List<Zone> zones) {
+    public Venue(String name, String city, String address, Map<Character, Zone> zones) {
         this.name = name;
         this.city = city;
         this.address = address;
@@ -34,7 +35,7 @@ public class Venue {
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", address='" + address + '\'' +
-                ", zones=" + zones +
+//                ", zones=" + zones +
                 '}';
     }
 
@@ -70,15 +71,15 @@ public class Venue {
         this.address = address;
     }
 
-    public List<Zone> getZones() {
+    public Map<Character, Zone> getZones() {
         return zones;
     }
 
-    public void setZones(List<Zone> zones) {
+    public void setZones(Map<Character, Zone> zones) {
         this.zones = zones;
     }
 
     public void addZona(Zone zone) {
-        this.zones.add(zone);
+        this.zones.put(zone.getName(), zone);
     }
 }

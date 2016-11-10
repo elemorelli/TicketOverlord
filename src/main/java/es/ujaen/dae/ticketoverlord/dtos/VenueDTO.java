@@ -1,32 +1,32 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
 import es.ujaen.dae.ticketoverlord.models.Venue;
-import es.ujaen.dae.ticketoverlord.models.Zone;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VenueDTO {
     private String name;
     private String city;
     private String address;
-    private List<ZoneDTO> zones;
+    private Map<Character, ZoneDTO> zones;
 
     public VenueDTO() {
-        this.zones = new ArrayList<>();
+        this.zones = new HashMap<>();
     }
 
     public VenueDTO(Venue venue) {
         this.name = venue.getName();
         this.city = venue.getCity();
         this.address = venue.getAddress();
-        this.zones = new ArrayList<>();
-        for (Zone zone : venue.getZones()) {
-            this.zones.add(new ZoneDTO(zone));
+        this.zones = new HashMap<>();
+
+        for (Character character : venue.getZones().keySet()) {
+            this.zones.put(character, new ZoneDTO(venue.getZones().get(character)));
         }
     }
 
-    public VenueDTO(String name, String city, String address, List<ZoneDTO> zones) {
+    public VenueDTO(String name, String city, String address, HashMap<Character, ZoneDTO> zones) {
         this.name = name;
         this.city = city;
         this.address = address;
@@ -66,15 +66,15 @@ public class VenueDTO {
         this.address = address;
     }
 
-    public List<ZoneDTO> getZones() {
+    public Map<Character, ZoneDTO> getZones() {
         return zones;
     }
 
-    public void setZones(List<ZoneDTO> zones) {
+    public void setZones(Map<Character, ZoneDTO> zones) {
         this.zones = zones;
     }
 
-    public void addZona(ZoneDTO zona) {
-        this.zones.add(zona);
+    public void addZona(ZoneDTO zone) {
+        this.zones.put(zone.getName(), zone);
     }
 }

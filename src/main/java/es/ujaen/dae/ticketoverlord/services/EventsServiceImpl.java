@@ -66,7 +66,7 @@ public class EventsServiceImpl implements EventsService {
             PricePerZone pricePerZone = new PricePerZone();
             pricePerZone.setPrice(priceDTO.getPrice());
 
-            for (Zone zone : venue.getZones()) {
+            for (Zone zone : venue.getZones().values()) {
                 if (zone.getName().equals(priceDTO.getZone().getName())) {
                     pricePerZone.setZone(zone);
                     pricePerZone.setAvailableSeats(zone.getSeats());

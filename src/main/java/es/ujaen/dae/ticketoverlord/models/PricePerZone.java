@@ -17,9 +17,10 @@ public class PricePerZone {
     public PricePerZone() {
     }
 
-    public PricePerZone(BigDecimal price, Zone zone) {
+    public PricePerZone(BigDecimal price, Integer availableSeats, Zone zone) {
         this.price = price;
         this.zone = zone;
+        this.availableSeats = availableSeats;
     }
 
     @Override
