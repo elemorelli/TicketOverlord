@@ -40,6 +40,8 @@ public class TestDataCreator {
 
     public void insertTestData() {
 
+        deleteTickets();
+
         deleteEvents();
 
         deleteVenues();
@@ -51,6 +53,10 @@ public class TestDataCreator {
         insertEvents();
 
         insertUsers();
+    }
+
+    private void deleteTickets() {
+        // TODO: Borrar todos los tickets antes de borrar los eventos
     }
 
     private void deleteVenues() {

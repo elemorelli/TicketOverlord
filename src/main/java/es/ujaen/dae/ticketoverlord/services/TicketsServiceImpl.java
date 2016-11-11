@@ -38,19 +38,16 @@ public class TicketsServiceImpl implements TicketsService {
         ticket.setEvent(event);
         ticket.setQuantity(ticketsToBuy);
 
-        for (PricePerZone pricePerZone : event.getPricePerZones().values()) {
-            if (pricePerZone.getZone().getName().equals(priceDTO.getZone().getName())) {
-                ticket.setZone(pricePerZone.getZone());
-                ticket.setPrice(pricePerZone.getPrice());
+        PricePerZone pricePerZone = event.getPricePerZones().get(priceDTO.getZone().getName());
 
-                Integer availableSeats = pricePerZone.getAvailableSeats();
-                if (ticketsToBuy > 0 && ticketsToBuy <= availableSeats) {
-                    pricePerZone.setAvailableSeats(availableSeats - ticketsToBuy);
-                } else {
-                    throw new NoTicketsAvailableException();
-                }
-                break;
-            }
+        ticket.setZone(pricePerZone.getZone());
+        ticket.setPrice(pricePerZone.getPrice());
+
+        Integer availableSeats = pricePerZone.getAvailableSeats();
+        if (ticketsToBuy > 0 && ticketsToBuy <= availableSeats) {
+            pricePerZone.setAvailableSeats(availableSeats - ticketsToBuy);
+        } else {
+            throw new NoTicketsAvailableException();
         }
 
         ticketsDAO.insertTicket(ticket);
