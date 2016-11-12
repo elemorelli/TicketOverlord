@@ -24,6 +24,18 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     }
 
     @Override
+    public Venue selectVenueById(Integer id) {
+        
+        try {
+            Venue venue = em.find(Venue.class, id);
+            venues.put(venue.getName(), venue);
+            return venue;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public Venue selectVenueByName(String venueName) {
 
         if (venues.containsKey(venueName)) {

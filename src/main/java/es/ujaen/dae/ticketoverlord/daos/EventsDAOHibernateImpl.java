@@ -25,6 +25,17 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    public Event selectEventById(Integer id) {
+        try {
+            Event event = em.find(Event.class, id);
+            events.put(event.getName(), event);
+            return event;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public Event selectEventByName(String eventName) {
 
         if (events.containsKey(eventName)) {
