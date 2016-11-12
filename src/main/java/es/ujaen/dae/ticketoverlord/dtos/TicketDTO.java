@@ -5,15 +5,17 @@ import es.ujaen.dae.ticketoverlord.models.Ticket;
 import java.math.BigDecimal;
 
 public class TicketDTO {
-    private BigDecimal price;
+    private Integer id;
     private EventDTO event;
     private ZoneDTO zone;
+    private BigDecimal price;
     private Integer quantity;
 
     public TicketDTO() {
     }
 
     public TicketDTO(Ticket ticket) {
+        this.id = ticket.getId();
         this.price = ticket.getPrice();
         this.event = new EventDTO(ticket.getEvent());
         this.zone = new ZoneDTO(ticket.getZone());
@@ -23,11 +25,20 @@ public class TicketDTO {
     @Override
     public String toString() {
         return "TicketDTO{" +
-                "price=" + price +
+                "id=" + id +
                 ", event=" + event +
                 ", zone=" + zone +
+                ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public BigDecimal getPrice() {

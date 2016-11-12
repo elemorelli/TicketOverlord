@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VenueDTO {
+    private Integer id;
     private String name;
     private String city;
     private String address;
@@ -16,6 +17,7 @@ public class VenueDTO {
     }
 
     public VenueDTO(Venue venue) {
+        this.id = venue.getId();
         this.name = venue.getName();
         this.city = venue.getCity();
         this.address = venue.getAddress();
@@ -26,20 +28,23 @@ public class VenueDTO {
         }
     }
 
-    public VenueDTO(String name, String city, String address, HashMap<Character, ZoneDTO> zones) {
-        this.name = name;
-        this.city = city;
-        this.address = address;
-        this.zones = zones;
-    }
-
     @Override
     public String toString() {
         return "VenueDTO{" +
-                "city='" + city + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", city='" + city + '\'' +
                 ", address='" + address + '\'' +
                 ", zones=" + zones +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

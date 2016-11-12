@@ -3,6 +3,7 @@ package es.ujaen.dae.ticketoverlord.dtos;
 import es.ujaen.dae.ticketoverlord.models.User;
 
 public class UserDTO {
+    private Integer id;
     private String uuidToken;
     private String name;
     private String password;
@@ -12,6 +13,7 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.uuidToken = user.getUuidToken();
     }
@@ -19,10 +21,20 @@ public class UserDTO {
     @Override
     public String toString() {
         return "UserDTO{" +
-                "uuidToken='" + uuidToken + '\'' +
+                "id=" + id +
+                ", uuidToken='" + uuidToken + '\'' +
                 ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
                 ", isAdmin=" + isAdmin +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUuidToken() {

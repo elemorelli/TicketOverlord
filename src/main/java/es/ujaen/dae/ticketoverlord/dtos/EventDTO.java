@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EventDTO {
+    private Integer id;
     private String name;
     private String type;
     private LocalDate date;
@@ -19,6 +20,7 @@ public class EventDTO {
     }
 
     public EventDTO(Event event) {
+        this.id = event.getId();
         this.name = event.getName();
         this.type = event.getType();
         this.date = event.getDate();
@@ -32,12 +34,21 @@ public class EventDTO {
     @Override
     public String toString() {
         return "EventDTO{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", date=" + date +
                 ", venue=" + venue +
                 ", pricesPerZone=" + pricesPerZone +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
