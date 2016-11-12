@@ -9,6 +9,7 @@ import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
 import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.NoTicketsAvailableException;
+import es.ujaen.dae.ticketoverlord.exceptions.TicketTransactionException;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Ticket;
@@ -30,34 +31,38 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @LoggedUserOperation
-    public void buyTicket(UserDTO userDTO, EventDTO eventDTO, PricePerZoneDTO priceDTO, Integer ticketsToBuy) throws NoTicketsAvailableException {
+    public void buyTicket(UserDTO userDTO, EventDTO eventDTO, PricePerZoneDTO priceDTO, Integer ticketsToBuy) throws NoTicketsAvailableException, TicketTransactionException {
 
-        Ticket ticket = new Ticket();
+        try {
+            Ticket ticket = new Ticket();
 
-        Event event = eventsDAO.selectEventByName(eventDTO.getName());
-        ticket.setEvent(event);
-        ticket.setQuantity(ticketsToBuy);
+            Event event = eventsDAO.selectEventByName(eventDTO.getName());
+            ticket.setEvent(event);
+            ticket.setQuantity(ticketsToBuy);
 
-        PricePerZone pricePerZone = event.getPricePerZones().get(priceDTO.getZone().getName());
+            PricePerZone pricePerZone = event.getPricePerZones().get(priceDTO.getZone().getName());
 
-        ticket.setZone(pricePerZone.getZone());
-        ticket.setPrice(pricePerZone.getPrice());
+            ticket.setZone(pricePerZone.getZone());
+            ticket.setPrice(pricePerZone.getPrice());
 
-        Integer availableSeats = pricePerZone.getAvailableSeats();
-        if (ticketsToBuy > 0 && ticketsToBuy <= availableSeats) {
-            pricePerZone.setAvailableSeats(availableSeats - ticketsToBuy);
-        } else {
-            throw new NoTicketsAvailableException();
+            Integer availableSeats = pricePerZone.getAvailableSeats();
+            if (ticketsToBuy > 0 && ticketsToBuy <= availableSeats) {
+                pricePerZone.setAvailableSeats(availableSeats - ticketsToBuy);
+            } else {
+                throw new NoTicketsAvailableException();
+            }
+
+            ticketsDAO.insertTicket(ticket);
+
+            User user = usersDAO.selectUserByName(userDTO.getName());
+            user.addTicket(ticket);
+            usersDAO.updateUser(user);
+
+            // TODO: Revisar porque no actualiza los asientos
+            eventsDAO.updateEvent(event);
+        } catch (RuntimeException e) {
+            throw new TicketTransactionException(e);
         }
-
-        ticketsDAO.insertTicket(ticket);
-
-        User user = usersDAO.selectUserByName(userDTO.getName());
-        user.addTicket(ticket);
-        usersDAO.updateUser(user);
-
-        // TODO: Revisar porque no actualiza los asientos
-        eventsDAO.updateEvent(event);
     }
 
     @Override

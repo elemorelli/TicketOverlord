@@ -2,6 +2,7 @@ package es.ujaen.dae.ticketoverlord.client;
 
 import es.ujaen.dae.ticketoverlord.dtos.*;
 import es.ujaen.dae.ticketoverlord.exceptions.NoTicketsAvailableException;
+import es.ujaen.dae.ticketoverlord.exceptions.TicketTransactionException;
 import es.ujaen.dae.ticketoverlord.services.EventsService;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
@@ -283,6 +284,8 @@ public class ConsoleClient {
                         ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
                     } catch (NoTicketsAvailableException e) {
                         System.err.println("Operación cancelada: No hay tickets disponibles");
+                    } catch (TicketTransactionException e) {
+                        System.err.println("Operación cancelada: Error procesando transacción");
                     }
                 } else {
                     System.err.println("Operación cancelada");
