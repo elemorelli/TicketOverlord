@@ -34,7 +34,8 @@ public class UsersDAOHibernateImpl implements UsersDAO {
             return users.get(username);
         } else {
             try {
-                User user = em.createQuery("SELECT u FROM User u WHERE u.name = :username", User.class)
+                User user = em.createQuery("SELECT u FROM User u " +
+                        "WHERE UPPER(u.name) = UPPER(:username)", User.class)
                         .setParameter("username", username)
                         .getSingleResult();
                 users.put(user.getName(), user);

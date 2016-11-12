@@ -30,7 +30,8 @@ public class VenueDAOHibernateImpl implements VenueDAO {
             return venues.get(venueName);
         } else {
             try {
-                Venue venue = em.createQuery("SELECT v FROM Venue v WHERE v.name = :venuename", Venue.class)
+                Venue venue = em.createQuery("SELECT v FROM Venue v " +
+                        "WHERE UPPER(v.name) = UPPER(:venuename)", Venue.class)
                         .setParameter("venuename", venueName)
                         .getSingleResult();
                 venues.put(venue.getName(), venue);

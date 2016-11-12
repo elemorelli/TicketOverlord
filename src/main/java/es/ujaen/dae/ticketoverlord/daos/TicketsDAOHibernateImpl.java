@@ -45,7 +45,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     @Override
     public List<Ticket> selectAllTickets() {
 
-        return em.createQuery("SELECT t FROM Ticket t")
+        return em.createQuery("SELECT t FROM Ticket t", Ticket.class)
                 .getResultList();
     }
 

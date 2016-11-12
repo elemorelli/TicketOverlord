@@ -32,7 +32,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
         } else {
             try {
                 Event event = em.createQuery("SELECT e FROM Event e " +
-                        "WHERE e.name LIKE :eventname", Event.class)
+                        "WHERE UPPER(e.name) = UPPER(:eventname)", Event.class)
                         .setParameter("eventname", "%" + eventName + "%")
                         .getSingleResult();
                 events.put(event.getName(), event);
@@ -52,14 +52,15 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     public List<Event> selectEventsByName(String eventName) {
 
         return em.createQuery("SELECT e FROM Event e " +
-                "WHERE e.name LIKE :eventname", Event.class)
+                "WHERE UPPER(e.name) LIKE UPPER(:eventname)", Event.class)
                 .setParameter("eventname", "%" + eventName + "%").getResultList();
     }
 
     public List<Event> selectEventsByNameAndCity(String eventName, String city) {
 
         return em.createQuery("SELECT e FROM Event e " +
-                "WHERE e.name LIKE :eventname AND e.venue.city LIKE :cityname", Event.class)
+                "WHERE UPPER(e.name) LIKE UPPER(:eventname) " +
+                "AND UPPER(e.venue.city) LIKE UPPER(:cityname)", Event.class)
                 .setParameter("eventname", "%" + eventName + "%")
                 .setParameter("cityname", "%" + city + "%")
                 .getResultList();
@@ -69,7 +70,8 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     public List<Event> selectEventsByDateAndType(LocalDate date, String type) {
 
         return em.createQuery("SELECT e FROM Event e " +
-                "WHERE e.date = :eventdate AND e.type LIKE :eventtype", Event.class)
+                "WHERE e.date = :eventdate" +
+                "AND UPPER(e.type) LIKE UPPER(:eventtype)", Event.class)
                 .setParameter("eventdate", "%" + date + "%")
                 .setParameter("eventtype", "%" + type + "%")
                 .getResultList();
@@ -79,7 +81,9 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     public List<Event> selectEventsByDateTypeAndCity(LocalDate date, String type, String city) {
 
         return em.createQuery("SELECT e FROM Event e " +
-                "WHERE e.date = :eventdate AND e.type LIKE :eventtype AND e.venue.city LIKE :cityname", Event.class)
+                "WHERE e.date = :eventdate " +
+                "AND UPPER(e.type) LIKE UPPER(:eventtype) " +
+                "AND UPPER(e.venue.city) LIKE UPPER(:cityname)", Event.class)
                 .setParameter("eventdate", "%" + date + "%")
                 .setParameter("eventtype", "%" + type + "%")
                 .setParameter("cityname", "%" + city + "%")
