@@ -56,35 +56,34 @@ public class TestDataCreator {
     }
 
     private void deleteTickets() {
-        // TODO: Borrar todos los tickets antes de borrar los eventos
+
+        List<Ticket> tickets = ticketsDAO.selectAllTickets();
+        for (Ticket ticket : tickets) {
+            ticketsDAO.delete(ticket);
+        }
     }
 
     private void deleteVenues() {
-        Map<String, Venue> venues = venuesDAO.selectAllVenues();
-        for (Venue venue : venues.values()) {
+
+        List<Venue> venues = venuesDAO.selectAllVenues();
+        for (Venue venue : venues) {
             venuesDAO.deleteVenue(venue);
         }
     }
 
     private void deleteEvents() {
-        List<Event> events = eventsDAO.selectEventsByName(" ");
+
+        List<Event> events = eventsDAO.selectAllEvents();
         for (Event event : events) {
             eventsDAO.deleteEvent(event);
         }
     }
 
     private void deleteUsers() {
-        checkAndDeleteUser("Admin");
-        checkAndDeleteUser("Anto");
-        checkAndDeleteUser("Ele");
-        checkAndDeleteUser("Alessandro");
-        checkAndDeleteUser("Egle");
-    }
 
-    private void checkAndDeleteUser(String username) {
-        User userToCheck = usersDAO.selectUserByName(username);
-        if (userToCheck != null) {
-            usersDAO.delete(userToCheck);
+        List<User> users = usersDAO.selectAllUsers();
+        for (User user : users) {
+            usersDAO.deleteUser(user);
         }
     }
 

@@ -2,12 +2,12 @@ package es.ujaen.dae.ticketoverlord.daos;
 
 import es.ujaen.dae.ticketoverlord.models.Venue;
 
-import java.util.Map;
+import java.util.List;
 
 public interface VenueDAO {
     Venue selectVenueByName(String venueName);
 
-    Map<String, Venue> selectAllVenues();
+    List<Venue> selectAllVenues();
 
     void insertVenue(Venue venue);
 

@@ -7,6 +7,8 @@ import java.util.List;
 public interface TicketsDAO {
     Ticket selectTicketByNumber(Integer ticketNumber);
 
+    List<Ticket> selectAllTickets();
+
     List<Ticket> selectTicketsByUser(String username);
 
     void insertTicket(Ticket ticket);

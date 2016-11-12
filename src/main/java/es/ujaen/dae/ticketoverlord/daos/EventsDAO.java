@@ -8,6 +8,8 @@ import java.util.List;
 public interface EventsDAO {
     Event selectEventByName(String eventName);
 
+    List<Event> selectAllEvents();
+
     List<Event> selectEventsByName(String eventName);
 
     List<Event> selectEventsByNameAndCity(String name, String city);

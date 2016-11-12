@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository("UsersDAO")
@@ -28,13 +29,13 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     }
 
     @Override
-    public User selectUserByName(String userName) {
-        if (users.containsKey(userName)) {
-            return users.get(userName);
+    public User selectUserByName(String username) {
+        if (users.containsKey(username)) {
+            return users.get(username);
         } else {
             try {
-                User user = em.createQuery("SELECT u FROM User u where u.name = :username", User.class)
-                        .setParameter("username", userName)
+                User user = em.createQuery("SELECT u FROM User u WHERE u.name = :username", User.class)
+                        .setParameter("username", username)
                         .getSingleResult();
                 users.put(user.getName(), user);
                 return user;
@@ -42,6 +43,13 @@ public class UsersDAOHibernateImpl implements UsersDAO {
                 return null;
             }
         }
+    }
+
+    @Override
+    public List<User> selectAllUsers() {
+
+        return em.createQuery("SELECT u FROM User u", User.class)
+                .getResultList();
     }
 
     @Override
@@ -65,7 +73,7 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     }
 
     @Override
-    public void delete(User user) {
+    public void deleteUser(User user) {
         try {
             em.remove(em.find(User.class, user.getId()));
             users.remove(user.getId());

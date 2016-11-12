@@ -30,7 +30,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
             return venues.get(venueName);
         } else {
             try {
-                Venue venue = em.createQuery("SELECT v FROM Venue v where v.name = :venuename", Venue.class)
+                Venue venue = em.createQuery("SELECT v FROM Venue v WHERE v.name = :venuename", Venue.class)
                         .setParameter("venuename", venueName)
                         .getSingleResult();
                 venues.put(venue.getName(), venue);
@@ -42,16 +42,10 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     }
 
     @Override
-    public Map<String, Venue> selectAllVenues() {
+    public List<Venue> selectAllVenues() {
 
-        // TODO: Ver si se puede mejorar
-        List<Venue> result = em.createQuery("SELECT v FROM Venue v", Venue.class).getResultList();
-        for (Venue venue : result) {
-            if (!venues.containsKey(venue.getName())) {
-                venues.put(venue.getName(), venue);
-            }
-        }
-        return venues;
+        return em.createQuery("SELECT v FROM Venue v", Venue.class)
+                .getResultList();
     }
 
     @Override

@@ -43,6 +43,13 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    public List<Ticket> selectAllTickets() {
+
+        return em.createQuery("SELECT t FROM Ticket t")
+                .getResultList();
+    }
+
+    @Override
     public List<Ticket> selectTicketsByUser(String username) {
 
         return usersDAO.selectUserByName(username).getTickets();

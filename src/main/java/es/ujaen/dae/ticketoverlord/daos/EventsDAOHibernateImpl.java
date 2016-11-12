@@ -31,7 +31,8 @@ public class EventsDAOHibernateImpl implements EventsDAO {
             return events.get(eventName);
         } else {
             try {
-                Event event = em.createQuery("SELECT e FROM Event e WHERE e.name LIKE :eventname", Event.class)
+                Event event = em.createQuery("SELECT e FROM Event e " +
+                        "WHERE e.name LIKE :eventname", Event.class)
                         .setParameter("eventname", "%" + eventName + "%")
                         .getSingleResult();
                 events.put(event.getName(), event);
@@ -42,54 +43,47 @@ public class EventsDAOHibernateImpl implements EventsDAO {
         }
     }
 
+    public List<Event> selectAllEvents() {
+
+        return em.createQuery("SELECT e FROM Event e", Event.class)
+                .getResultList();
+    }
+
     public List<Event> selectEventsByName(String eventName) {
 
-        try {
-            return em.createQuery("SELECT e FROM Event e WHERE e.name LIKE :eventname", Event.class)
-                    .setParameter("eventname", "%" + eventName + "%")
-                    .getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return em.createQuery("SELECT e FROM Event e " +
+                "WHERE e.name LIKE :eventname", Event.class)
+                .setParameter("eventname", "%" + eventName + "%").getResultList();
     }
 
     public List<Event> selectEventsByNameAndCity(String eventName, String city) {
 
-        try {
-            return em.createQuery("SELECT e FROM Event e WHERE e.name LIKE :eventname AND e.venue.city LIKE :cityname", Event.class)
-                    .setParameter("eventname", "%" + eventName + "%")
-                    .setParameter("cityname", "%" + city + "%")
-                    .getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return em.createQuery("SELECT e FROM Event e " +
+                "WHERE e.name LIKE :eventname AND e.venue.city LIKE :cityname", Event.class)
+                .setParameter("eventname", "%" + eventName + "%")
+                .setParameter("cityname", "%" + city + "%")
+                .getResultList();
     }
 
     @Override
     public List<Event> selectEventsByDateAndType(LocalDate date, String type) {
 
-        try {
-            return em.createQuery("SELECT e FROM Event e WHERE e.date = :eventdate AND e.type LIKE :eventtype", Event.class)
-                    .setParameter("eventdate", "%" + date + "%")
-                    .setParameter("eventtype", "%" + type + "%")
-                    .getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return em.createQuery("SELECT e FROM Event e " +
+                "WHERE e.date = :eventdate AND e.type LIKE :eventtype", Event.class)
+                .setParameter("eventdate", "%" + date + "%")
+                .setParameter("eventtype", "%" + type + "%")
+                .getResultList();
     }
 
     @Override
     public List<Event> selectEventsByDateTypeAndCity(LocalDate date, String type, String city) {
 
-        try {
-            return em.createQuery("SELECT e FROM Event e WHERE e.date = :eventdate AND e.type LIKE :eventtype AND e.venue.city LIKE :cityname", Event.class)
-                    .setParameter("eventdate", "%" + date + "%")
-                    .setParameter("eventtype", "%" + type + "%")
-                    .setParameter("cityname", "%" + city + "%")
-                    .getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return em.createQuery("SELECT e FROM Event e " +
+                "WHERE e.date = :eventdate AND e.type LIKE :eventtype AND e.venue.city LIKE :cityname", Event.class)
+                .setParameter("eventdate", "%" + date + "%")
+                .setParameter("eventtype", "%" + type + "%")
+                .setParameter("cityname", "%" + city + "%")
+                .getResultList();
     }
 
     @Override
