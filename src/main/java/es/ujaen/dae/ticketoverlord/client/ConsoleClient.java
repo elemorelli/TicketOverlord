@@ -221,16 +221,22 @@ public class ConsoleClient {
     private void buyTicketsFromList(List<EventDTO> events) {
 
         System.out.println();
-        System.out.println("¿Desea comprar tickets para uno de estos eventos? S/N");
+        if (events.size() > 1) {
+            System.out.println("¿Desea comprar tickets para uno de estos eventos? S/N");
+        } else {
+            System.out.println("¿Desea comprar tickets para este evento? S/N");
+        }
         String input = readText().toUpperCase();
         List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
         if (affirmatives.contains(input)) {
 
-            System.out.println("Ingrese el número del evento para el cual desea comprar tickets");
-            int eventNumber;
-            do {
-                eventNumber = readNumber();
-            } while (eventNumber < 1 || eventNumber > events.size());
+            int eventNumber = 1;
+            if (events.size() > 1) {
+                System.out.println("Ingrese el número del evento para el cual desea comprar tickets");
+                do {
+                    eventNumber = readNumber();
+                } while (eventNumber < 1 || eventNumber > events.size());
+            }
 
             EventDTO event = events.get(eventNumber - 1);
 
@@ -488,7 +494,7 @@ public class ConsoleClient {
         do {
             try {
                 return br.readLine().toUpperCase().charAt(0);
-            } catch (IOException e) {
+            } catch (IOException | StringIndexOutOfBoundsException e) {
                 System.err.println("Error leyendo texto ingresado");
             }
         } while (true);
