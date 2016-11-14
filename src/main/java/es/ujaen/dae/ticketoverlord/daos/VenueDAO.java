@@ -8,8 +8,6 @@ public interface VenueDAO {
 
     Venue selectVenueById(Integer id);
 
-    Venue selectVenueByName(String venueName);
-
     List<Venue> selectAllVenues();
 
     void insertVenue(Venue venue);

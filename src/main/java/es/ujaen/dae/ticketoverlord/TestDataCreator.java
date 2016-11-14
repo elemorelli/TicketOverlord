@@ -11,7 +11,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,8 +137,17 @@ public class TestDataCreator {
 
     private void insertEvents() {
 
-        Venue ferial = venuesDAO.selectVenueByName("IFEJA, Ferias Jaén");
-        Venue centroJubilados = venuesDAO.selectVenueByName("Centro de jubilados \"La edad de oro\"");
+        List<Venue> venues = venuesDAO.selectAllVenues();
+
+        Venue ferial = null;
+        Venue centroJubilados = null;
+        for (Venue venue : venues) {
+            if (venue.getName().equalsIgnoreCase("IFEJA, Ferias Jaén")) {
+                ferial = venue;
+            } else if (venue.getName().equalsIgnoreCase("Centro de jubilados \"La edad de oro\"")) {
+                centroJubilados = venue;
+            }
+        }
 
         Map<Character, PricePerZone> preciosFeriaSanLucas = new HashMap<>();
         preciosFeriaSanLucas.put('A', new PricePerZone(new BigDecimal(20), 5, ferial.getZones().get('A')));

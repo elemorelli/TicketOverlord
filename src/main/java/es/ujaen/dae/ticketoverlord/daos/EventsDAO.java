@@ -9,8 +9,6 @@ public interface EventsDAO {
 
     Event selectEventById(Integer id);
 
-    Event selectEventByName(String eventName);
-
     List<Event> selectAllEvents();
 
     List<Event> selectEventsByName(String eventName);

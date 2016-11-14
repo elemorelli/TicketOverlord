@@ -35,25 +35,6 @@ public class EventsDAOHibernateImpl implements EventsDAO {
         }
     }
 
-    @Override
-    public Event selectEventByName(String eventName) {
-
-        if (events.containsKey(eventName)) {
-            return events.get(eventName);
-        } else {
-            try {
-                Event event = em.createQuery("SELECT e FROM Event e " +
-                        "WHERE UPPER(e.name) = UPPER(:eventname)", Event.class)
-                        .setParameter("eventname", "%" + eventName + "%")
-                        .getSingleResult();
-                events.put(event.getName(), event);
-                return event;
-            } catch (NoResultException e) {
-                return null;
-            }
-        }
-    }
-
     public List<Event> selectAllEvents() {
 
         return em.createQuery("SELECT e FROM Event e", Event.class)
