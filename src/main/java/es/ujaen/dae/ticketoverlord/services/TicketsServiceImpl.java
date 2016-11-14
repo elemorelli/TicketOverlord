@@ -15,6 +15,7 @@ import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Ticket;
 import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -56,8 +57,9 @@ public class TicketsServiceImpl implements TicketsService {
             ticket.setUser(user);
             ticketsDAO.insertTicket(ticket);
 
-            // TODO: Revisar porque no actualiza los asientos
             eventsDAO.updateEvent(event);
+        } catch (OptimisticLockingFailureException e) {
+            throw new TicketTransactionException(e);
         } catch (RuntimeException e) {
             throw new TicketTransactionException(e);
         }

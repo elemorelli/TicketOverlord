@@ -13,6 +13,8 @@ public class PricePerZone {
     @ManyToOne
     private Zone zone;
     private Integer availableSeats;
+    @Version
+    private Integer version;
 
     public PricePerZone() {
     }
