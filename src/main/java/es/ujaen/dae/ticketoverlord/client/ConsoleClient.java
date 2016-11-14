@@ -206,9 +206,13 @@ public class ConsoleClient {
                 System.out.println("    Precios:");
 
                 for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone.values()) {
-                    System.out.println("      Zone '" + pricePerZoneDTO.getZone().getName()
-                            + "' - €" + pricePerZoneDTO.getPrice()
-                            + " (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
+                    System.out.print("      Zone '" + pricePerZoneDTO.getZone().getName()
+                            + "' - €" + pricePerZoneDTO.getPrice());
+                    if (pricePerZoneDTO.getAvailableSeats() > 0) {
+                        System.out.println(" (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
+                    } else {
+                        System.out.println(" ENTRADAS AGOTADAS");
+                    }
                 }
             } else {
                 System.out.println("    Todavía no se ha asignado los precios");
@@ -245,9 +249,13 @@ public class ConsoleClient {
                 System.out.println("Seleccione zona a la cual desea asistir:");
 
                 for (PricePerZoneDTO pricePerZoneDTO : prices.values()) {
-                    System.out.println("Zona '" + pricePerZoneDTO.getZone().getName()
-                            + "' a €" + pricePerZoneDTO.getPrice()
-                            + " (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
+                    System.out.print("Zona '" + pricePerZoneDTO.getZone().getName()
+                            + "' a €" + pricePerZoneDTO.getPrice());
+                    if (pricePerZoneDTO.getAvailableSeats() > 0) {
+                        System.out.println(" (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
+                    } else {
+                        System.out.println(" ENTRADAS AGOTADAS");
+                    }
                 }
 
                 Character selectedZone;
