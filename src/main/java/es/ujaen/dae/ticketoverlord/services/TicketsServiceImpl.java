@@ -36,7 +36,7 @@ public class TicketsServiceImpl implements TicketsService {
         try {
             Ticket ticket = new Ticket();
 
-            Event event = eventsDAO.selectEventByName(eventDTO.getName());
+            Event event = eventsDAO.selectEventById(eventDTO.getId());
             ticket.setEvent(event);
             ticket.setQuantity(ticketsToBuy);
 
@@ -54,7 +54,7 @@ public class TicketsServiceImpl implements TicketsService {
 
             ticketsDAO.insertTicket(ticket);
 
-            User user = usersDAO.selectUserByName(userDTO.getName());
+            User user = usersDAO.selectUserById(userDTO.getId());
             user.addTicket(ticket);
             usersDAO.updateUser(user);
 
