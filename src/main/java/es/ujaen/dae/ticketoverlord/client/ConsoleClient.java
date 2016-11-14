@@ -288,6 +288,7 @@ public class ConsoleClient {
                 if (affirmatives.contains(input)) {
                     try {
                         ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
+                        System.out.println("La operación se ha completado satisfactoriamente");
                     } catch (NoTicketsAvailableException e) {
                         System.err.println("Operación cancelada: No hay tickets disponibles");
                     } catch (TicketTransactionException e) {

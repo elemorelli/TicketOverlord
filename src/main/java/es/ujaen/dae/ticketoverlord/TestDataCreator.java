@@ -40,13 +40,24 @@ public class TestDataCreator {
 
     public void insertTestData() {
 
-        deleteTickets();
-
-        deleteEvents();
-
-        deleteVenues();
-
-        deleteUsers();
+        for (int i = 0; i < 2; i++) {
+            try {
+                deleteTickets();
+            } catch (Exception e) {
+            }
+            try {
+                deleteUsers();
+            } catch (Exception e) {
+            }
+            try {
+                deleteEvents();
+            } catch (Exception e) {
+            }
+            try {
+                deleteVenues();
+            } catch (Exception e) {
+            }
+        }
 
         insertVenues();
 

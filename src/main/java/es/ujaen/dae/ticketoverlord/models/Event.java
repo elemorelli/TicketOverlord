@@ -13,11 +13,10 @@ public class Event {
     private Integer id;
     private String name;
     private String type;
-    //    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate date;
     @ManyToOne
     private Venue venue;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Map<Character, PricePerZone> pricePerZones;
 
     public Event() {

@@ -13,7 +13,7 @@ public class Venue {
     private String name;
     private String city;
     private String address;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Map<Character, Zone> zones;
 
     public Venue() {

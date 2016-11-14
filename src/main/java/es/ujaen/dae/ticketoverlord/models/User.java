@@ -15,7 +15,7 @@ public class User {
     @Column(unique = true)
     private String name;
     private String password;
-    //    @OneToMany(fetch = FetchType.LAZY)
+    // TODO: Debería ser LAZY
     @OneToMany(fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 
