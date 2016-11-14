@@ -10,6 +10,8 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @ManyToOne
+    private User user;
+    @ManyToOne
     private Event event;
     @ManyToOne
     private Zone zone;
@@ -20,11 +22,20 @@ public class Ticket {
     public String toString() {
         return "Ticket{" +
                 "id=" + id +
+                ", user=" + user +
                 ", event=" + event +
                 ", zone=" + zone +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getId() {

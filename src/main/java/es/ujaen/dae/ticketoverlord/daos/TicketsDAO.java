@@ -9,7 +9,7 @@ public interface TicketsDAO {
 
     List<Ticket> selectAllTickets();
 
-    List<Ticket> selectTicketsByUser(String username);
+    List<Ticket> selectTicketsByUser(Integer id);
 
     void insertTicket(Ticket ticket);
 

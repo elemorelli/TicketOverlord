@@ -50,9 +50,12 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
-    public List<Ticket> selectTicketsByUser(String username) {
+    public List<Ticket> selectTicketsByUser(Integer id) {
 
-        return usersDAO.selectUserByName(username).getTickets();
+        return em.createQuery("SELECT t FROM Ticket t " +
+                "WHERE t.user.id = :id", Ticket.class)
+                .setParameter("id", id)
+                .getResultList();
     }
 
     @Override

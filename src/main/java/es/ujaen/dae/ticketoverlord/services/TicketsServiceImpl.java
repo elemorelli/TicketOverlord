@@ -52,11 +52,9 @@ public class TicketsServiceImpl implements TicketsService {
                 throw new NoTicketsAvailableException();
             }
 
-            ticketsDAO.insertTicket(ticket);
-
             User user = usersDAO.selectUserById(userDTO.getId());
-            user.addTicket(ticket);
-            usersDAO.updateUser(user);
+            ticket.setUser(user);
+            ticketsDAO.insertTicket(ticket);
 
             // TODO: Revisar porque no actualiza los asientos
             eventsDAO.updateEvent(event);
@@ -70,7 +68,7 @@ public class TicketsServiceImpl implements TicketsService {
     public List<TicketDTO> listTicketsByUser(UserDTO user) {
 
         List<TicketDTO> ticketDTOs = new ArrayList<>();
-        for (Ticket ticket : ticketsDAO.selectTicketsByUser(user.getName())) {
+        for (Ticket ticket : ticketsDAO.selectTicketsByUser(user.getId())) {
 
             ticketDTOs.add(new TicketDTO(ticket));
         }
