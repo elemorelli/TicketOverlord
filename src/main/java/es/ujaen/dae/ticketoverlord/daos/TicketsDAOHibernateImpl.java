@@ -4,41 +4,28 @@ import es.ujaen.dae.ticketoverlord.exceptions.dao.tickets.TicketInsertionExcepti
 import es.ujaen.dae.ticketoverlord.exceptions.dao.tickets.TicketRemovalException;
 import es.ujaen.dae.ticketoverlord.exceptions.dao.tickets.TicketUpdateException;
 import es.ujaen.dae.ticketoverlord.models.Ticket;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository("TicketsDAO")
 public class TicketsDAOHibernateImpl implements TicketsDAO {
-    @Autowired
-    private UsersDAO usersDAO;
-    private Map<Integer, Ticket> tickets;
     @PersistenceContext
     private EntityManager em;
-
-    public TicketsDAOHibernateImpl() {
-        tickets = new HashMap<>();
-    }
 
     @Override
     public Ticket selectTicketByNumber(Integer ticketNumber) {
 
-        if (tickets.containsKey(ticketNumber)) {
-            return tickets.get(ticketNumber);
-        } else {
-            try {
-                Ticket ticket = em.find(Ticket.class, ticketNumber);
-                tickets.put(ticketNumber, ticket);
-                return ticket;
-            } catch (NoResultException e) {
-                return null;
-            }
+        try {
+            Ticket ticket = em.find(Ticket.class, ticketNumber);
+            return ticket;
+        } catch (NoResultException e) {
+            return null;
         }
     }
 
@@ -50,6 +37,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    @Cacheable("ticketsCache")
     public List<Ticket> selectTicketsByUser(Integer id) {
 
         return em.createQuery("SELECT t FROM Ticket t " +
@@ -59,17 +47,18 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    @CacheEvict(value = "ticketsCache", key = "#ticket.getUser().getId()")
     public void insertTicket(Ticket ticket) {
 
         try {
             em.persist(ticket);
-            tickets.put(ticket.getId(), ticket);
         } catch (Exception e) {
             throw new TicketInsertionException(e);
         }
     }
 
     @Override
+    @CacheEvict(value = "ticketsCache", key = "#ticket.getUser().getId()")
     public void updateTicket(Ticket ticket) {
 
         try {
@@ -80,10 +69,10 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    @CacheEvict(value = "ticketsCache", key = "#ticket.getUser().getId()")
     public void delete(Ticket ticket) {
         try {
             em.remove(em.find(Ticket.class, ticket.getId()));
-            tickets.remove(ticket.getId());
         } catch (Exception e) {
             throw new TicketRemovalException(e);
         }

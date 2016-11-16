@@ -15,8 +15,8 @@
 
     <aop:aspectj-autoproxy/>
 
-    <import resource="testData/testData.xml"/>
-
     <import resource="orm.xml"/>
+
+    <import resource="cache.xml"/>
 
 </beans>

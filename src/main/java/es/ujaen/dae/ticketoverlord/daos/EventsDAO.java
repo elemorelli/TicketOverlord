@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface EventsDAO {
-
     Event selectEventById(Integer id);
 
     List<Event> selectAllEvents();

@@ -5,7 +5,6 @@ import es.ujaen.dae.ticketoverlord.models.Venue;
 import java.util.List;
 
 public interface VenueDAO {
-
     Venue selectVenueById(Integer id);
 
     List<Venue> selectAllVenues();

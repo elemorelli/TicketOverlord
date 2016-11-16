@@ -10,37 +10,31 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository("EventsDAO")
 public class EventsDAOHibernateImpl implements EventsDAO {
-    private Map<String, Event> events;
     @PersistenceContext
     private EntityManager em;
-
-    public EventsDAOHibernateImpl() {
-        this.events = new HashMap<>();
-    }
 
     @Override
     public Event selectEventById(Integer id) {
         try {
             Event event = em.find(Event.class, id);
-            events.put(event.getName(), event);
             return event;
         } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Override
     public List<Event> selectAllEvents() {
 
         return em.createQuery("SELECT e FROM Event e", Event.class)
                 .getResultList();
     }
 
+    @Override
     public List<Event> selectEventsByName(String eventName) {
 
         return em.createQuery("SELECT e FROM Event e " +
@@ -49,6 +43,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
                 .getResultList();
     }
 
+    @Override
     public List<Event> selectEventsByNameAndCity(String eventName, String city) {
 
         return em.createQuery("SELECT e FROM Event e " +
@@ -87,7 +82,6 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     public void insertEvent(Event event) {
         try {
             em.persist(event);
-            events.put(event.getName(), event);
         } catch (Exception e) {
             throw new EventInsertionException(e);
         }
@@ -107,7 +101,6 @@ public class EventsDAOHibernateImpl implements EventsDAO {
         try {
             em.remove(em.find(Event.class, event.getId()));
             // em.remove(event);
-            events.remove(event.getName());
         } catch (Exception e) {
             throw new EventRemovalException(e);
         }

@@ -1,6 +1,7 @@
 package es.ujaen.dae.ticketoverlord.models;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Entity
 @Table(name = "ZONES")
