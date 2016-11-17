@@ -1,12 +1,12 @@
 package es.ujaen.dae.ticketoverlord;
 
+import es.ujaen.dae.ticketoverlord.configurations.AppConfiguration;
 import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.TicketsDAO;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
 import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
 import es.ujaen.dae.ticketoverlord.models.*;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,7 +24,7 @@ public class TestDataCreator {
 
     public static void main(String[] args) {
 
-        AbstractApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
         appContext.registerShutdownHook();
 
         TestDataCreator creator = new TestDataCreator();

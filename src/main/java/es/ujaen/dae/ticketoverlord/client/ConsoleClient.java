@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketoverlord.client;
 
+import es.ujaen.dae.ticketoverlord.configurations.AppConfiguration;
 import es.ujaen.dae.ticketoverlord.dtos.*;
 import es.ujaen.dae.ticketoverlord.exceptions.NoTicketsAvailableException;
 import es.ujaen.dae.ticketoverlord.exceptions.TicketTransactionException;
@@ -7,8 +8,7 @@ import es.ujaen.dae.ticketoverlord.services.EventsService;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
 import es.ujaen.dae.ticketoverlord.services.VenuesService;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class ConsoleClient {
 
     public static void main(String[] args) {
 
-        AbstractApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
         appContext.registerShutdownHook();
 
         ConsoleClient client = new ConsoleClient();
