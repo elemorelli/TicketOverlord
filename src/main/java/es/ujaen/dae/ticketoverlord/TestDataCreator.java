@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TestDataCreator {
     private EventsDAO eventsDAO;
@@ -99,32 +98,24 @@ public class TestDataCreator {
 
     private void insertVenues() {
 
-        Map<Character, Zone> zonasFerial = new HashMap<>();
-        zonasFerial.put('A', new Zone('A', 100));
-        zonasFerial.put('B', new Zone('B', 200));
-        zonasFerial.put('C', new Zone('C', 300));
+        Venue ferial = new Venue("IFEJA, Ferias Jaén", "Jaén, Jaén", "Prolongación Carretera Granada S/N", new HashMap<>());
+        ferial.addZona(new Zone('A', 100));
+        ferial.addZona(new Zone('B', 200));
+        ferial.addZona(new Zone('C', 300));
 
-        Venue ferial = new Venue("IFEJA, Ferias Jaén", "Jaén, Jaén", "Prolongación Carretera Granada S/N", zonasFerial);
+        Venue plazaToros = new Venue("Plaza de Toros de Jaén", "Jaén, Jaén", "Alameda de Capuchinos S/N", new HashMap<>());
+        plazaToros.addZona(new Zone('A', 100));
+        plazaToros.addZona(new Zone('B', 200));
+        plazaToros.addZona(new Zone('C', 300));
+        plazaToros.addZona(new Zone('D', 400));
 
-        Map<Character, Zone> zonasPlazaToros = new HashMap<>();
-        zonasPlazaToros.put('A', new Zone('A', 100));
-        zonasPlazaToros.put('B', new Zone('B', 200));
-        zonasPlazaToros.put('C', new Zone('C', 300));
-        zonasPlazaToros.put('D', new Zone('D', 400));
+        Venue centroJubilados = new Venue("Centro de jubilados \"La edad de oro\"", "Úbeda, Jaén", "Calle del Sabio 23", new HashMap<>());
+        centroJubilados.addZona(new Zone('A', 10));
 
-        Venue plazaToros = new Venue("Plaza de Toros de Jaén", "Jaén, Jaén", "Alameda de Capuchinos S/N", zonasPlazaToros);
-
-        Map<Character, Zone> zonasCentroJubilados = new HashMap<>();
-        zonasCentroJubilados.put('A', new Zone('A', 10));
-
-        Venue centroJubilados = new Venue("Centro de jubilados \"La edad de oro\"", "Úbeda, Jaén", "Calle del Sabio 23", zonasCentroJubilados);
-
-        Map<Character, Zone> zonasGlorieta = new HashMap<>();
-        zonasGlorieta.put('A', new Zone('A', 100));
-        zonasGlorieta.put('B', new Zone('B', 50));
-        zonasGlorieta.put('C', new Zone('C', 20));
-
-        Venue glorieta = new Venue("Teatro La Glorieta", "Baeza, Jaén", "Calle del Artista 12", zonasGlorieta);
+        Venue glorieta = new Venue("Teatro La Glorieta", "Baeza, Jaén", "Calle del Artista 12", new HashMap<>());
+        glorieta.addZona(new Zone('A', 100));
+        glorieta.addZona(new Zone('B', 50));
+        glorieta.addZona(new Zone('C', 20));
 
         Venue instituto = new Venue("Teatro del instituto", "Jaén, Jaén", "Calle del Estudiante 10", new HashMap<>());
 
@@ -149,19 +140,15 @@ public class TestDataCreator {
             }
         }
 
-        Map<Character, PricePerZone> preciosFeriaSanLucas = new HashMap<>();
-        preciosFeriaSanLucas.put('A', new PricePerZone(new BigDecimal(20), 5, ferial.getZones().get('A')));
-        preciosFeriaSanLucas.put('B', new PricePerZone(new BigDecimal(10), 10, ferial.getZones().get('B')));
-        preciosFeriaSanLucas.put('C', new PricePerZone(new BigDecimal(5), 10, ferial.getZones().get('C')));
-
-        Event feriaSanLucas = new Event("Feria de San Lucas 2016", "Todo", LocalDate.parse("08/10/2016", dateFormatter), ferial, preciosFeriaSanLucas);
+        Event feriaSanLucas = new Event("Feria de San Lucas 2016", "Todo", LocalDate.parse("08/10/2016", dateFormatter), ferial, new HashMap<>());
+        feriaSanLucas.addPricePerZones(new PricePerZone(new BigDecimal(20), 5, ferial.getZones().get('A')));
+        feriaSanLucas.addPricePerZones(new PricePerZone(new BigDecimal(10), 10, ferial.getZones().get('B')));
+        feriaSanLucas.addPricePerZones(new PricePerZone(new BigDecimal(5), 10, ferial.getZones().get('C')));
 
         Event nochesAndaluces = new Event("Noches andaluces", "Concierto", LocalDate.parse("20/10/2016", dateFormatter), ferial, new HashMap<>());
 
-        Map<Character, PricePerZone> preciosBandoneon = new HashMap<>();
-        preciosBandoneon.put('A', new PricePerZone(new BigDecimal(20), 10, centroJubilados.getZones().get('A')));
-
-        Event bandoneon = new Event("Al ritmo del bandoneón", "Concierto", LocalDate.parse("20/11/2016", dateFormatter), centroJubilados, preciosBandoneon);
+        Event bandoneon = new Event("Al ritmo del bandoneón", "Concierto", LocalDate.parse("20/11/2016", dateFormatter), centroJubilados, new HashMap<>());
+        bandoneon.addPricePerZones(new PricePerZone(new BigDecimal(20), 10, centroJubilados.getZones().get('A')));
 
         eventsDAO.insertEvent(feriaSanLucas);
         eventsDAO.insertEvent(nochesAndaluces);
