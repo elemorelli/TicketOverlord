@@ -15,7 +15,7 @@ public class User {
     private String name;
     private String password;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    List<Ticket> tickets;
+    private List<Ticket> tickets;
 
     public User() {
     }

@@ -33,6 +33,7 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @LoggedUserOperation
+    @Transactional // TODO: Esta bien marcar como @Transactional al metodo de un servicio?
     public void buyTicket(UserDTO userDTO, EventDTO eventDTO, PricePerZoneDTO priceDTO, Integer ticketsToBuy) throws NoTicketsAvailableException, TicketTransactionException {
 
         try {
@@ -70,7 +71,7 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @LoggedUserOperation
-    @Transactional // TODO: Esta bien marcar como @Transactional al metodo de un servicio?
+    @Transactional(readOnly = true) // TODO: Esta bien marcar como @Transactional al metodo de un servicio?
     public List<TicketDTO> listTicketsByUser(UserDTO user) {
 
         List<TicketDTO> ticketDTOs = new ArrayList<>();
