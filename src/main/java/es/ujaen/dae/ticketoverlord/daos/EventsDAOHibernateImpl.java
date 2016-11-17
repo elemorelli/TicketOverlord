@@ -5,6 +5,8 @@ import es.ujaen.dae.ticketoverlord.exceptions.dao.events.EventRemovalException;
 import es.ujaen.dae.ticketoverlord.exceptions.dao.events.EventUpdateException;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -13,11 +15,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository("EventsDAO")
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class EventsDAOHibernateImpl implements EventsDAO {
     @PersistenceContext
     private EntityManager em;
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Event selectEventById(Integer id) {
         try {
             Event event = em.find(Event.class, id);
@@ -28,6 +32,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Event> selectAllEvents() {
 
         return em.createQuery("SELECT e FROM Event e", Event.class)
@@ -35,6 +40,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Event> selectEventsByName(String eventName) {
 
         return em.createQuery("SELECT e FROM Event e " +
@@ -44,6 +50,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Event> selectEventsByNameAndCity(String eventName, String city) {
 
         return em.createQuery("SELECT e FROM Event e " +
@@ -55,6 +62,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Event> selectEventsByDateAndType(LocalDate date, String type) {
 
         return em.createQuery("SELECT e FROM Event e " +
@@ -66,6 +74,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Event> selectEventsByDateTypeAndCity(LocalDate date, String type, String city) {
 
         return em.createQuery("SELECT e FROM Event e " +
@@ -79,6 +88,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void insertEvent(Event event) {
         try {
             em.persist(event);
@@ -88,6 +98,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void updateEvent(Event event) {
         try {
             em.merge(event);
@@ -97,6 +108,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void deleteEvent(Event event) {
         try {
             em.remove(em.find(Event.class, event.getId()));

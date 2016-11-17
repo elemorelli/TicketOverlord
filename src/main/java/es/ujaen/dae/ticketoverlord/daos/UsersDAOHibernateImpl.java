@@ -8,6 +8,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -15,17 +17,20 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository("UsersDAO")
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class UsersDAOHibernateImpl implements UsersDAO {
     @PersistenceContext
     private EntityManager em;
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Cacheable(value = "usersCache")
     public User selectUserById(Integer id) {
         return em.find(User.class, id);
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Cacheable(value = "usersCache")
     public User selectUserByName(String username) {
         try {
@@ -40,6 +45,7 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Cacheable(value = "usersCache")
     public List<User> selectAllUsers() {
 
@@ -48,6 +54,7 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     @CacheEvict(value = "usersCache", key = "0")
     public void insertUser(User user) {
         try {
@@ -59,6 +66,7 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     @Caching(evict = {
             @CacheEvict(value = "usersCache", key = "0"),
             @CacheEvict(value = "usersCache", key = "#user.getId()"),
@@ -73,6 +81,7 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     @Caching(evict = {
             @CacheEvict(value = "usersCache", key = "0"),
             @CacheEvict(value = "usersCache", key = "#user.getId()"),

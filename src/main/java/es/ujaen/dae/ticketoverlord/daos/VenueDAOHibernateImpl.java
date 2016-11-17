@@ -7,6 +7,8 @@ import es.ujaen.dae.ticketoverlord.models.Venue;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -14,11 +16,13 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository("VenuesDAO")
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class VenueDAOHibernateImpl implements VenueDAO {
     @PersistenceContext
     private EntityManager em;
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Cacheable("venuesCache")
     public Venue selectVenueById(Integer id) {
 
@@ -31,6 +35,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Venue> selectAllVenues() {
 
         return em.createQuery("SELECT v FROM Venue v", Venue.class)
@@ -38,6 +43,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void insertVenue(Venue venue) {
         try {
             em.persist(venue);
@@ -47,6 +53,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     @CacheEvict(value = "venuesCache", key = "#venue.getId()")
     public void updateVenue(Venue venue) {
         try {
@@ -57,6 +64,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     @CacheEvict(value = "venuesCache", key = "#venue.getId()")
     public void deleteVenue(Venue venue) {
         try {

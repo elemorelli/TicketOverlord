@@ -1,35 +1,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation=
                "http://www.springframework.org/schema/beans
                 http://www.springframework.org/schema/beans/spring-beans.xsd
                 http://www.springframework.org/schema/context
-                http://www.springframework.org/schema/context/spring-context-3.0.xsd
-                http://www.springframework.org/schema/aop
-                http://www.springframework.org/schema/aop/spring-aop.xsd
-                http://www.springframework.org/schema/tx
-                http://www.springframework.org/schema/tx/spring-tx.xsd">
+                http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <context:component-scan base-package="es.ujaen.dae.ticketoverlord.configurations"/>
-
-    <tx:advice id="txAdvice">
-        <tx:attributes>
-            <tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
-            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Throwable"/>
-            <tx:method name="update*" propagation="REQUIRED"/>
-            <tx:method name="delete*" propagation="REQUIRED"/>
-            <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
-        </tx:attributes>
-    </tx:advice>
-
-    <aop:config>
-        <aop:advisor pointcut="execution(* es.ujaen.dae.ticketoverlord.daos.EventsDAO.*(..))" advice-ref="txAdvice"/>
-        <aop:advisor pointcut="execution(* es.ujaen.dae.ticketoverlord.daos.TicketsDAO.*(..))" advice-ref="txAdvice"/>
-        <aop:advisor pointcut="execution(* es.ujaen.dae.ticketoverlord.daos.UsersDAO.*(..))" advice-ref="txAdvice"/>
-        <aop:advisor pointcut="execution(* es.ujaen.dae.ticketoverlord.daos.VenueDAO.*(..))" advice-ref="txAdvice"/>
-    </aop:config>
 
 </beans>

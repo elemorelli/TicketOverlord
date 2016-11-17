@@ -7,6 +7,8 @@ import es.ujaen.dae.ticketoverlord.models.Ticket;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -14,11 +16,13 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository("TicketsDAO")
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class TicketsDAOHibernateImpl implements TicketsDAO {
     @PersistenceContext
     private EntityManager em;
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Ticket selectTicketByNumber(Integer ticketNumber) {
 
         try {
@@ -30,6 +34,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Ticket> selectAllTickets() {
 
         return em.createQuery("SELECT t FROM Ticket t", Ticket.class)
@@ -37,6 +42,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Cacheable("ticketsCache")
     public List<Ticket> selectTicketsByUser(Integer id) {
 
@@ -47,6 +53,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     @CacheEvict(value = "ticketsCache", key = "#ticket.getUser().getId()")
     public void insertTicket(Ticket ticket) {
 
@@ -58,6 +65,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     @CacheEvict(value = "ticketsCache", key = "#ticket.getUser().getId()")
     public void updateTicket(Ticket ticket) {
 
@@ -69,6 +77,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     @CacheEvict(value = "ticketsCache", key = "#ticket.getUser().getId()")
     public void delete(Ticket ticket) {
         try {
