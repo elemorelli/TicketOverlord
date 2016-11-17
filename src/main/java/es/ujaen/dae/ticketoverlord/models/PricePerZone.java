@@ -9,6 +9,9 @@ public class PricePerZone {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EVENT_ID")
+    private Event event;
     private BigDecimal price;
     @ManyToOne
     private Zone zone;
@@ -41,6 +44,14 @@ public class PricePerZone {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public BigDecimal getPrice() {

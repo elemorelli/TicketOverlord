@@ -16,7 +16,7 @@ public class Event {
     private LocalDate date;
     @ManyToOne
     private Venue venue;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Map<Character, PricePerZone> pricePerZones;
 
     public Event() {
@@ -29,6 +29,9 @@ public class Event {
         this.date = date;
         this.venue = venue;
         this.pricePerZones = pricePerZones;
+        for (Character key : pricePerZones.keySet()) {
+            this.pricePerZones.get(key).setEvent(this);
+        }
     }
 
     @Override
@@ -92,6 +95,7 @@ public class Event {
     }
 
     public void addPricePerZones(PricePerZone pricePerZone) {
+        pricePerZone.setEvent(this);
         this.pricePerZones.put(pricePerZone.getZone().getName(), pricePerZone);
     }
 }

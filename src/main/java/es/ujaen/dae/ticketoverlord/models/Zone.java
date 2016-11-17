@@ -1,7 +1,6 @@
 package es.ujaen.dae.ticketoverlord.models;
 
 import javax.persistence.*;
-import java.util.Map;
 
 @Entity
 @Table(name = "ZONES")
@@ -9,6 +8,9 @@ public class Zone {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "VENUE_ID")
+    private Venue venue;
     private Character name;
     private Integer seats;
 
@@ -35,6 +37,14 @@ public class Zone {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Venue getVenue() {
+        return venue;
+    }
+
+    public void setVenue(Venue venue) {
+        this.venue = venue;
     }
 
     public Character getName() {

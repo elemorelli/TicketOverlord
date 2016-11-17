@@ -13,7 +13,7 @@ public class Venue {
     private String name;
     private String city;
     private String address;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Map<Character, Zone> zones;
 
     public Venue() {
@@ -25,6 +25,9 @@ public class Venue {
         this.city = city;
         this.address = address;
         this.zones = zones;
+        for (Character key : zones.keySet()) {
+            this.zones.get(key).setVenue(this);
+        }
     }
 
     @Override
@@ -34,7 +37,7 @@ public class Venue {
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", address='" + address + '\'' +
-//                ", zones=" + zones +
+                ", zones=" + zones +
                 '}';
     }
 
@@ -79,6 +82,7 @@ public class Venue {
     }
 
     public void addZona(Zone zone) {
+        zone.setVenue(this);
         this.zones.put(zone.getName(), zone);
     }
 }
