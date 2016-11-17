@@ -26,6 +26,8 @@ public class ConsoleClient {
     private final InputStreamReader isr = new InputStreamReader(System.in);
     private final BufferedReader br = new BufferedReader(isr);
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
+    private final List<String> negatives = Arrays.asList("N", "NO");
     private UserDTO authenticatedUser = null;
     private EventsService eventsService;
     private TicketsService ticketsService;
@@ -230,8 +232,11 @@ public class ConsoleClient {
         } else {
             System.out.println("¿Desea comprar tickets para este evento? S/N");
         }
-        String input = readText().toUpperCase();
-        List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
+        String input;
+        do {
+            input = readText().toUpperCase();
+        } while (!affirmatives.contains(input) && !negatives.contains(input));
+
         if (affirmatives.contains(input)) {
 
             int eventNumber = 1;
@@ -291,7 +296,9 @@ public class ConsoleClient {
                 System.out.println();
                 System.out.println("  ¿Desea confirmar la operación? S/N");
 
-                input = readText().toUpperCase();
+                do {
+                    input = readText().toUpperCase();
+                } while (!affirmatives.contains(input) && !negatives.contains(input));
 
                 if (affirmatives.contains(input)) {
                     try {
