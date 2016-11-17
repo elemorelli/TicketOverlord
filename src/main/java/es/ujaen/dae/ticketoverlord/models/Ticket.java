@@ -9,11 +9,12 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
     private User user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Event event;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Zone zone;
     private BigDecimal price;
     private Integer quantity;

@@ -4,6 +4,7 @@ import es.ujaen.dae.ticketoverlord.exceptions.dao.tickets.TicketInsertionExcepti
 import es.ujaen.dae.ticketoverlord.exceptions.dao.tickets.TicketRemovalException;
 import es.ujaen.dae.ticketoverlord.exceptions.dao.tickets.TicketUpdateException;
 import es.ujaen.dae.ticketoverlord.models.Ticket;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,8 @@ import java.util.List;
 public class TicketsDAOHibernateImpl implements TicketsDAO {
     @PersistenceContext
     private EntityManager em;
+    @Autowired
+    private UsersDAO usersDAO;
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -45,11 +48,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Cacheable("ticketsCache")
     public List<Ticket> selectTicketsByUser(Integer id) {
-
-        return em.createQuery("SELECT t FROM Ticket t " +
-                "WHERE t.user.id = :id", Ticket.class)
-                .setParameter("id", id)
-                .getResultList();
+        return usersDAO.selectUserById(id).getTickets();
     }
 
     @Override

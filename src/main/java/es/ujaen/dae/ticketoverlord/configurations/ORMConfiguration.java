@@ -37,7 +37,7 @@ public class ORMConfiguration {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setDatabase(Database.H2);
         jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
-        jpaVendorAdapter.setShowSql(true);
+        jpaVendorAdapter.setShowSql(false);
         jpaVendorAdapter.setGenerateDdl(true);
         return jpaVendorAdapter;
     }

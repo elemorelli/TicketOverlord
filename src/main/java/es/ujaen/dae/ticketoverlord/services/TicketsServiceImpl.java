@@ -17,6 +17,7 @@ import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +55,11 @@ public class TicketsServiceImpl implements TicketsService {
             }
 
             User user = usersDAO.selectUserById(userDTO.getId());
+            user.addTicket(ticket);
             ticket.setUser(user);
-            ticketsDAO.insertTicket(ticket);
 
+            ticketsDAO.insertTicket(ticket);
+            usersDAO.updateUser(user);
             eventsDAO.updateEvent(event);
         } catch (OptimisticLockingFailureException e) {
             throw new TicketTransactionException(e);
@@ -67,11 +70,12 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @LoggedUserOperation
+    @Transactional // TODO: Esta bien marcar como @Transactional al metodo de un servicio?
     public List<TicketDTO> listTicketsByUser(UserDTO user) {
 
         List<TicketDTO> ticketDTOs = new ArrayList<>();
-        for (Ticket ticket : ticketsDAO.selectTicketsByUser(user.getId())) {
-
+//        for (Ticket ticket : ticketsDAO.selectTicketsByUser(user.getId())) {
+        for (Ticket ticket : usersDAO.selectUserById(user.getId()).getTickets()) {
             ticketDTOs.add(new TicketDTO(ticket));
         }
         return ticketDTOs;

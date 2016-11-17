@@ -1,6 +1,7 @@
 package es.ujaen.dae.ticketoverlord.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "USERS")
@@ -13,6 +14,8 @@ public class User {
     @Column(unique = true)
     private String name;
     private String password;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Ticket> tickets;
 
     public User() {
     }
@@ -68,5 +71,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 }
