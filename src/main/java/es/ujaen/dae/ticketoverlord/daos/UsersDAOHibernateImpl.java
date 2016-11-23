@@ -55,7 +55,10 @@ public class UsersDAOHibernateImpl implements UsersDAO {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
-    @CacheEvict(value = "usersCache", key = "0")
+    @Caching(evict = {
+            @CacheEvict(value = "usersCache", key = "0"),
+            @CacheEvict(value = "usersCache", key = "#user.getName()")
+    })
     public void insertUser(User user) {
         try {
             em.persist(user);
