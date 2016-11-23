@@ -92,6 +92,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     public void insertEvent(Event event) {
         try {
             em.persist(event);
+            em.flush();
         } catch (Exception e) {
             throw new EventInsertionException(e);
         }
@@ -102,6 +103,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
     public void updateEvent(Event event) {
         try {
             em.merge(event);
+            em.flush();
         } catch (Exception e) {
             throw new EventUpdateException(e);
         }
@@ -113,6 +115,7 @@ public class EventsDAOHibernateImpl implements EventsDAO {
         try {
             em.remove(em.find(Event.class, event.getId()));
             // em.remove(event);
+            em.flush();
         } catch (Exception e) {
             throw new EventRemovalException(e);
         }

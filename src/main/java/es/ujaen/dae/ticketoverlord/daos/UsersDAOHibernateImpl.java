@@ -62,8 +62,8 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     public void insertUser(User user) {
         try {
             em.persist(user);
+            em.flush();
         } catch (Exception e) {
-            // TODO: Ver de envolver las transacciones en un aspecto que translade las excepciones
             throw new UserInsertionException(e);
         }
     }
@@ -78,6 +78,7 @@ public class UsersDAOHibernateImpl implements UsersDAO {
     public void updateUser(User user) {
         try {
             em.merge(user);
+            em.flush();
         } catch (Exception e) {
             throw new UserUpdateException(e);
         }
@@ -95,6 +96,7 @@ public class UsersDAOHibernateImpl implements UsersDAO {
             em.remove(em.find(User.class, user.getId()));
             // TODO: Investigar porque no lo elimina así
             // em.remove(user);
+            em.flush();
         } catch (Exception e) {
             throw new UserRemovalException(e);
         }

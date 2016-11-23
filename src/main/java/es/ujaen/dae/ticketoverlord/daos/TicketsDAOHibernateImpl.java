@@ -58,6 +58,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
 
         try {
             em.persist(ticket);
+            em.flush();
         } catch (Exception e) {
             throw new TicketInsertionException(e);
         }
@@ -70,6 +71,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
 
         try {
             em.merge(ticket);
+            em.flush();
         } catch (Exception e) {
             throw new TicketUpdateException(e);
         }
@@ -81,6 +83,7 @@ public class TicketsDAOHibernateImpl implements TicketsDAO {
     public void delete(Ticket ticket) {
         try {
             em.remove(em.find(Ticket.class, ticket.getId()));
+            em.flush();
         } catch (Exception e) {
             throw new TicketRemovalException(e);
         }

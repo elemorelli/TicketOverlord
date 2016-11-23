@@ -47,6 +47,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     public void insertVenue(Venue venue) {
         try {
             em.persist(venue);
+            em.flush();
         } catch (Exception e) {
             throw new VenuesInsertionException(e);
         }
@@ -58,6 +59,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
     public void updateVenue(Venue venue) {
         try {
             em.merge(venue);
+            em.flush();
         } catch (Exception e) {
             throw new VenuesUpdateException(e);
         }
@@ -70,6 +72,7 @@ public class VenueDAOHibernateImpl implements VenueDAO {
         try {
             em.remove(em.find(Venue.class, venue.getId()));
             // em.remove(venue);
+            em.flush();
         } catch (Exception e) {
             throw new VenuesRemovalException(e);
         }
