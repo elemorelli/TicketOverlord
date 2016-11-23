@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository("VenuesDAO")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-public class VenueDAOHibernateImpl implements VenueDAO {
+public class VenueDAOJPAImpl implements VenueDAO {
     @PersistenceContext
     private EntityManager em;
 

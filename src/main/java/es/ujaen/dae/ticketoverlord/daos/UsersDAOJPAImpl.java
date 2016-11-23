@@ -18,7 +18,7 @@ import java.util.List;
 
 @Repository("UsersDAO")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-public class UsersDAOHibernateImpl implements UsersDAO {
+public class UsersDAOJPAImpl implements UsersDAO {
     @PersistenceContext
     private EntityManager em;
 

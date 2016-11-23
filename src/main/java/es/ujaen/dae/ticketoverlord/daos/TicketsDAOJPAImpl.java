@@ -18,7 +18,7 @@ import java.util.List;
 
 @Repository("TicketsDAO")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-public class TicketsDAOHibernateImpl implements TicketsDAO {
+public class TicketsDAOJPAImpl implements TicketsDAO {
     @PersistenceContext
     private EntityManager em;
     @Autowired

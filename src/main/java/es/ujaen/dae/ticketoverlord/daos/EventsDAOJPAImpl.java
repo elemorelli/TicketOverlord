@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository("EventsDAO")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-public class EventsDAOHibernateImpl implements EventsDAO {
+public class EventsDAOJPAImpl implements EventsDAO {
     @PersistenceContext
     private EntityManager em;
 
