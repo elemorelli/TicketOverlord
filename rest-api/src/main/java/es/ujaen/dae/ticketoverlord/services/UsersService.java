@@ -2,6 +2,8 @@ package es.ujaen.dae.ticketoverlord.services;
 
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 
+import java.util.List;
+
 public interface UsersService {
     void addNewUser(UserDTO user);
 
@@ -14,6 +16,8 @@ public interface UsersService {
     void logoutUser(UserDTO user);
 
     boolean isAdmin(UserDTO user);
+
+    List<UserDTO> getUsers();
 
     UserDTO getUser(UserDTO user);
 

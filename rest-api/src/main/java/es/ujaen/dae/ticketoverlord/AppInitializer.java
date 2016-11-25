@@ -23,7 +23,6 @@ public class AppInitializer implements WebApplicationInitializer {
     private AnnotationConfigWebApplicationContext getContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation("es.ujaen.dae.ticketoverlord.configurations");
-        context.scan("es.ujaen.dae.ticketoverlord.configurations");
         return context;
     }
 }

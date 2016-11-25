@@ -8,9 +8,7 @@ import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Component("UsersService")
 public class UsersServiceImpl implements UsersService {
@@ -65,6 +63,18 @@ public class UsersServiceImpl implements UsersService {
     @LoggedUserOperation
     public boolean isAdmin(UserDTO user) {
         return user.getUuidToken().equals(this.adminToken);
+    }
+
+    @Override
+    public List<UserDTO> getUsers() {
+
+        List<UserDTO> userDTOs = new ArrayList<>();
+        List<User> users = usersDAO.selectAllUsers();
+
+        for (User user : users) {
+            userDTOs.add(getUserAsDTO(user));
+        }
+        return userDTOs;
     }
 
     @Override
