@@ -1,2 +1,3 @@
 rootProject.name = 'TicketOverlord'
-
+include 'console-client'
+include 'rest-api'

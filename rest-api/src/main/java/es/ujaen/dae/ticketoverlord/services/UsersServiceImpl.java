@@ -3,6 +3,7 @@ package es.ujaen.dae.ticketoverlord.services;
 import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
+import es.ujaen.dae.ticketoverlord.exceptions.services.users.NoUserFoundException;
 import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -67,17 +68,23 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UserDTO getUserData(UserDTO userToQuery) {
+    public UserDTO getUser(UserDTO userToQuery) {
+        return getUserAsDTO(usersDAO.selectUserByName(userToQuery.getName()));
+    }
 
-        User user = usersDAO.selectUserByName(userToQuery.getName());
+    @Override
+    public UserDTO getUser(Integer userId) {
+        return getUserAsDTO(usersDAO.selectUserById(userId));
+    }
 
+    private UserDTO getUserAsDTO(User user) {
         if (user != null) {
-            UserDTO foundUser = new UserDTO(user);
-            if (isAdmin(foundUser)) {
-                foundUser.setAdmin(true);
+            UserDTO userDTO = new UserDTO(user);
+            if (isAdmin(userDTO)) {
+                userDTO.setAdmin(true);
             }
-            return foundUser;
+            return userDTO;
         }
-        return null;
+        throw new NoUserFoundException();
     }
 }

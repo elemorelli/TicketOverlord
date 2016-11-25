@@ -15,5 +15,7 @@ public interface UsersService {
 
     boolean isAdmin(UserDTO user);
 
-    UserDTO getUserData(UserDTO user);
+    UserDTO getUser(UserDTO user);
+
+    UserDTO getUser(Integer id);
 }

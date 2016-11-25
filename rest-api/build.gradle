@@ -1,0 +1,32 @@
+group 'es.ujaen.dae'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'war'
+
+dependencies {
+    // Utils
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
+    // Spring
+    compile group: 'org.springframework', name: 'spring-aspects', version: '4.3.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.3.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-expression', version: '4.3.3.RELEASE'
+    // Aspects
+    compile group: 'org.springframework', name: 'spring-aop', version: '4.3.3.RELEASE'
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.9'
+    // Logger
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.1.7'
+    // ORM
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.10.4.RELEASE'
+    compile group: 'org.springframework', name: 'spring-orm', version: '4.3.3.RELEASE'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.3.Final'
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.193'
+    // Web
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.4.RELEASE'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.5'
+}

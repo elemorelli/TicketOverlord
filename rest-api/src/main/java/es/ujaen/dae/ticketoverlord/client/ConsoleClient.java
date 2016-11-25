@@ -454,7 +454,7 @@ public class ConsoleClient {
 
             if (usersService.authenticateUser(user)) {
                 System.out.println("Autenticación correcta");
-                authenticatedUser = usersService.getUserData(user);
+                authenticatedUser = usersService.getUser(user);
             } else {
                 System.err.println("Password incorrecto");
                 authenticatedUser = null;
