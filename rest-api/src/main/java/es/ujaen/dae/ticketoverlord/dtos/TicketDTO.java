@@ -1,10 +1,11 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
 import es.ujaen.dae.ticketoverlord.models.Ticket;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.math.BigDecimal;
 
-public class TicketDTO {
+public class TicketDTO extends ResourceSupport {
     private Integer id;
     private EventDTO event;
     private ZoneDTO zone;
@@ -33,7 +34,7 @@ public class TicketDTO {
                 '}';
     }
 
-    public Integer getId() {
+    public Integer getTicketId() {
         return id;
     }
 

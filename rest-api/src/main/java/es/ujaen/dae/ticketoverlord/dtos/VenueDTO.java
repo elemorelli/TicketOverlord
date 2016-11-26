@@ -1,11 +1,12 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
 import es.ujaen.dae.ticketoverlord.models.Venue;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class VenueDTO {
+public class VenueDTO extends ResourceSupport {
     private Integer id;
     private String name;
     private String city;
@@ -39,7 +40,7 @@ public class VenueDTO {
                 '}';
     }
 
-    public Integer getId() {
+    public Integer getVenueId() {
         return id;
     }
 

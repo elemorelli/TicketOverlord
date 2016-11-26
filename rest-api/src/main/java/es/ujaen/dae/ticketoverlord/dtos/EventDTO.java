@@ -2,12 +2,13 @@ package es.ujaen.dae.ticketoverlord.dtos;
 
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EventDTO {
+public class EventDTO extends ResourceSupport {
     private Integer id;
     private String name;
     private String type;
@@ -43,7 +44,7 @@ public class EventDTO {
                 '}';
     }
 
-    public Integer getId() {
+    public Integer getEventId() {
         return id;
     }
 

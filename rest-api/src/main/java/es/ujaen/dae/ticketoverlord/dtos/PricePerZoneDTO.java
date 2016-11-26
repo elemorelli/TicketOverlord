@@ -1,10 +1,11 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.math.BigDecimal;
 
-public class PricePerZoneDTO {
+public class PricePerZoneDTO extends ResourceSupport {
     private Integer id;
     private BigDecimal price;
     private ZoneDTO zone;
@@ -30,7 +31,7 @@ public class PricePerZoneDTO {
                 '}';
     }
 
-    public Integer getId() {
+    public Integer getPricePerZoneId() {
         return id;
     }
 

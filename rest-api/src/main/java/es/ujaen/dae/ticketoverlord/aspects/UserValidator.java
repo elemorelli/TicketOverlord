@@ -1,7 +1,8 @@
 package es.ujaen.dae.ticketoverlord.aspects;
 
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
-import es.ujaen.dae.ticketoverlord.exceptions.UnauthorizedAccessException;
+import es.ujaen.dae.ticketoverlord.exceptions.services.ForbiddenAccessException;
+import es.ujaen.dae.ticketoverlord.exceptions.services.UnauthorizedAccessException;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
 import org.aopalliance.aop.AspectException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -29,7 +30,7 @@ public class UserValidator {
                     return throwable;
                 }
             } else {
-                throw new UnauthorizedAccessException("User " + user.getName() + " tried to do an operation that requires authentication");
+                throw new ForbiddenAccessException("User " + user.getName() + " tried to do an operation that requires authentication");
             }
         } else {
             throw new UnauthorizedAccessException("Unknown users tried to do an operation that requires authentication");
@@ -49,7 +50,7 @@ public class UserValidator {
                     return throwable;
                 }
             } else {
-                throw new UnauthorizedAccessException("User " + user.getName() + " tried to do an Admininstrator operation");
+                throw new ForbiddenAccessException("User " + user.getName() + " tried to do an Admininstrator operation");
             }
         } else {
             throw new UnauthorizedAccessException("Unknown users tried to do an Admininstrator operation");

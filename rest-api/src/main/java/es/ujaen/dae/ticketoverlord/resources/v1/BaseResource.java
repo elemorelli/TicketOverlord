@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static es.ujaen.dae.ticketoverlord.resources.v1.BaseResource.API;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(API)
@@ -19,9 +20,11 @@ public class BaseResource {
     final static String API = "/api/v1";
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
-    public Map<String, String> getHomeLinks() {
+    public Map<String, String> getHomeLinks() throws NoSuchMethodException {
         Map<String, String> links = new HashMap<>();
-        links.put("Users", "http://localhost:8080/ticketoverlord" + API + "/users/");
+
+        links.put("Users", linkTo(UsersResource.class.getMethod("getUsers"), 2L).withSelfRel().getHref());
+
         return links;
     }
 }

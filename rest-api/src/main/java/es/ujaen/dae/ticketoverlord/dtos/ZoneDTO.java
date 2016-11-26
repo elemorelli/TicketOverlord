@@ -1,8 +1,9 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
 import es.ujaen.dae.ticketoverlord.models.Zone;
+import org.springframework.hateoas.ResourceSupport;
 
-public class ZoneDTO {
+public class ZoneDTO extends ResourceSupport {
     private Integer id;
     private Character name;
     private Integer seats;
@@ -25,7 +26,7 @@ public class ZoneDTO {
                 '}';
     }
 
-    public Integer getId() {
+    public Integer getZoneId() {
         return id;
     }
 

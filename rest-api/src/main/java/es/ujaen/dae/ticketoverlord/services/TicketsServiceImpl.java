@@ -39,7 +39,7 @@ public class TicketsServiceImpl implements TicketsService {
         try {
             Ticket ticket = new Ticket();
 
-            Event event = eventsDAO.selectEventById(eventDTO.getId());
+            Event event = eventsDAO.selectEventById(eventDTO.getEventId());
             ticket.setEvent(event);
             ticket.setQuantity(ticketsToBuy);
 
@@ -55,7 +55,7 @@ public class TicketsServiceImpl implements TicketsService {
                 throw new NoTicketsAvailableException();
             }
 
-            User user = usersDAO.selectUserById(userDTO.getId());
+            User user = usersDAO.selectUserById(userDTO.getUserId());
             user.addTicket(ticket);
             ticket.setUser(user);
 
@@ -75,8 +75,8 @@ public class TicketsServiceImpl implements TicketsService {
     public List<TicketDTO> listTicketsByUser(UserDTO user) {
 
         List<TicketDTO> ticketDTOs = new ArrayList<>();
-//        for (Ticket ticket : ticketsDAO.selectTicketsByUser(user.getId())) {
-        for (Ticket ticket : usersDAO.selectUserById(user.getId()).getTickets()) {
+//        for (Ticket ticket : ticketsDAO.selectTicketsByUser(user.getEventId())) {
+        for (Ticket ticket : usersDAO.selectUserById(user.getUserId()).getTickets()) {
             ticketDTOs.add(new TicketDTO(ticket));
         }
         return ticketDTOs;

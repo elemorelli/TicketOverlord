@@ -5,7 +5,11 @@ import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import java.util.List;
 
 public interface UsersService {
-    void addNewUser(UserDTO user);
+    UserDTO addNewUser(UserDTO user);
+
+    UserDTO modifyUser(UserDTO user);
+
+    void deleteUser(UserDTO user);
 
     boolean userExists(UserDTO user);
 

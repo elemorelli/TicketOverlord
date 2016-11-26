@@ -58,7 +58,7 @@ public class EventsServiceImpl implements EventsService {
         event.setType(eventDTO.getType());
         event.setDate(eventDTO.getDate());
 
-        Venue venue = venueDAO.selectVenueById(eventDTO.getVenue().getId());
+        Venue venue = venueDAO.selectVenueById(eventDTO.getVenue().getVenueId());
         event.setVenue(venue);
 
         Map<Character, PricePerZoneDTO> prices = eventDTO.getPricesPerZone();

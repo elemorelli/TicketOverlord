@@ -22,11 +22,37 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public void addNewUser(UserDTO user) {
+    public UserDTO addNewUser(UserDTO userDTO) {
 
-        User nuevoUser = new User(user.getName(), user.getPassword());
-        nuevoUser.setUuidToken(UUID.randomUUID().toString());
-        usersDAO.insertUser(nuevoUser);
+        User user = new User(userDTO.getName(), userDTO.getPassword());
+        user.setUuidToken(UUID.randomUUID().toString());
+        usersDAO.insertUser(user);
+        return new UserDTO(user);
+    }
+
+    @Override
+    public UserDTO modifyUser(UserDTO userDTO) {
+
+        User user = usersDAO.selectUserById(userDTO.getUserId());
+        if (user != null) {
+            user.setName(userDTO.getName());
+            user.setPassword(userDTO.getPassword());
+            usersDAO.updateUser(user);
+            return new UserDTO(user);
+        } else {
+            throw new NoUserFoundException();
+        }
+    }
+
+    @Override
+    public void deleteUser(UserDTO userDTO) {
+
+        User user = usersDAO.selectUserById(userDTO.getUserId());
+        if (user != null) {
+            usersDAO.deleteUser(user);
+        } else {
+            throw new NoUserFoundException();
+        }
     }
 
     @Override

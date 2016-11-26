@@ -1,9 +1,12 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import es.ujaen.dae.ticketoverlord.models.User;
+import org.springframework.hateoas.ResourceSupport;
 
-public class UserDTO {
-    private Integer id;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserDTO extends ResourceSupport {
+    private Integer userId;
     private String uuidToken;
     private String name;
     private String password;
@@ -13,7 +16,7 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
-        this.id = user.getId();
+        this.userId = user.getId();
         this.name = user.getName();
         this.uuidToken = user.getUuidToken();
     }
@@ -21,7 +24,7 @@ public class UserDTO {
     @Override
     public String toString() {
         return "UserDTO{" +
-                "id=" + id +
+                "userId=" + userId +
                 ", uuidToken='" + uuidToken + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
@@ -29,12 +32,12 @@ public class UserDTO {
                 '}';
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUuidToken() {
