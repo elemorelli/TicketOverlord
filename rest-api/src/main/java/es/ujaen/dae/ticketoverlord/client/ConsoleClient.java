@@ -4,10 +4,7 @@ import es.ujaen.dae.ticketoverlord.configurations.AppConfiguration;
 import es.ujaen.dae.ticketoverlord.dtos.*;
 import es.ujaen.dae.ticketoverlord.exceptions.NoTicketsAvailableException;
 import es.ujaen.dae.ticketoverlord.exceptions.TicketTransactionException;
-import es.ujaen.dae.ticketoverlord.services.EventsService;
-import es.ujaen.dae.ticketoverlord.services.TicketsService;
-import es.ujaen.dae.ticketoverlord.services.UsersService;
-import es.ujaen.dae.ticketoverlord.services.VenuesService;
+import es.ujaen.dae.ticketoverlord.services.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.BufferedReader;
@@ -32,6 +29,7 @@ public class ConsoleClient {
     private EventsService eventsService;
     private TicketsService ticketsService;
     private UsersService usersService;
+    private SessionService sessionService;
     private VenuesService venuesService;
 
     public static void main(String[] args) {
@@ -43,6 +41,7 @@ public class ConsoleClient {
         client.eventsService = (EventsService) appContext.getBean("EventsService");
         client.ticketsService = (TicketsService) appContext.getBean("TicketsService");
         client.usersService = (UsersService) appContext.getBean("UsersService");
+        client.sessionService = (SessionService) appContext.getBean("SessionService");
         client.venuesService = (VenuesService) appContext.getBean("VenuesService");
 
         client.mainLoop();
@@ -452,10 +451,11 @@ public class ConsoleClient {
             String password = readText();
             user.setPassword(password);
 
-            if (usersService.authenticateUser(user)) {
+            try {
+                sessionService.authenticateUser(user);
                 System.out.println("Autenticación correcta");
                 authenticatedUser = usersService.getUser(user);
-            } else {
+            } catch (RuntimeException e) {
                 System.err.println("Password incorrecto");
                 authenticatedUser = null;
             }
@@ -467,7 +467,7 @@ public class ConsoleClient {
 
     private void logout() {
 
-        usersService.logoutUser(authenticatedUser);
+        sessionService.logoutUser(authenticatedUser);
         authenticatedUser = null;
         System.out.println("Se ha deslogueado correctamente");
     }

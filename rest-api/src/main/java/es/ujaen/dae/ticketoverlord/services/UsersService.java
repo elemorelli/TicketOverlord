@@ -13,12 +13,6 @@ public interface UsersService {
 
     boolean userExists(UserDTO user);
 
-    boolean authenticateUser(UserDTO user);
-
-    boolean isUserAuthenticated(UserDTO user);
-
-    void logoutUser(UserDTO user);
-
     boolean isAdmin(UserDTO user);
 
     List<UserDTO> getUsers();

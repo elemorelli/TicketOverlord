@@ -62,30 +62,6 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public boolean authenticateUser(UserDTO userToValidate) {
-
-        User user = usersDAO.selectUserByName(userToValidate.getName());
-
-        if (user != null && user.getPassword().equals(userToValidate.getPassword())) {
-            authenticatedUsers.add(user.getUuidToken());
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean isUserAuthenticated(UserDTO user) {
-        return authenticatedUsers.contains(user.getUuidToken());
-    }
-
-    @Override
-    @LoggedUserOperation
-    public void logoutUser(UserDTO user) {
-        authenticatedUsers.remove(user.getUuidToken());
-    }
-
-    @Override
     @LoggedUserOperation
     public boolean isAdmin(UserDTO user) {
         return user.getUuidToken().equals(this.adminToken);

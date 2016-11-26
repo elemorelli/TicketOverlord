@@ -3,6 +3,7 @@ package es.ujaen.dae.ticketoverlord.aspects;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.services.ForbiddenAccessException;
 import es.ujaen.dae.ticketoverlord.exceptions.services.UnauthorizedAccessException;
+import es.ujaen.dae.ticketoverlord.services.SessionService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
 import org.aopalliance.aop.AspectException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Component;
 public class UserValidator {
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private SessionService sessionService;
 
     @Around(value = "@annotation(es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation)")
     public Object verifyLoggedUser(ProceedingJoinPoint joinPoint) throws UnauthorizedAccessException {
@@ -23,7 +26,7 @@ public class UserValidator {
         UserDTO user = getUserArgument(joinPoint);
 
         if (user != null) {
-            if (usersService.isUserAuthenticated(user)) {
+            if (sessionService.isUserAuthenticated(user)) {
                 try {
                     return joinPoint.proceed();
                 } catch (Throwable throwable) {
@@ -43,7 +46,7 @@ public class UserValidator {
         UserDTO user = getUserArgument(joinPoint);
 
         if (user != null) {
-            if (usersService.isUserAuthenticated(user) && usersService.isAdmin(user)) {
+            if (sessionService.isUserAuthenticated(user) && usersService.isAdmin(user)) {
                 try {
                     return joinPoint.proceed();
                 } catch (Throwable throwable) {
