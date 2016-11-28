@@ -28,6 +28,7 @@ public class BaseResource {
         links.put("Login", linkTo(BaseResource.class.getMethod("login", UserDTO.class), 2L).withSelfRel().getHref());
         links.put("Logout", linkTo(BaseResource.class.getMethod("logout", UserDTO.class), 2L).withSelfRel().getHref());
         links.put("Users", linkTo(UsersResource.class.getMethod("getUsers"), 2L).withSelfRel().getHref());
+        links.put("Venues", linkTo(VenuesResource.class.getMethod("getVenues"), 2L).withSelfRel().getHref());
 
         return links;
     }

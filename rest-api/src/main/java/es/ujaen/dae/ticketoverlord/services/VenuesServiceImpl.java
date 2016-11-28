@@ -23,4 +23,9 @@ public class VenuesServiceImpl implements VenuesService {
         }
         return venueDTOs;
     }
+
+    @Override
+    public VenueDTO getVenue(Integer venueId) {
+        return new VenueDTO(venuesDAO.selectVenueById(venueId));
+    }
 }

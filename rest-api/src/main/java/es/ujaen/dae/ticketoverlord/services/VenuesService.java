@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface VenuesService {
     List<VenueDTO> getVenues();
+
+    VenueDTO getVenue(Integer venueId);
 }
