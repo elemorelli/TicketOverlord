@@ -2,7 +2,10 @@ package es.ujaen.dae.ticketoverlord.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import es.ujaen.dae.ticketoverlord.models.User;
+import es.ujaen.dae.ticketoverlord.resources.v1.UsersResource;
 import org.springframework.hateoas.ResourceSupport;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO extends ResourceSupport {
@@ -19,6 +22,8 @@ public class UserDTO extends ResourceSupport {
         this.userId = user.getId();
         this.name = user.getName();
         this.uuidToken = user.getUuidToken();
+        this.add(linkTo(UsersResource.class).slash(this.getUserId()).withSelfRel());
+        this.add(linkTo(UsersResource.class).slash(this.getUserId()).slash("tickets").withRel("tickets"));
     }
 
     @Override
