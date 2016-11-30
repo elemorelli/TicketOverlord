@@ -20,7 +20,6 @@ public class CacheConfiguration {
         List<Cache> caches = new ArrayList<>();
         caches.add(new ConcurrentMapCache("venuesCache"));
         caches.add(new ConcurrentMapCache("ticketsCache"));
-        caches.add(new ConcurrentMapCache("usersCache"));
         cacheManager.setCaches(caches);
         return cacheManager;
     }
