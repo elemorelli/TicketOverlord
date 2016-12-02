@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,17 @@ public class EventsServiceImpl implements EventsService {
     private EventsDAO eventsDAO;
     @Autowired
     private VenueDAO venueDAO;
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    @Override
+    public List<EventDTO> getEvents() {
+        return getEventDTOs(eventsDAO.selectAllEvents());
+    }
+
+    @Override
+    public EventDTO getEvent(Integer eventId) {
+        return new EventDTO(eventsDAO.selectEventById(eventId));
+    }
 
     @Override
     public List<EventDTO> findEventsByName(String name) {
@@ -51,12 +63,12 @@ public class EventsServiceImpl implements EventsService {
 
     @Override
     @AdminOperation
-    public void addNewEvent(UserDTO user, EventDTO eventDTO) {
+    public EventDTO addNewEvent(UserDTO user, EventDTO eventDTO) {
 
         Event event = new Event();
         event.setName(eventDTO.getName());
         event.setType(eventDTO.getType());
-        event.setDate(eventDTO.getDate());
+        event.setDate(LocalDate.parse(eventDTO.getDate(), dateFormatter));
 
         Venue venue = venueDAO.selectVenueById(eventDTO.getVenue().getVenueId());
         event.setVenue(venue);
@@ -74,6 +86,8 @@ public class EventsServiceImpl implements EventsService {
         }
 
         eventsDAO.insertEvent(event);
+
+        return new EventDTO(event);
     }
 
     private List<EventDTO> getEventDTOs(List<Event> filteredEvents) {

@@ -198,7 +198,7 @@ public class ConsoleClient {
             System.out.println();
             System.out.println("  EVENTO " + ++eventNumber + ": \"" + event.getName() + "\"");
             System.out.println("    Tipo: " + event.getType());
-            System.out.println("    Fecha: " + event.getDate().format(dateFormatter));
+            System.out.println("    Fecha: " + event.getDate());
             System.out.println("    Recinto: " + event.getVenue().getName());
             System.out.println("    Localidad: " + event.getVenue().getCity());
 
@@ -285,7 +285,7 @@ public class ConsoleClient {
                 System.out.println("-----------------------------------");
                 System.out.println("Resumen de la compra:");
                 System.out.println("  Evento: " + event.getName());
-                System.out.println("  Fecha: " + event.getDate().format(dateFormatter));
+                System.out.println("  Fecha: " + event.getDate());
                 System.out.println("  Recinto: " + event.getVenue().getName());
                 System.out.println("  Zona: " + priceToCharge.getZone().getName());
                 System.out.println("  Precio por ticket: €" + priceToCharge.getPrice());
@@ -375,7 +375,7 @@ public class ConsoleClient {
         eventdto.setType(readText()); // TODO: Posible Enum y mostrarlo como lista?
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        eventdto.setDate(readDate());
+        eventdto.setDate(readDate().format(dateFormatter));
 
         List<VenueDTO> venues = venuesService.getVenues();
 

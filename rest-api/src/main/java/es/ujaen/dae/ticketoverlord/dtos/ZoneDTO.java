@@ -1,7 +1,10 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
 import es.ujaen.dae.ticketoverlord.models.Zone;
+import es.ujaen.dae.ticketoverlord.resources.v1.VenuesResource;
 import org.springframework.hateoas.ResourceSupport;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 public class ZoneDTO extends ResourceSupport {
     private Integer id;
@@ -15,6 +18,11 @@ public class ZoneDTO extends ResourceSupport {
         this.id = zone.getId();
         this.name = zone.getName();
         this.seats = zone.getSeats();
+
+        this.add(linkTo(VenuesResource.class)
+                .slash(zone.getVenue().getId())
+                .slash("zones")
+                .slash(this.getZoneId()).withSelfRel());
     }
 
     @Override

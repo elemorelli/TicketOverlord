@@ -46,7 +46,7 @@ public class Event {
                 '}';
     }
 
-    public Integer getId() {
+    public Integer getEventId() {
         return id;
     }
 

@@ -22,9 +22,9 @@ public class EventsDAOJPAImpl implements EventsDAO {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Event selectEventById(Integer id) {
+    public Event selectEventById(Integer eventId) {
         try {
-            Event event = em.find(Event.class, id);
+            Event event = em.find(Event.class, eventId);
             return event;
         } catch (NoResultException e) {
             return null;
@@ -51,39 +51,39 @@ public class EventsDAOJPAImpl implements EventsDAO {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Event> selectEventsByNameAndCity(String eventName, String city) {
+    public List<Event> selectEventsByNameAndCity(String eventName, String eventCity) {
 
         return em.createQuery("SELECT e FROM Event e " +
                 "WHERE UPPER(e.name) LIKE UPPER(:eventname) " +
                 "AND UPPER(e.venue.city) LIKE UPPER(:cityname)", Event.class)
                 .setParameter("eventname", "%" + eventName + "%")
-                .setParameter("cityname", "%" + city + "%")
+                .setParameter("cityname", "%" + eventCity + "%")
                 .getResultList();
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Event> selectEventsByDateAndType(LocalDate date, String type) {
+    public List<Event> selectEventsByDateAndType(LocalDate eventDate, String eventType) {
 
         return em.createQuery("SELECT e FROM Event e " +
                 "WHERE e.date = :eventdate " +
                 "AND UPPER(e.type) LIKE UPPER(:eventtype)", Event.class)
-                .setParameter("eventdate", "%" + date + "%")
-                .setParameter("eventtype", "%" + type + "%")
+                .setParameter("eventdate", "%" + eventDate + "%")
+                .setParameter("eventtype", "%" + eventType + "%")
                 .getResultList();
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Event> selectEventsByDateTypeAndCity(LocalDate date, String type, String city) {
+    public List<Event> selectEventsByDateTypeAndCity(LocalDate eventDate, String eventType, String eventCity) {
 
         return em.createQuery("SELECT e FROM Event e " +
                 "WHERE e.date = :eventdate " +
                 "AND UPPER(e.type) LIKE UPPER(:eventtype) " +
                 "AND UPPER(e.venue.city) LIKE UPPER(:cityname)", Event.class)
-                .setParameter("eventdate", "%" + date + "%")
-                .setParameter("eventtype", "%" + type + "%")
-                .setParameter("cityname", "%" + city + "%")
+                .setParameter("eventdate", "%" + eventDate + "%")
+                .setParameter("eventtype", "%" + eventType + "%")
+                .setParameter("cityname", "%" + eventCity + "%")
                 .getResultList();
     }
 
@@ -113,7 +113,7 @@ public class EventsDAOJPAImpl implements EventsDAO {
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteEvent(Event event) {
         try {
-            em.remove(em.find(Event.class, event.getId()));
+            em.remove(em.find(Event.class, event.getEventId()));
             // em.remove(event);
             em.flush();
         } catch (Exception e) {
