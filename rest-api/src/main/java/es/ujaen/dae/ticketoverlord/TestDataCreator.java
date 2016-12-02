@@ -10,16 +10,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+
+import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 
 public class TestDataCreator {
     private EventsDAO eventsDAO;
     private TicketsDAO ticketsDAO;
     private UsersDAO usersDAO;
     private VenueDAO venuesDAO;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static void main(String[] args) {
 
@@ -140,14 +140,14 @@ public class TestDataCreator {
             }
         }
 
-        Event feriaSanLucas = new Event("Feria de San Lucas 2016", "Todo", LocalDate.parse("08/10/2016", dateFormatter), ferial, new HashMap<>());
+        Event feriaSanLucas = new Event("Feria de San Lucas 2016", "Todo", LocalDate.parse("08/10/2016", DATE_FORMAT), ferial, new HashMap<>());
         feriaSanLucas.addPricePerZones(new PricePerZone(new BigDecimal(20), 5, ferial.getZones().get('A')));
         feriaSanLucas.addPricePerZones(new PricePerZone(new BigDecimal(10), 10, ferial.getZones().get('B')));
         feriaSanLucas.addPricePerZones(new PricePerZone(new BigDecimal(5), 10, ferial.getZones().get('C')));
 
-        Event nochesAndaluces = new Event("Noches andaluces", "Concierto", LocalDate.parse("20/10/2016", dateFormatter), ferial, new HashMap<>());
+        Event nochesAndaluces = new Event("Noches andaluces", "Concierto", LocalDate.parse("20/10/2016", DATE_FORMAT), ferial, new HashMap<>());
 
-        Event bandoneon = new Event("Al ritmo del bandoneón", "Concierto", LocalDate.parse("20/11/2016", dateFormatter), centroJubilados, new HashMap<>());
+        Event bandoneon = new Event("Al ritmo del bandoneón", "Concierto", LocalDate.parse("20/11/2016", DATE_FORMAT), centroJubilados, new HashMap<>());
         bandoneon.addPricePerZones(new PricePerZone(new BigDecimal(20), 10, centroJubilados.getZones().get('A')));
 
         eventsDAO.insertEvent(feriaSanLucas);

@@ -7,10 +7,10 @@ import es.ujaen.dae.ticketoverlord.resources.v1.EventsResource;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @JsonIgnoreProperties({"venue", "pricesPerZone"})
@@ -21,7 +21,6 @@ public class EventDTO extends ResourceSupport {
     private String date;
     private VenueDTO venue;
     private Map<Character, PricePerZoneDTO> pricesPerZone;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public EventDTO() {
         this.pricesPerZone = new HashMap<>();
@@ -31,7 +30,7 @@ public class EventDTO extends ResourceSupport {
         this.eventId = event.getEventId();
         this.name = event.getName();
         this.type = event.getType();
-        this.date = event.getDate().format(dateFormatter);
+        this.date = event.getDate().format(DATE_FORMAT);
         this.venue = new VenueDTO(event.getVenue());
         this.pricesPerZone = new HashMap<>();
         for (PricePerZone price : event.getPricePerZones().values()) {
@@ -44,9 +43,6 @@ public class EventDTO extends ResourceSupport {
         this.add(linkTo(EventsResource.class)
                 .slash(this.getEventId())
                 .slash("availability").withRel("availability"));
-//        for (PricePerZoneDTO price : this.getPricesPerZone().values()) {
-//            this.add(price.getLink(Link.REL_SELF).withRel("priceperzone"));
-//        }
     }
 
     @Override

@@ -30,7 +30,8 @@ public class VenueDTO extends ResourceSupport {
         for (Character character : venue.getZones().keySet()) {
             this.zones.put(character, new ZoneDTO(venue.getZones().get(character)));
         }
-        this.add(linkTo(VenuesResource.class).slash(this.getVenueId()).withSelfRel());
+        this.add(linkTo(VenuesResource.class)
+                .slash(this.getVenueId()).withSelfRel());
     }
 
     @Override

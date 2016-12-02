@@ -14,10 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 
 @Component("EventsService")
 public class EventsServiceImpl implements EventsService {
@@ -25,7 +26,6 @@ public class EventsServiceImpl implements EventsService {
     private EventsDAO eventsDAO;
     @Autowired
     private VenueDAO venueDAO;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
     public List<EventDTO> getEvents() {
@@ -68,7 +68,7 @@ public class EventsServiceImpl implements EventsService {
         Event event = new Event();
         event.setName(eventDTO.getName());
         event.setType(eventDTO.getType());
-        event.setDate(LocalDate.parse(eventDTO.getDate(), dateFormatter));
+        event.setDate(LocalDate.parse(eventDTO.getDate(), DATE_FORMAT));
 
         Venue venue = venueDAO.selectVenueById(eventDTO.getVenue().getVenueId());
         event.setVenue(venue);

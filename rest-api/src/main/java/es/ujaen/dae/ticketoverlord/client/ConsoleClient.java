@@ -12,17 +12,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
+
 public class ConsoleClient {
     private final InputStreamReader isr = new InputStreamReader(System.in);
     private final BufferedReader br = new BufferedReader(isr);
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
     private final List<String> negatives = Arrays.asList("N", "NO");
     private UserDTO authenticatedUser = null;
@@ -375,7 +375,7 @@ public class ConsoleClient {
         eventdto.setType(readText()); // TODO: Posible Enum y mostrarlo como lista?
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        eventdto.setDate(readDate().format(dateFormatter));
+        eventdto.setDate(readDate().format(DATE_FORMAT));
 
         List<VenueDTO> venues = venuesService.getVenues();
 
@@ -521,7 +521,7 @@ public class ConsoleClient {
         do {
             try {
                 String date = br.readLine();
-                return LocalDate.parse(date, dateFormatter);
+                return LocalDate.parse(date, DATE_FORMAT);
             } catch (DateTimeParseException | IOException e) {
                 System.err.println("Error en el formato de ingreso de la fecha");
             }
