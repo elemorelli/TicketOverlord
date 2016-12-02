@@ -1,6 +1,6 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.resources.v1.EventsResource;
@@ -13,13 +13,13 @@ import java.util.List;
 import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-@JsonIgnoreProperties({"pricesPerZone"})
 public class EventDTO extends ResourceSupport {
     private Integer eventId;
     private String name;
     private String type;
     private String date;
     private Integer venueId;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<PricePerZoneDTO> pricesPerZone;
 
     public EventDTO() {
@@ -106,7 +106,15 @@ public class EventDTO extends ResourceSupport {
         this.pricesPerZone = pricesPerZone;
     }
 
-    public void addPricesPerZone(PricePerZoneDTO pricePerZoneDTO) {
+    public void addPricePerZone(PricePerZoneDTO pricePerZoneDTO) {
         this.pricesPerZone.add(pricePerZoneDTO);
+    }
+
+    public PricePerZoneDTO getPricePerZone(Character zoneName) {
+        for (PricePerZoneDTO dto : pricesPerZone) {
+            if (dto.getZoneName().equals(zoneName))
+                return dto;
+        }
+        return null;
     }
 }

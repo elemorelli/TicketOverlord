@@ -7,6 +7,8 @@ import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.services.events.EventZoneMismatchException;
+import es.ujaen.dae.ticketoverlord.exceptions.services.events.NoEventFoundException;
+import es.ujaen.dae.ticketoverlord.exceptions.services.venues.NoVenueFoundException;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Venue;
@@ -29,7 +31,7 @@ public class EventsServiceImpl implements EventsService {
 
     @Override
     public List<EventDTO> getEvents() {
-        return getEventDTOs(eventsDAO.selectAllEvents());
+        return getDTOsFromEvents(eventsDAO.selectAllEvents());
     }
 
     @Override
@@ -40,38 +42,80 @@ public class EventsServiceImpl implements EventsService {
     @Override
     public List<EventDTO> findEventsByName(String name) {
 
-        return getEventDTOs(eventsDAO.selectEventsByName(name));
+        return getDTOsFromEvents(eventsDAO.selectEventsByName(name));
     }
 
     @Override
     public List<EventDTO> findEventsByNameAndCity(String name, String city) {
 
-        return getEventDTOs(eventsDAO.selectEventsByNameAndCity(name, city));
+        return getDTOsFromEvents(eventsDAO.selectEventsByNameAndCity(name, city));
     }
 
     @Override
     public List<EventDTO> findEventsByDateAndType(LocalDate date, String type) {
 
-        return getEventDTOs(eventsDAO.selectEventsByDateAndType(date, type));
+        return getDTOsFromEvents(eventsDAO.selectEventsByDateAndType(date, type));
     }
 
     @Override
     public List<EventDTO> findEventsByDateTypeAndCity(LocalDate date, String type, String city) {
 
-        return getEventDTOs(eventsDAO.selectEventsByDateTypeAndCity(date, type, city));
+        return getDTOsFromEvents(eventsDAO.selectEventsByDateTypeAndCity(date, type, city));
     }
 
     @Override
     @AdminOperation
-    public EventDTO addNewEvent(UserDTO user, EventDTO eventDTO) {
+    public EventDTO addNewEvent(UserDTO userDTO, EventDTO eventDTO) {
 
         Event event = new Event();
+        fillEventFromDTO(eventDTO, event);
+        eventsDAO.insertEvent(event);
+        return new EventDTO(event);
+    }
+
+    @Override
+    public EventDTO modifyEvent(EventDTO eventDTO) {
+
+        Event event = eventsDAO.selectEventById(eventDTO.getEventId());
+        if (event != null) {
+            fillEventFromDTO(eventDTO, event);
+            eventsDAO.updateEvent(event);
+            return new EventDTO(event);
+        } else {
+            throw new NoEventFoundException();
+        }
+    }
+
+    @Override
+    public void deleteEvent(EventDTO eventDTO) {
+
+        Event event = eventsDAO.selectEventById(eventDTO.getEventId());
+        if (event != null) {
+            eventsDAO.deleteEvent(event);
+        } else {
+            throw new NoEventFoundException();
+        }
+    }
+
+    private List<EventDTO> getDTOsFromEvents(List<Event> filteredEvents) {
+        List<EventDTO> events = new ArrayList<>();
+        for (Event event : filteredEvents) {
+            events.add(new EventDTO(event));
+        }
+        return events;
+    }
+
+    private void fillEventFromDTO(EventDTO eventDTO, Event event) {
         event.setName(eventDTO.getName());
         event.setType(eventDTO.getType());
         event.setDate(LocalDate.parse(eventDTO.getDate(), DATE_FORMAT));
 
         Venue venue = venueDAO.selectVenueById(eventDTO.getVenueId());
         event.setVenue(venue);
+
+        if (venue == null) {
+            throw new NoVenueFoundException();
+        }
 
         if (venue.getZones().size() != eventDTO.getPricesPerZone().size()) {
             throw new EventZoneMismatchException("The number of zones in the event does not match the venue");
@@ -91,17 +135,5 @@ public class EventsServiceImpl implements EventsService {
             pricePerZone.setAvailableSeats(zone.getSeats());
             event.addPricePerZones(pricePerZone);
         }
-
-        eventsDAO.insertEvent(event);
-
-        return new EventDTO(event);
-    }
-
-    private List<EventDTO> getEventDTOs(List<Event> filteredEvents) {
-        List<EventDTO> events = new ArrayList<>();
-        for (Event event : filteredEvents) {
-            events.add(new EventDTO(event));
-        }
-        return events;
     }
 }

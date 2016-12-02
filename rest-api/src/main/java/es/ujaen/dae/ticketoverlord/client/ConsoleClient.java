@@ -419,7 +419,7 @@ public class ConsoleClient {
                 PricePerZoneDTO pricePerZone = new PricePerZoneDTO();
                 pricePerZone.setZoneName(zone.getName());
                 pricePerZone.setPrice(price);
-                eventdto.addPricesPerZone(pricePerZone);
+                eventdto.addPricePerZone(pricePerZone);
             }
         } else {
             System.out.println("El recinto no tiene zonas");

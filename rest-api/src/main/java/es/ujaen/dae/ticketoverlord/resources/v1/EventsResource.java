@@ -52,16 +52,16 @@ public class EventsResource {
     @RequestMapping(method = RequestMethod.GET, value = "/{eventId}/availability/{zoneName}")
     public PricePerZoneDTO getEventZoneAvailability(@PathVariable Integer eventId, @PathVariable Character zoneName) {
 
-        return eventsService.getEvent(eventId).getPricesPerZone().get(zoneName);
+        return eventsService.getEvent(eventId).getPricePerZone(zoneName);
     }
 
-    //    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}", consumes = "application/json")
-    //    public EventDTO modifyEvent(@PathVariable Integer eventId, @RequestBody EventDTO eventDTO) {
-    //        eventDTO.setVenueId(eventId);
-    //        return eventsService.modifyEvent(eventDTO);
-    //    }
+    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}", consumes = "application/json")
+    public EventDTO modifyEvent(@PathVariable Integer eventId, @RequestBody EventDTO eventDTO) {
+        eventDTO.setEventId(eventId);
+        return eventsService.modifyEvent(eventDTO);
+    }
 
-    // TODO: Remove when the below method has only one @RequestBody
+    // TODO: Remover cuando el metodo de abajo solo tenga un parametro @RequestBody
     public static class EventUserWrapper {
         private UserDTO user;
         private EventDTO event;
@@ -89,9 +89,10 @@ public class EventsResource {
         return eventsService.addNewEvent(eventUserWrapper.getUser(), eventUserWrapper.getEvent());
     }
 
-    //    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}", consumes = "application/json")
-    //    public void deleteEvent(@PathVariable Integer eventId, @RequestBody EventDTO eventDTO) {
-    //        eventDTO.setVenueId(eventId);
-    //        eventsService.deleteEvent(eventDTO);
-    //    }
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}")
+    public void deleteEvent(@PathVariable Integer eventId) {
+        EventDTO eventDTO = new EventDTO();
+        eventDTO.setEventId(eventId);
+        eventsService.deleteEvent(eventDTO);
+    }
 }

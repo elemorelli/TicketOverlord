@@ -19,5 +19,9 @@ public interface EventsService {
 
     List<EventDTO> findEventsByDateTypeAndCity(LocalDate date, String type, String city);
 
-    EventDTO addNewEvent(UserDTO user, EventDTO event);
+    EventDTO addNewEvent(UserDTO userDTO, EventDTO eventDTO);
+
+    EventDTO modifyEvent(EventDTO eventDTO);
+
+    void deleteEvent(EventDTO eventDTO);
 }
