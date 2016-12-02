@@ -6,6 +6,7 @@ import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
+import es.ujaen.dae.ticketoverlord.exceptions.services.events.EventZoneMismatchException;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Venue;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 
@@ -70,15 +70,22 @@ public class EventsServiceImpl implements EventsService {
         event.setType(eventDTO.getType());
         event.setDate(LocalDate.parse(eventDTO.getDate(), DATE_FORMAT));
 
-        Venue venue = venueDAO.selectVenueById(eventDTO.getVenue().getVenueId());
+        Venue venue = venueDAO.selectVenueById(eventDTO.getVenueId());
         event.setVenue(venue);
 
-        Map<Character, PricePerZoneDTO> prices = eventDTO.getPricesPerZone();
-        for (PricePerZoneDTO priceDTO : prices.values()) {
+        if (venue.getZones().size() != eventDTO.getPricesPerZone().size()) {
+            throw new EventZoneMismatchException("The number of zones in the event does not match the venue");
+        }
+
+        List<PricePerZoneDTO> prices = eventDTO.getPricesPerZone();
+        for (PricePerZoneDTO priceDTO : prices) {
             PricePerZone pricePerZone = new PricePerZone();
             pricePerZone.setPrice(priceDTO.getPrice());
 
-            Zone zone = venue.getZones().get(priceDTO.getZone().getName());
+            Zone zone = venue.getZones().get(priceDTO.getZoneName());
+            if (zone == null) {
+                throw new EventZoneMismatchException("The venue doesn't have a zone with name " + priceDTO.getZoneName());
+            }
 
             pricePerZone.setZone(zone);
             pricePerZone.setAvailableSeats(zone.getSeats());

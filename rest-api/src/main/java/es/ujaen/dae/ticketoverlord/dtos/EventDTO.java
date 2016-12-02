@@ -4,26 +4,26 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.resources.v1.EventsResource;
-import org.springframework.hateoas.Link;
+import es.ujaen.dae.ticketoverlord.resources.v1.VenuesResource;
 import org.springframework.hateoas.ResourceSupport;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-@JsonIgnoreProperties({"venue", "pricesPerZone"})
+@JsonIgnoreProperties({"pricesPerZone"})
 public class EventDTO extends ResourceSupport {
     private Integer eventId;
     private String name;
     private String type;
     private String date;
-    private VenueDTO venue;
-    private Map<Character, PricePerZoneDTO> pricesPerZone;
+    private Integer venueId;
+    private List<PricePerZoneDTO> pricesPerZone;
 
     public EventDTO() {
-        this.pricesPerZone = new HashMap<>();
+        this.pricesPerZone = new ArrayList<>();
     }
 
     public EventDTO(Event event) {
@@ -31,15 +31,16 @@ public class EventDTO extends ResourceSupport {
         this.name = event.getName();
         this.type = event.getType();
         this.date = event.getDate().format(DATE_FORMAT);
-        this.venue = new VenueDTO(event.getVenue());
-        this.pricesPerZone = new HashMap<>();
+        this.venueId = event.getVenue().getId();
+        this.pricesPerZone = new ArrayList<>();
         for (PricePerZone price : event.getPricePerZones().values()) {
-            this.pricesPerZone.put(price.getZone().getName(), new PricePerZoneDTO(price));
+            this.pricesPerZone.add(new PricePerZoneDTO(price));
         }
 
         this.add(linkTo(EventsResource.class)
                 .slash(this.getEventId()).withSelfRel());
-        this.add(venue.getLink(Link.REL_SELF).withRel("venue"));
+        this.add(linkTo(VenuesResource.class)
+                .slash(this.getVenueId()).withRel("venue"));
         this.add(linkTo(EventsResource.class)
                 .slash(this.getEventId())
                 .slash("availability").withRel("availability"));
@@ -52,7 +53,7 @@ public class EventDTO extends ResourceSupport {
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", date=" + date +
-                ", venue=" + venue +
+                ", venueId=" + venueId +
                 ", pricesPerZone=" + pricesPerZone +
                 '}';
     }
@@ -89,23 +90,23 @@ public class EventDTO extends ResourceSupport {
         this.date = date;
     }
 
-    public VenueDTO getVenue() {
-        return venue;
+    public Integer getVenueId() {
+        return venueId;
     }
 
-    public void setVenue(VenueDTO venue) {
-        this.venue = venue;
+    public void setVenueId(Integer venueId) {
+        this.venueId = venueId;
     }
 
-    public Map<Character, PricePerZoneDTO> getPricesPerZone() {
+    public List<PricePerZoneDTO> getPricesPerZone() {
         return pricesPerZone;
     }
 
-    public void setPricesPerZone(Map<Character, PricePerZoneDTO> pricesPerZone) {
+    public void setPricesPerZone(List<PricePerZoneDTO> pricesPerZone) {
         this.pricesPerZone = pricesPerZone;
     }
 
     public void addPricesPerZone(PricePerZoneDTO pricePerZoneDTO) {
-        this.pricesPerZone.put(pricePerZoneDTO.getZone().getName(), pricePerZoneDTO);
+        this.pricesPerZone.add(pricePerZoneDTO);
     }
 }

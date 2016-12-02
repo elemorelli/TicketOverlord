@@ -13,10 +13,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 
@@ -195,19 +192,22 @@ public class ConsoleClient {
         System.out.println("Eventos encontrados:");
         int eventNumber = 0;
         for (EventDTO event : events) {
+
+            VenueDTO venue = venuesService.getVenue(event.getEventId());
+
             System.out.println();
             System.out.println("  EVENTO " + ++eventNumber + ": \"" + event.getName() + "\"");
             System.out.println("    Tipo: " + event.getType());
             System.out.println("    Fecha: " + event.getDate());
-            System.out.println("    Recinto: " + event.getVenue().getName());
-            System.out.println("    Localidad: " + event.getVenue().getCity());
+            System.out.println("    Recinto: " + venue.getName());
+            System.out.println("    Localidad: " + venue.getCity());
 
-            Map<Character, PricePerZoneDTO> pricesPerZone = event.getPricesPerZone();
+            List<PricePerZoneDTO> pricesPerZone = event.getPricesPerZone();
             if (!pricesPerZone.isEmpty()) {
                 System.out.println("    Precios:");
 
-                for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone.values()) {
-                    System.out.print("      Zone '" + pricePerZoneDTO.getZone().getName()
+                for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone) {
+                    System.out.print("      Zone '" + pricePerZoneDTO.getZoneName()
                             + "' - €" + pricePerZoneDTO.getPrice());
                     if (pricePerZoneDTO.getAvailableSeats() > 0) {
                         System.out.println(" (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
@@ -248,12 +248,14 @@ public class ConsoleClient {
 
             EventDTO event = events.get(eventNumber - 1);
 
-            Map<Character, PricePerZoneDTO> prices = event.getPricesPerZone();
+            Set<Character> zoneNames = new HashSet<>();
+            List<PricePerZoneDTO> prices = event.getPricesPerZone();
             if (prices != null && !prices.isEmpty()) {
                 System.out.println("Seleccione zona a la cual desea asistir:");
 
-                for (PricePerZoneDTO pricePerZoneDTO : prices.values()) {
-                    System.out.print("Zona '" + pricePerZoneDTO.getZone().getName()
+                for (PricePerZoneDTO pricePerZoneDTO : prices) {
+                    zoneNames.add(pricePerZoneDTO.getZoneName());
+                    System.out.print("Zona '" + pricePerZoneDTO.getZoneName()
                             + "' a €" + pricePerZoneDTO.getPrice());
                     if (pricePerZoneDTO.getAvailableSeats() > 0) {
                         System.out.println(" (" + pricePerZoneDTO.getAvailableSeats() + " tickets disponibles)");
@@ -265,13 +267,13 @@ public class ConsoleClient {
                 Character selectedZone;
                 do {
                     selectedZone = readCharacter();
-                    if (!prices.containsKey(selectedZone)) {
+                    if (!zoneNames.contains(selectedZone)) {
                         System.err.println("La zona ingresada no existe");
                     } else if (prices.get(selectedZone).getAvailableSeats() <= 0) {
                         System.err.println("TICKETS AGOTADOS PARA LA ZONA '" + selectedZone + "'");
                     }
                 }
-                while (!prices.containsKey(selectedZone) || prices.get(selectedZone).getAvailableSeats() <= 0);
+                while (!zoneNames.contains(selectedZone) || prices.get(selectedZone).getAvailableSeats() <= 0);
 
                 PricePerZoneDTO priceToCharge = prices.get(selectedZone);
 
@@ -281,13 +283,15 @@ public class ConsoleClient {
                     ticketsToBuy = readNumber();
                 } while (ticketsToBuy <= 0 || ticketsToBuy > priceToCharge.getAvailableSeats());
 
+                VenueDTO venue = venuesService.getVenue(event.getEventId());
+
                 System.out.println();
                 System.out.println("-----------------------------------");
                 System.out.println("Resumen de la compra:");
                 System.out.println("  Evento: " + event.getName());
                 System.out.println("  Fecha: " + event.getDate());
-                System.out.println("  Recinto: " + event.getVenue().getName());
-                System.out.println("  Zona: " + priceToCharge.getZone().getName());
+                System.out.println("  Recinto: " + venue.getName());
+                System.out.println("  Zona: " + priceToCharge.getZoneName());
                 System.out.println("  Precio por ticket: €" + priceToCharge.getPrice());
                 System.out.println("  Cantidad de tickets: " + ticketsToBuy);
                 System.out.println("  Se le facturará un total de €" + (priceToCharge.getPrice().multiply(new BigDecimal(ticketsToBuy))));
@@ -327,9 +331,13 @@ public class ConsoleClient {
             System.out.println("Tickets adquiridos por el usuario " + authenticatedUser.getName() + ": ");
             System.out.println("-----------------------------------");
             for (TicketDTO ticket : tickets) {
-                System.out.println("Evento: " + ticket.getEvent().getName());
-                System.out.println("    Fecha: " + ticket.getEvent().getDate());
-                System.out.println("    Recinto: " + ticket.getEvent().getVenue().getName());
+
+                EventDTO event = ticket.getEvent();
+                VenueDTO venue = venuesService.getVenue(event.getEventId());
+
+                System.out.println("Evento: " + event.getName());
+                System.out.println("    Fecha: " + event.getDate());
+                System.out.println("    Recinto: " + venue.getName());
                 System.out.println("    Zona: " + ticket.getZone().getName());
                 System.out.println("    Precio por ticket: " + ticket.getPrice());
                 System.out.println("    Cantidad comprada: " + ticket.getQuantity());
@@ -393,7 +401,7 @@ public class ConsoleClient {
 
         VenueDTO venue = venues.get(venueNumber - 1);
 
-        eventdto.setVenue(venue);
+        eventdto.setVenueId(venue.getVenueId());
 
         Collection<ZoneDTO> zones = venue.getZones().values();
 
@@ -409,7 +417,7 @@ public class ConsoleClient {
                 System.out.println("  Precio para la zona '" + zone.getName() + "': ");
                 BigDecimal price = readDecimalNumber();
                 PricePerZoneDTO pricePerZone = new PricePerZoneDTO();
-                pricePerZone.setZone(zone);
+                pricePerZone.setZoneName(zone.getName());
                 pricePerZone.setPrice(price);
                 eventdto.addPricesPerZone(pricePerZone);
             }

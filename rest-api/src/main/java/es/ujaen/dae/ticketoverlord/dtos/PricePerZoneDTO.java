@@ -10,12 +10,11 @@ import java.math.BigDecimal;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-@JsonIgnoreProperties({"pricePerZoneId", "zone"})
+@JsonIgnoreProperties({"pricePerZoneId"})
 public class PricePerZoneDTO extends ResourceSupport {
     private Integer pricePerZoneId;
     private Character zoneName;
     private BigDecimal price;
-    private ZoneDTO zone;
     private Integer availableSeats;
 
     public PricePerZoneDTO() {
@@ -24,16 +23,15 @@ public class PricePerZoneDTO extends ResourceSupport {
     public PricePerZoneDTO(PricePerZone price) {
         this.pricePerZoneId = price.getId();
         this.price = price.getPrice();
-        this.zone = new ZoneDTO(price.getZone());
-        this.zoneName = zone.getName();
+        this.zoneName = price.getZone().getName();
         this.availableSeats = price.getAvailableSeats();
 
         this.add(linkTo(EventsResource.class)
                 .slash(price.getEvent().getEventId())
                 .slash("availability")
-                .slash(this.getZone().getName()).withSelfRel());
+                .slash(this.getZoneName()).withSelfRel());
 
-        this.add(zone.getLink(Link.REL_SELF).withRel("zone"));
+        this.add(new ZoneDTO(price.getZone()).getLink(Link.REL_SELF).withRel("zone"));
     }
 
     @Override
@@ -41,7 +39,7 @@ public class PricePerZoneDTO extends ResourceSupport {
         return "PricePerZoneDTO{" +
                 "pricePerZoneId=" + pricePerZoneId +
                 ", price=" + price +
-                ", zone=" + zone +
+                ", zoneName=" + zoneName +
                 ", availableSeats=" + availableSeats +
                 '}';
     }
@@ -68,14 +66,6 @@ public class PricePerZoneDTO extends ResourceSupport {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public ZoneDTO getZone() {
-        return zone;
-    }
-
-    public void setZone(ZoneDTO zone) {
-        this.zone = zone;
     }
 
     public Integer getAvailableSeats() {

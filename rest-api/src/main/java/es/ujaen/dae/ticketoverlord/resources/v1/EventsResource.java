@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 
@@ -42,9 +41,9 @@ public class EventsResource {
     @RequestMapping(method = RequestMethod.GET, value = "/{eventId}/availability")
     public List<String> getEventAvailability(@PathVariable Integer eventId) {
 
-        Map<Character, PricePerZoneDTO> pricesPerZone = eventsService.getEvent(eventId).getPricesPerZone();
+        List<PricePerZoneDTO> pricesPerZone = eventsService.getEvent(eventId).getPricesPerZone();
         List<String> links = new ArrayList<>();
-        for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone.values()) {
+        for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone) {
             links.add(pricePerZoneDTO.getLink(Link.REL_SELF).getHref());
         }
         return links;
@@ -58,18 +57,41 @@ public class EventsResource {
 
     //    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}", consumes = "application/json")
     //    public EventDTO modifyEvent(@PathVariable Integer eventId, @RequestBody EventDTO eventDTO) {
-    //        eventDTO.setEventId(eventId);
+    //        eventDTO.setVenueId(eventId);
     //        return eventsService.modifyEvent(eventDTO);
     //    }
 
+    // TODO: Remove when the below method has only one @RequestBody
+    public static class EventUserWrapper {
+        private UserDTO user;
+        private EventDTO event;
+
+        public EventDTO getEvent() {
+            return event;
+        }
+
+        public void setEvent(EventDTO event) {
+            this.event = event;
+        }
+
+        public UserDTO getUser() {
+            return user;
+        }
+
+        public void setUser(UserDTO user) {
+            this.user = user;
+        }
+    }
+
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-    public EventDTO addEvent(@RequestBody UserDTO userDTO, @RequestBody EventDTO eventDTO) {
-        return eventsService.addNewEvent(userDTO, eventDTO);
+    public EventDTO addEvent(@RequestBody EventUserWrapper eventUserWrapper) {
+        // TODO: Reemplazar el uso de UserDTO para autenticacion cuando tengamos Spring Security
+        return eventsService.addNewEvent(eventUserWrapper.getUser(), eventUserWrapper.getEvent());
     }
 
     //    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}", consumes = "application/json")
     //    public void deleteEvent(@PathVariable Integer eventId, @RequestBody EventDTO eventDTO) {
-    //        eventDTO.setEventId(eventId);
+    //        eventDTO.setVenueId(eventId);
     //        eventsService.deleteEvent(eventDTO);
     //    }
 }

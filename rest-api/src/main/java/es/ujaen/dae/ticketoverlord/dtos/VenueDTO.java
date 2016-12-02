@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 public class VenueDTO extends ResourceSupport {
-    private Integer id;
+    private Integer venueId;
     private String name;
     private String city;
     private String address;
@@ -21,7 +21,7 @@ public class VenueDTO extends ResourceSupport {
     }
 
     public VenueDTO(Venue venue) {
-        this.id = venue.getId();
+        this.venueId = venue.getId();
         this.name = venue.getName();
         this.city = venue.getCity();
         this.address = venue.getAddress();
@@ -37,7 +37,7 @@ public class VenueDTO extends ResourceSupport {
     @Override
     public String toString() {
         return "VenueDTO{" +
-                "id=" + id +
+                "venueId=" + venueId +
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", address='" + address + '\'' +
@@ -46,11 +46,11 @@ public class VenueDTO extends ResourceSupport {
     }
 
     public Integer getVenueId() {
-        return id;
+        return venueId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setVenueId(Integer venueId) {
+        this.venueId = venueId;
     }
 
     public String getName() {
