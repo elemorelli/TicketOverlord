@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static es.ujaen.dae.ticketoverlord.resources.v1.BaseResource.API;
+import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 
 @RestController
 @RequestMapping(API + "/venues")

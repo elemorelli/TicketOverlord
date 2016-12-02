@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-import static es.ujaen.dae.ticketoverlord.resources.v1.BaseResource.API;
+import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(API)
-public class BaseResource {
+public class IndexResource {
     @Autowired
     private SessionService sessionService;
     final static String API = "/api/v1";
@@ -25,10 +25,11 @@ public class BaseResource {
     public Map<String, String> getHomeLinks() throws NoSuchMethodException {
         Map<String, String> links = new HashMap<>();
 
-        links.put("Login", linkTo(BaseResource.class.getMethod("login", UserDTO.class), 2L).withSelfRel().getHref());
-        links.put("Logout", linkTo(BaseResource.class.getMethod("logout", UserDTO.class), 2L).withSelfRel().getHref());
+        links.put("Login", linkTo(IndexResource.class.getMethod("login", UserDTO.class), 2L).withSelfRel().getHref());
+        links.put("Logout", linkTo(IndexResource.class.getMethod("logout", UserDTO.class), 2L).withSelfRel().getHref());
         links.put("Users", linkTo(UsersResource.class.getMethod("getUsers"), 2L).withSelfRel().getHref());
         links.put("Venues", linkTo(VenuesResource.class.getMethod("getVenues"), 2L).withSelfRel().getHref());
+        links.put("Events", linkTo(EventsResource.class.getMethod("getEvents"), 2L).withSelfRel().getHref());
 
         return links;
     }

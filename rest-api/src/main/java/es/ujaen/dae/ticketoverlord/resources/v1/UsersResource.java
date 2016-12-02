@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static es.ujaen.dae.ticketoverlord.resources.v1.BaseResource.API;
+import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 
 @RestController
 @RequestMapping(API + "/users")
@@ -45,6 +45,7 @@ public class UsersResource {
         List<TicketDTO> tickets = ticketsService.listTicketsByUser(userDTO);
         List<String> links = new ArrayList<>();
         for (TicketDTO ticket : tickets) {
+            // TODO: Cambiar al link de ticket cuando este su recurso
             //links.add(ticket.getLink(Link.REL_SELF).getHref());
             links.add("Ticket " + ticket.getTicketId());
         }
