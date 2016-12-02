@@ -1,11 +1,12 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import es.ujaen.dae.ticketoverlord.models.Venue;
 import es.ujaen.dae.ticketoverlord.resources.v1.VenuesResource;
 import org.springframework.hateoas.ResourceSupport;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -14,10 +15,11 @@ public class VenueDTO extends ResourceSupport {
     private String name;
     private String city;
     private String address;
-    private Map<Character, ZoneDTO> zones;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<ZoneDTO> zones;
 
     public VenueDTO() {
-        this.zones = new HashMap<>();
+        this.zones = new ArrayList<>();
     }
 
     public VenueDTO(Venue venue) {
@@ -25,13 +27,16 @@ public class VenueDTO extends ResourceSupport {
         this.name = venue.getName();
         this.city = venue.getCity();
         this.address = venue.getAddress();
-        this.zones = new HashMap<>();
+        this.zones = new ArrayList<>();
 
         for (Character character : venue.getZones().keySet()) {
-            this.zones.put(character, new ZoneDTO(venue.getZones().get(character)));
+            this.zones.add(new ZoneDTO(venue.getZones().get(character)));
         }
         this.add(linkTo(VenuesResource.class)
                 .slash(this.getVenueId()).withSelfRel());
+        this.add(linkTo(VenuesResource.class)
+                .slash(this.getVenueId())
+                .slash("zones").withRel("zones"));
     }
 
     @Override
@@ -77,15 +82,15 @@ public class VenueDTO extends ResourceSupport {
         this.address = address;
     }
 
-    public Map<Character, ZoneDTO> getZones() {
+    public List<ZoneDTO> getZones() {
         return zones;
     }
 
-    public void setZones(Map<Character, ZoneDTO> zones) {
+    public void setZones(List<ZoneDTO> zones) {
         this.zones = zones;
     }
 
     public void addZona(ZoneDTO zone) {
-        this.zones.put(zone.getName(), zone);
+        this.zones.add(zone);
     }
 }

@@ -403,7 +403,7 @@ public class ConsoleClient {
 
         eventdto.setVenueId(venue.getVenueId());
 
-        Collection<ZoneDTO> zones = venue.getZones().values();
+        Collection<ZoneDTO> zones = venue.getZones();
 
         if (!zones.isEmpty()) {
 

@@ -8,4 +8,10 @@ public interface VenuesService {
     List<VenueDTO> getVenues();
 
     VenueDTO getVenue(Integer venueId);
+
+    VenueDTO addNewVenue(VenueDTO venueDTO);
+
+    VenueDTO modifyVenue(VenueDTO venueDTO);
+
+    void deleteVenue(VenueDTO venueDTO);
 }

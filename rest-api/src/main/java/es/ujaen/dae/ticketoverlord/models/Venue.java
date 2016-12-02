@@ -81,7 +81,7 @@ public class Venue {
         this.zones = zones;
     }
 
-    public void addZona(Zone zone) {
+    public void addZone(Zone zone) {
         zone.setVenue(this);
         this.zones.put(zone.getName(), zone);
     }
