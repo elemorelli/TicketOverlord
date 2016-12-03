@@ -1,23 +1,23 @@
 package es.ujaen.dae.ticketoverlord.client;
 
+import es.ujaen.dae.ticketoverlord.client.dtos.*;
 import es.ujaen.dae.ticketoverlord.client.utilities.RestTemplates;
-import es.ujaen.dae.ticketoverlord.dtos.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-
-import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 
 public class ConsoleClient {
     private final InputStreamReader isr = new InputStreamReader(System.in);
     private final BufferedReader br = new BufferedReader(isr);
-    private final List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
-    private final List<String> negatives = Arrays.asList("N", "NO");
+    private final static List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
+    private final static List<String> negatives = Arrays.asList("N", "NO");
+    public final static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private UserDTO authenticatedUser = null;
 
     public static void main(String[] args) {

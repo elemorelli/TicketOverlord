@@ -1,7 +1,7 @@
 package es.ujaen.dae.ticketoverlord.client;
 
+import es.ujaen.dae.ticketoverlord.client.dtos.*;
 import es.ujaen.dae.ticketoverlord.client.utilities.RestTemplates;
-import es.ujaen.dae.ticketoverlord.dtos.*;
 
 import java.math.BigDecimal;
 import java.util.List;

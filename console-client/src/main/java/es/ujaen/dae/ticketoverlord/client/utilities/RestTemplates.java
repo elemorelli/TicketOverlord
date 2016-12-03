@@ -1,9 +1,9 @@
 package es.ujaen.dae.ticketoverlord.client.utilities;
 
-import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
-import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
-import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
-import es.ujaen.dae.ticketoverlord.dtos.VenueDTO;
+import es.ujaen.dae.ticketoverlord.client.dtos.EventDTO;
+import es.ujaen.dae.ticketoverlord.client.dtos.TicketDTO;
+import es.ujaen.dae.ticketoverlord.client.dtos.UserDTO;
+import es.ujaen.dae.ticketoverlord.client.dtos.VenueDTO;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -118,7 +118,7 @@ public class RestTemplates {
 
     public static class Tickets {
         private static final String URL = BASE_URL + "tickets/";
-        private  static final String URL_ID = URL + "{ticketsId}/";
+        private static final String URL_ID = URL + "{ticketsId}/";
 
         public static void addTicket(TicketDTO ticketDTO) {
             new RestTemplate().put(URL, ticketDTO);
