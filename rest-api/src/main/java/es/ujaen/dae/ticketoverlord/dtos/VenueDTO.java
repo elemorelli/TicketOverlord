@@ -102,4 +102,12 @@ public class VenueDTO extends ResourceSupport {
     public void addZone(ZoneDTO zone) {
         this.zones.add(zone);
     }
+
+    public ZoneDTO getZone(Character zoneName) {
+        for (ZoneDTO dto : zones) {
+            if (dto.getName().equals(zoneName))
+                return dto;
+        }
+        return null;
+    }
 }

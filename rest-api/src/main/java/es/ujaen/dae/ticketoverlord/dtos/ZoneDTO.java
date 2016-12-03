@@ -1,5 +1,7 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import es.ujaen.dae.ticketoverlord.models.Zone;
 import es.ujaen.dae.ticketoverlord.resources.v1.VenuesResource;
 import org.springframework.hateoas.ResourceSupport;
@@ -27,7 +29,11 @@ public class ZoneDTO extends ResourceSupport {
         this.add(linkTo(VenuesResource.class)
                 .slash(zone.getVenue().getId())
                 .slash("zones")
-                .slash(this.getZoneId()).withSelfRel());
+                .slash(this.getName()).withSelfRel());
+
+
+        this.add(linkTo(VenuesResource.class)
+                .slash(zone.getVenue().getId()).withSelfRel());
     }
 
     @Override
@@ -39,6 +45,9 @@ public class ZoneDTO extends ResourceSupport {
                 '}';
     }
 
+
+    @JsonIgnore
+    @JsonProperty
     public Integer getZoneId() {
         return id;
     }

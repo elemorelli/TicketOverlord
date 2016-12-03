@@ -35,13 +35,19 @@ public class VenuesResource {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{venueId}/zones")
-    public List<ZoneDTO> getZones(@PathVariable Integer venueId) {
-        return venuesService.getVenue(venueId).getZones();
+    public List<String> getZones(@PathVariable Integer venueId) {
+
+        List<ZoneDTO> zones = venuesService.getVenue(venueId).getZones();
+        List<String> links = new ArrayList<>();
+        for (ZoneDTO zoneDTO : zones) {
+            links.add(zoneDTO.getLink(Link.REL_SELF).getHref());
+        }
+        return links;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{venueId}/zones/{zoneName}")
     public ZoneDTO getZone(@PathVariable Integer venueId, @PathVariable Character zoneName) {
-        return venuesService.getVenue(venueId).getZones().get(zoneName);
+        return venuesService.getVenue(venueId).getZone(zoneName);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{venueId}", consumes = "application/json")
