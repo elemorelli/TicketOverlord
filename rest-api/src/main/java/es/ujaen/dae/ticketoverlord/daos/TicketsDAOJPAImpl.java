@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -28,12 +27,7 @@ public class TicketsDAOJPAImpl implements TicketsDAO {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Ticket selectTicketByNumber(Integer ticketNumber) {
 
-        try {
-            Ticket ticket = em.find(Ticket.class, ticketNumber);
-            return ticket;
-        } catch (NoResultException e) {
-            return null;
-        }
+        return em.find(Ticket.class, ticketNumber);
     }
 
     @Override

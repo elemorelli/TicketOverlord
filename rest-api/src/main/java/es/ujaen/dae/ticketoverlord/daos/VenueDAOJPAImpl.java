@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -26,12 +25,7 @@ public class VenueDAOJPAImpl implements VenueDAO {
     @Cacheable("venuesCache")
     public Venue selectVenueById(Integer id) {
 
-        try {
-            Venue venue = em.find(Venue.class, id);
-            return venue;
-        } catch (NoResultException e) {
-            return null;
-        }
+        return em.find(Venue.class, id);
     }
 
     @Override

@@ -133,7 +133,7 @@ public class EventsServiceImpl implements EventsService {
 
             pricePerZone.setZone(zone);
             pricePerZone.setAvailableSeats(zone.getSeats());
-            event.addPricePerZones(pricePerZone);
+            event.addPricePerZone(pricePerZone);
         }
     }
 }

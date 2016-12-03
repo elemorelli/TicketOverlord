@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,12 +22,8 @@ public class EventsDAOJPAImpl implements EventsDAO {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Event selectEventById(Integer eventId) {
-        try {
-            Event event = em.find(Event.class, eventId);
-            return event;
-        } catch (NoResultException e) {
-            return null;
-        }
+
+        return em.find(Event.class, eventId);
     }
 
     @Override

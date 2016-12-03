@@ -94,7 +94,7 @@ public class Event {
         this.pricePerZones = pricePerZones;
     }
 
-    public void addPricePerZones(PricePerZone pricePerZone) {
+    public void addPricePerZone(PricePerZone pricePerZone) {
         pricePerZone.setEvent(this);
         this.pricePerZones.put(pricePerZone.getZone().getName(), pricePerZone);
     }

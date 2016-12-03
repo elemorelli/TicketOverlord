@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -28,15 +27,10 @@ public class UsersDAOJPAImpl implements UsersDAO {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public User selectUserByName(String username) {
-        try {
-            User user = em.createQuery("SELECT u FROM User u " +
-                    "WHERE UPPER(u.name) = UPPER(:username)", User.class)
-                    .setParameter("username", username)
-                    .getSingleResult();
-            return user;
-        } catch (NoResultException e) {
-            return null;
-        }
+        return em.createQuery("SELECT u FROM User u " +
+                "WHERE UPPER(u.name) = UPPER(:username)", User.class)
+                .setParameter("username", username)
+                .getSingleResult();
     }
 
     @Override
