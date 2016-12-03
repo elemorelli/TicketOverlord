@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
@@ -19,7 +20,6 @@ public class EventDTO extends ResourceSupport {
     private String type;
     private String date;
     private Integer venueId;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<PricePerZoneDTO> pricesPerZone;
 
     public EventDTO() {
@@ -106,6 +106,8 @@ public class EventDTO extends ResourceSupport {
         this.venueId = venueId;
     }
 
+    @JsonIgnore
+    @JsonProperty
     public List<PricePerZoneDTO> getPricesPerZone() {
         return pricesPerZone;
     }

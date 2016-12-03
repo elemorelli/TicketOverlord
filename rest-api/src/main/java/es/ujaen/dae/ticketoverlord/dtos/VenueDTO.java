@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.ujaen.dae.ticketoverlord.models.Venue;
 import es.ujaen.dae.ticketoverlord.resources.v1.VenuesResource;
@@ -15,7 +16,6 @@ public class VenueDTO extends ResourceSupport {
     private String name;
     private String city;
     private String address;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ZoneDTO> zones;
 
     public VenueDTO() {
@@ -89,6 +89,8 @@ public class VenueDTO extends ResourceSupport {
         this.address = address;
     }
 
+    @JsonIgnore
+    @JsonProperty
     public List<ZoneDTO> getZones() {
         return zones;
     }

@@ -1,6 +1,7 @@
 package es.ujaen.dae.ticketoverlord.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.resources.v1.EventsResource;
 import org.springframework.hateoas.Link;
@@ -10,7 +11,6 @@ import java.math.BigDecimal;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-@JsonIgnoreProperties({"pricePerZoneId"})
 public class PricePerZoneDTO extends ResourceSupport {
     private Integer pricePerZoneId;
     private Character zoneName;
@@ -50,6 +50,8 @@ public class PricePerZoneDTO extends ResourceSupport {
                 '}';
     }
 
+    @JsonIgnore
+    @JsonProperty
     public Integer getPricePerZoneId() {
         return pricePerZoneId;
     }
