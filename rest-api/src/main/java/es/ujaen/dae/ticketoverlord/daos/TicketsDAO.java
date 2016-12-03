@@ -5,7 +5,7 @@ import es.ujaen.dae.ticketoverlord.models.Ticket;
 import java.util.List;
 
 public interface TicketsDAO {
-    Ticket selectTicketByNumber(Integer ticketNumber);
+    Ticket selectTicketById(Integer ticketNumber);
 
     List<Ticket> selectAllTickets();
 
@@ -15,5 +15,5 @@ public interface TicketsDAO {
 
     void updateTicket(Ticket ticket);
 
-    void delete(Ticket ticket);
+    void deleteTicket(Ticket ticket);
 }

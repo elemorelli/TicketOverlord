@@ -29,9 +29,9 @@ public class UserDTO extends ResourceSupport {
         this.name = user.getName();
         this.uuidToken = user.getUuidToken();
         this.add(linkTo(UsersResource.class)
-                .slash(this.getUserId()).withSelfRel());
+                .slash(this.getName()).withSelfRel());
         this.add(linkTo(UsersResource.class)
-                .slash(this.getUserId())
+                .slash(this.getName())
                 .slash("tickets").withRel("tickets"));
     }
 

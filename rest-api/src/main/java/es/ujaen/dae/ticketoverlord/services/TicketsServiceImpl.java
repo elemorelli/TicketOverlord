@@ -4,12 +4,11 @@ import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.TicketsDAO;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
-import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
-import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
 import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
-import es.ujaen.dae.ticketoverlord.exceptions.NoTicketsAvailableException;
 import es.ujaen.dae.ticketoverlord.exceptions.TicketTransactionException;
+import es.ujaen.dae.ticketoverlord.exceptions.services.tickets.NoTicketFoundException;
+import es.ujaen.dae.ticketoverlord.exceptions.services.tickets.NoTicketsAvailableException;
 import es.ujaen.dae.ticketoverlord.models.Event;
 import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Ticket;
@@ -33,17 +32,50 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @LoggedUserOperation
-    @Transactional // TODO: Esta bien marcar como @Transactional al metodo de un servicio?
-    public void buyTicket(UserDTO userDTO, EventDTO eventDTO, PricePerZoneDTO priceDTO, Integer ticketsToBuy) throws NoTicketsAvailableException, TicketTransactionException {
+    @Transactional(readOnly = true)
+    public List<TicketDTO> getTickets(UserDTO userDTO) {
+
+        List<TicketDTO> tickets = new ArrayList<>();
+        for (Ticket ticket : ticketsDAO.selectAllTickets()) {
+            tickets.add(new TicketDTO(ticket));
+        }
+        return tickets;
+    }
+
+    @Override
+    @LoggedUserOperation
+    @Transactional(readOnly = true)
+    public List<TicketDTO> getTicketsByUser(UserDTO user) {
+
+        List<TicketDTO> tickets = new ArrayList<>();
+        for (Ticket ticket : usersDAO.selectUserById(user.getUserId()).getTickets()) {
+            tickets.add(new TicketDTO(ticket));
+        }
+        return tickets;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TicketDTO getTicket(TicketDTO ticket) {
+
+        return new TicketDTO(ticketsDAO.selectTicketById(ticket.getTicketId()));
+    }
+
+    @Override
+    @LoggedUserOperation
+    @Transactional(rollbackFor = {TicketTransactionException.class})
+    public TicketDTO buyTicket(UserDTO userDTO, TicketDTO ticketDTO) throws NoTicketsAvailableException, TicketTransactionException {
 
         try {
             Ticket ticket = new Ticket();
 
-            Event event = eventsDAO.selectEventById(eventDTO.getEventId());
+            Event event = eventsDAO.selectEventById(ticketDTO.getEventId());
             ticket.setEvent(event);
+
+            Integer ticketsToBuy = ticketDTO.getQuantity();
             ticket.setQuantity(ticketsToBuy);
 
-            PricePerZone pricePerZone = event.getPricePerZones().get(priceDTO.getZoneName());
+            PricePerZone pricePerZone = event.getPricePerZones().get(ticketDTO.getZoneName());
 
             ticket.setZone(pricePerZone.getZone());
             ticket.setPrice(pricePerZone.getPrice());
@@ -55,30 +87,42 @@ public class TicketsServiceImpl implements TicketsService {
                 throw new NoTicketsAvailableException();
             }
 
-            User user = usersDAO.selectUserById(userDTO.getUserId());
+            User user = usersDAO.selectUserById(ticketDTO.getUserId());
             user.addTicket(ticket);
             ticket.setUser(user);
 
             ticketsDAO.insertTicket(ticket);
             usersDAO.updateUser(user);
             eventsDAO.updateEvent(event);
+
+            return new TicketDTO(ticket);
         } catch (OptimisticLockingFailureException e) {
-            throw new TicketTransactionException(e);
-        } catch (RuntimeException e) {
             throw new TicketTransactionException(e);
         }
     }
 
     @Override
-    @LoggedUserOperation
-    @Transactional(readOnly = true) // TODO: Esta bien marcar como @Transactional al metodo de un servicio?
-    public List<TicketDTO> listTicketsByUser(UserDTO user) {
+    public TicketDTO modifyTicket(TicketDTO ticketDTO) {
 
-        List<TicketDTO> ticketDTOs = new ArrayList<>();
-//        for (Ticket ticket : ticketsDAO.selectTicketsByUser(user.getEventId())) {
-        for (Ticket ticket : usersDAO.selectUserById(user.getUserId()).getTickets()) {
-            ticketDTOs.add(new TicketDTO(ticket));
+        Ticket ticket = ticketsDAO.selectTicketById(ticketDTO.getTicketId());
+        if (ticket != null) {
+//            ticket.setName(ticketDTO.getName());
+//            ticket.setPassword(ticketDTO.getPassword());
+            ticketsDAO.updateTicket(ticket);
+            return new TicketDTO(ticket);
+        } else {
+            throw new NoTicketFoundException();
         }
-        return ticketDTOs;
+    }
+
+    @Override
+    public void deleteTicket(TicketDTO ticketDTO) {
+
+        Ticket ticket = ticketsDAO.selectTicketById(ticketDTO.getTicketId());
+        if (ticket != null) {
+            ticketsDAO.deleteTicket(ticket);
+        } else {
+            throw new NoTicketFoundException();
+        }
     }
 }

@@ -25,7 +25,7 @@ public class TicketsDAOJPAImpl implements TicketsDAO {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Ticket selectTicketByNumber(Integer ticketNumber) {
+    public Ticket selectTicketById(Integer ticketNumber) {
 
         return em.find(Ticket.class, ticketNumber);
     }
@@ -74,7 +74,7 @@ public class TicketsDAOJPAImpl implements TicketsDAO {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     @CacheEvict(value = "ticketsCache", key = "#ticket.getUser().getId()")
-    public void delete(Ticket ticket) {
+    public void deleteTicket(Ticket ticket) {
         try {
             em.remove(em.find(Ticket.class, ticket.getId()));
             em.flush();

@@ -50,7 +50,7 @@ public class UsersResource {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(userId);
 
-        List<TicketDTO> tickets = ticketsService.listTicketsByUser(userDTO);
+        List<TicketDTO> tickets = ticketsService.getTicketsByUser(userDTO);
         List<String> links = new ArrayList<>();
         for (TicketDTO ticket : tickets) {
             // TODO: Cambiar al link de ticket cuando este su recurso
