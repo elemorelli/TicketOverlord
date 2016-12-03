@@ -26,6 +26,14 @@ public class EventDTO extends ResourceSupport {
         this.pricesPerZone = new ArrayList<>();
     }
 
+    public EventDTO(String name, String type, String date, Integer venueId) {
+        this.name = name;
+        this.type = type;
+        this.date = date;
+        this.venueId = venueId;
+        this.pricesPerZone = new ArrayList<>();
+    }
+
     public EventDTO(Event event) {
         this.eventId = event.getEventId();
         this.name = event.getName();

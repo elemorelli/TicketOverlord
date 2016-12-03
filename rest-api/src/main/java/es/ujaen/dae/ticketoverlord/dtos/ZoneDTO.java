@@ -14,6 +14,11 @@ public class ZoneDTO extends ResourceSupport {
     public ZoneDTO() {
     }
 
+    public ZoneDTO(Character name, Integer seats) {
+        this.name = name;
+        this.seats = seats;
+    }
+
     public ZoneDTO(Zone zone) {
         this.id = zone.getId();
         this.name = zone.getName();

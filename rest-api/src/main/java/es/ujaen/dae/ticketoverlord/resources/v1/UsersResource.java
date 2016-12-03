@@ -4,6 +4,7 @@ import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,16 @@ public class UsersResource {
         return links;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
-    public UserDTO getUserData(@PathVariable Integer userId) {
-        return usersService.getUser(userId);
+    @RequestMapping(method = RequestMethod.GET, value = "/{userTag}")
+    public UserDTO getUserData(@PathVariable String userTag) {
+
+        if (StringUtils.isNumericSpace(userTag)) {
+            return usersService.getUser(Integer.parseInt(userTag));
+        } else {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setName(userTag);
+            return usersService.getUser(userDTO);
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{userId}/tickets")
@@ -63,8 +71,9 @@ public class UsersResource {
         return usersService.addNewUser(userDTO);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}", consumes = "application/json")
-    public void deleteUser(@PathVariable Integer userId, @RequestBody UserDTO userDTO) {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
+    public void deleteUser(@PathVariable Integer userId) {
+        UserDTO userDTO = new UserDTO();
         userDTO.setUserId(userId);
         usersService.deleteUser(userDTO);
     }

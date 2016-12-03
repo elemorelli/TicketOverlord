@@ -1,11 +1,7 @@
 package es.ujaen.dae.ticketoverlord.client;
 
-import es.ujaen.dae.ticketoverlord.configurations.AppConfiguration;
+import es.ujaen.dae.ticketoverlord.client.utilities.RestTemplates;
 import es.ujaen.dae.ticketoverlord.dtos.*;
-import es.ujaen.dae.ticketoverlord.exceptions.NoTicketsAvailableException;
-import es.ujaen.dae.ticketoverlord.exceptions.TicketTransactionException;
-import es.ujaen.dae.ticketoverlord.services.*;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,25 +19,9 @@ public class ConsoleClient {
     private final List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
     private final List<String> negatives = Arrays.asList("N", "NO");
     private UserDTO authenticatedUser = null;
-    private EventsService eventsService;
-    private TicketsService ticketsService;
-    private UsersService usersService;
-    private SessionService sessionService;
-    private VenuesService venuesService;
 
     public static void main(String[] args) {
-
-        AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
-        appContext.registerShutdownHook();
-
-        ConsoleClient client = new ConsoleClient();
-        client.eventsService = (EventsService) appContext.getBean("EventsService");
-        client.ticketsService = (TicketsService) appContext.getBean("TicketsService");
-        client.usersService = (UsersService) appContext.getBean("UsersService");
-        client.sessionService = (SessionService) appContext.getBean("SessionService");
-        client.venuesService = (VenuesService) appContext.getBean("VenuesService");
-
-        client.mainLoop();
+        new ConsoleClient().mainLoop();
     }
 
     private void mainLoop() {
@@ -135,12 +115,13 @@ public class ConsoleClient {
 
         System.out.println("Ingrese el nombre del evento:");
         String eventName = readText();
-        List<EventDTO> events = eventsService.findEventsByName(eventName);
-        if (!events.isEmpty()) {
-            printEventList(events);
-        } else {
-            System.out.println("No se han encontrado eventos con ese nombre");
-        }
+        // TODO
+        //List<EventDTO> events = eventsService.findEventsByName(eventName);
+        //if (!events.isEmpty()) {
+        //printEventList(events);
+        //} else {
+        //System.out.println("No se han encontrado eventos con ese nombre");
+        //}
     }
 
     private void findEventsByNameAndCity() {
@@ -149,12 +130,13 @@ public class ConsoleClient {
         String eventName = readText();
         System.out.println("Ingrese la localidad");
         String eventCity = readText();
-        List<EventDTO> events = eventsService.findEventsByNameAndCity(eventName, eventCity);
-        if (!events.isEmpty()) {
-            printEventList(events);
-        } else {
-            System.out.println("No se han encontrado eventos con ese nombre en esa localidad");
-        }
+        // TODO
+        //List<EventDTO> events = eventsService.findEventsByNameAndCity(eventName, eventCity);
+        //if (!events.isEmpty()) {
+        //printEventList(events);
+        //} else {
+        //System.out.println("No se han encontrado eventos con ese nombre en esa localidad");
+        //}
     }
 
     private void findEventsByDateAndType() {
@@ -163,12 +145,13 @@ public class ConsoleClient {
         LocalDate eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
         String eventType = readText();
-        List<EventDTO> events = eventsService.findEventsByDateAndType(eventDate, eventType);
-        if (!events.isEmpty()) {
-            printEventList(events);
-        } else {
-            System.out.println("No se han encontrado eventos de ese tipo en esa fecha");
-        }
+        // TODO
+        //List<EventDTO> events = eventsService.findEventsByDateAndType(eventDate, eventType);
+        //if (!events.isEmpty()) {
+        //printEventList(events);
+        //} else {
+        //System.out.println("No se han encontrado eventos de ese tipo en esa fecha");
+        //}
     }
 
     private void findEventsByDateTypeAndCity() {
@@ -179,12 +162,13 @@ public class ConsoleClient {
         String eventType = readText();
         System.out.println("Ingrese la localidad");
         String eventCity = readText();
-        List<EventDTO> events = eventsService.findEventsByDateTypeAndCity(eventDate, eventType, eventCity);
-        if (!events.isEmpty()) {
-            printEventList(events);
-        } else {
-            System.out.println("No se han encontrado eventos de ese tipo en esa fecha y en esa localidad");
-        }
+        // TODO
+        //List<EventDTO> events = eventsService.findEventsByDateTypeAndCity(eventDate, eventType, eventCity);
+        //if (!events.isEmpty()) {
+        //printEventList(events);
+        //} else {
+        //System.out.println("No se han encontrado eventos de ese tipo en esa fecha y en esa localidad");
+        //}
     }
 
     private void printEventList(List<EventDTO> events) {
@@ -193,7 +177,7 @@ public class ConsoleClient {
         int eventNumber = 0;
         for (EventDTO event : events) {
 
-            VenueDTO venue = venuesService.getVenue(event.getEventId());
+            VenueDTO venue = RestTemplates.Venues.getVenue(event.getEventId());
 
             System.out.println();
             System.out.println("  EVENTO " + ++eventNumber + ": \"" + event.getName() + "\"");
@@ -283,7 +267,7 @@ public class ConsoleClient {
                     ticketsToBuy = readNumber();
                 } while (ticketsToBuy <= 0 || ticketsToBuy > priceToCharge.getAvailableSeats());
 
-                VenueDTO venue = venuesService.getVenue(event.getEventId());
+                VenueDTO venue = RestTemplates.Venues.getVenue(event.getEventId());
 
                 System.out.println();
                 System.out.println("-----------------------------------");
@@ -304,14 +288,15 @@ public class ConsoleClient {
                 } while (!affirmatives.contains(input) && !negatives.contains(input));
 
                 if (affirmatives.contains(input)) {
-                    try {
-                        ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
-                        System.out.println("La operación se ha completado satisfactoriamente");
-                    } catch (NoTicketsAvailableException e) {
-                        System.err.println("Operación cancelada: No hay tickets disponibles");
-                    } catch (TicketTransactionException e) {
-                        System.err.println("Operación cancelada: Error procesando transacción");
-                    }
+                    //try {
+                    // TODO
+                    //ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
+                    //System.out.println("La operación se ha completado satisfactoriamente");
+                    //} catch (NoTicketsAvailableException e) {
+                    //System.err.println("Operación cancelada: No hay tickets disponibles");
+                    //} catch (TicketTransactionException e) {
+                    //System.err.println("Operación cancelada: Error procesando transacción");
+                    //}
                 } else {
                     System.err.println("Operación cancelada");
                 }
@@ -324,7 +309,10 @@ public class ConsoleClient {
     }
 
     private void listTickets() {
-        List<TicketDTO> tickets = ticketsService.listTicketsByUser(authenticatedUser);
+
+        // TODO
+        //List<TicketDTO> tickets = ticketsService.listTicketsByUser(authenticatedUser);
+        List<TicketDTO> tickets = new ArrayList<>();
 
         if (!tickets.isEmpty()) {
             System.out.println();
@@ -333,7 +321,7 @@ public class ConsoleClient {
             for (TicketDTO ticket : tickets) {
 
                 EventDTO event = ticket.getEvent();
-                VenueDTO venue = venuesService.getVenue(event.getEventId());
+                VenueDTO venue = RestTemplates.Venues.getVenue(event.getEventId());
 
                 System.out.println("Evento: " + event.getName());
                 System.out.println("    Fecha: " + event.getDate());
@@ -374,18 +362,18 @@ public class ConsoleClient {
 
     private void addNewEvent() {
 
-        EventDTO eventdto = new EventDTO();
+        EventDTO eventDTO = new EventDTO();
 
         System.out.println("Ingrese el nombre del evento:");
-        eventdto.setName(readText());
+        eventDTO.setName(readText());
 
         System.out.println("Ingrese el tipo de evento:");
-        eventdto.setType(readText()); // TODO: Posible Enum y mostrarlo como lista?
+        eventDTO.setType(readText()); // TODO: Posible Enum y mostrarlo como lista?
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        eventdto.setDate(readDate().format(DATE_FORMAT));
+        eventDTO.setDate(readDate().format(DATE_FORMAT));
 
-        List<VenueDTO> venues = venuesService.getVenues();
+        List<VenueDTO> venues = RestTemplates.Venues.getAllVenues();
 
         Integer venueNumber = 0;
         for (VenueDTO venue : venues) {
@@ -401,7 +389,7 @@ public class ConsoleClient {
 
         VenueDTO venue = venues.get(venueNumber - 1);
 
-        eventdto.setVenueId(venue.getVenueId());
+        eventDTO.setVenueId(venue.getVenueId());
 
         Collection<ZoneDTO> zones = venue.getZones();
 
@@ -419,28 +407,28 @@ public class ConsoleClient {
                 PricePerZoneDTO pricePerZone = new PricePerZoneDTO();
                 pricePerZone.setZoneName(zone.getName());
                 pricePerZone.setPrice(price);
-                eventdto.addPricePerZone(pricePerZone);
+                eventDTO.addPricePerZone(pricePerZone);
             }
         } else {
             System.out.println("El recinto no tiene zonas");
         }
 
-        eventsService.addNewEvent(authenticatedUser, eventdto);
-        System.out.println("El evento '" + eventdto.getName() + "' ha sido creado correctamente");
+        RestTemplates.Events.addEvent(eventDTO);
+        System.out.println("El evento '" + eventDTO.getName() + "' ha sido creado correctamente");
     }
 
     private void registerUser() {
 
-        UserDTO userDTO = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
         String userName = readText();
-        userDTO.setName(userName);
 
-        if (!usersService.userExists(userDTO)) {
+        UserDTO userDTO = RestTemplates.Users.getUser(userName);
+
+        if (userDTO != null) {
             System.out.println("Introduzca la contraseña");
             String password = readText();
             userDTO.setPassword(password);
-            usersService.addNewUser(userDTO);
+            RestTemplates.Users.addUser(userDTO);
             System.out.println("El usuario " + userName + " ha sido registrado");
         } else {
             System.out.println("Nombre de usuario no disponible");
@@ -449,20 +437,20 @@ public class ConsoleClient {
 
     private void authenticateUser() {
 
-        UserDTO user = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
         String userName = readText();
-        user.setName(userName);
 
-        if (usersService.userExists(user)) {
+        UserDTO userDTO = RestTemplates.Users.getUser(userName);
+
+        if (userDTO != null) {
             System.out.println("Introduzca la contraseña");
             String password = readText();
-            user.setPassword(password);
+            userDTO.setPassword(password);
 
             try {
-                sessionService.authenticateUser(user);
+                RestTemplates.Session.login(userDTO);
                 System.out.println("Autenticación correcta");
-                authenticatedUser = usersService.getUser(user);
+                authenticatedUser = RestTemplates.Users.getUser(userName);
             } catch (RuntimeException e) {
                 System.err.println("Password incorrecto");
                 authenticatedUser = null;
@@ -475,7 +463,7 @@ public class ConsoleClient {
 
     private void logout() {
 
-        sessionService.logoutUser(authenticatedUser);
+        RestTemplates.Session.logout(authenticatedUser);
         authenticatedUser = null;
         System.out.println("Se ha deslogueado correctamente");
     }

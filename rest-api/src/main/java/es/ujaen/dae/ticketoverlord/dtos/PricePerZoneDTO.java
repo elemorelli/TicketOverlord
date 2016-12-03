@@ -20,10 +20,16 @@ public class PricePerZoneDTO extends ResourceSupport {
     public PricePerZoneDTO() {
     }
 
+    public PricePerZoneDTO(Character zoneName, BigDecimal price, Integer availableSeats) {
+        this.zoneName = zoneName;
+        this.price = price;
+        this.availableSeats = availableSeats;
+    }
+
     public PricePerZoneDTO(PricePerZone price) {
         this.pricePerZoneId = price.getId();
-        this.price = price.getPrice();
         this.zoneName = price.getZone().getName();
+        this.price = price.getPrice();
         this.availableSeats = price.getAvailableSeats();
 
         this.add(linkTo(EventsResource.class)

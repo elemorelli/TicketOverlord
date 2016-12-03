@@ -22,6 +22,13 @@ public class VenueDTO extends ResourceSupport {
         this.zones = new ArrayList<>();
     }
 
+    public VenueDTO(String name, String city, String address) {
+        this.name = name;
+        this.city = city;
+        this.address = address;
+        this.zones = new ArrayList<>();
+    }
+
     public VenueDTO(Venue venue) {
         this.venueId = venue.getId();
         this.name = venue.getName();
@@ -90,7 +97,7 @@ public class VenueDTO extends ResourceSupport {
         this.zones = zones;
     }
 
-    public void addZona(ZoneDTO zone) {
+    public void addZone(ZoneDTO zone) {
         this.zones.add(zone);
     }
 }

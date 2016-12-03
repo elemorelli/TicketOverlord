@@ -61,32 +61,9 @@ public class EventsResource {
         return eventsService.modifyEvent(eventDTO);
     }
 
-    // TODO: Remover cuando el metodo de abajo solo tenga un parametro @RequestBody
-    public static class EventUserWrapper {
-        private UserDTO user;
-        private EventDTO event;
-
-        public EventDTO getEvent() {
-            return event;
-        }
-
-        public void setEvent(EventDTO event) {
-            this.event = event;
-        }
-
-        public UserDTO getUser() {
-            return user;
-        }
-
-        public void setUser(UserDTO user) {
-            this.user = user;
-        }
-    }
-
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-    public EventDTO addEvent(@RequestBody EventUserWrapper eventUserWrapper) {
-        // TODO: Reemplazar el uso de UserDTO para autenticacion cuando tengamos Spring Security
-        return eventsService.addNewEvent(eventUserWrapper.getUser(), eventUserWrapper.getEvent());
+    public EventDTO addEvent(@RequestBody EventDTO eventDTO) {
+        return eventsService.addNewEvent(new UserDTO(), eventDTO);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}")

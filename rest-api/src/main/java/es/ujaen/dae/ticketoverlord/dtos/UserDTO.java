@@ -18,6 +18,12 @@ public class UserDTO extends ResourceSupport {
     public UserDTO() {
     }
 
+    public UserDTO(String uuidToken, String name, String password) {
+        this.uuidToken = uuidToken;
+        this.name = name;
+        this.password = password;
+    }
+
     public UserDTO(User user) {
         this.userId = user.getId();
         this.name = user.getName();
