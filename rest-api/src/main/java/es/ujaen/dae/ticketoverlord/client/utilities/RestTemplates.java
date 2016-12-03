@@ -117,8 +117,8 @@ public class RestTemplates {
     }
 
     public static class Tickets {
-        public static final String URL = BASE_URL + "tickets/";
-        public static final String URL_ID = URL + "{ticketsId}/";
+        private static final String URL = BASE_URL + "tickets/";
+        private  static final String URL_ID = URL + "{ticketsId}/";
 
         public static void addTicket(TicketDTO ticketDTO) {
             new RestTemplate().put(URL, ticketDTO);

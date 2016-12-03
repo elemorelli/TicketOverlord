@@ -80,9 +80,9 @@ public class TestDataCreator {
     private void insertVenues() {
 
         VenueDTO ferial = new VenueDTO("IFEJA, Ferias Jaén", "Jaén, Jaén", "Prolongación Carretera Granada S/N");
-        ferial.addZone(new ZoneDTO('A', 100));
-        ferial.addZone(new ZoneDTO('B', 200));
-        ferial.addZone(new ZoneDTO('C', 300));
+        ferial.addZone(new ZoneDTO('A', 50));
+        ferial.addZone(new ZoneDTO('B', 60));
+        ferial.addZone(new ZoneDTO('C', 70));
 
         VenueDTO plazaToros = new VenueDTO("Plaza de Toros de Jaén", "Jaén, Jaén", "Alameda de Capuchinos S/N");
         plazaToros.addZone(new ZoneDTO('A', 100));
@@ -94,9 +94,9 @@ public class TestDataCreator {
         centroJubilados.addZone(new ZoneDTO('A', 10));
 
         VenueDTO glorieta = new VenueDTO("Teatro La Glorieta", "Baeza, Jaén", "Calle del Artista 12");
-        glorieta.addZone(new ZoneDTO('A', 100));
-        glorieta.addZone(new ZoneDTO('B', 50));
-        glorieta.addZone(new ZoneDTO('C', 20));
+        glorieta.addZone(new ZoneDTO('A', 85));
+        glorieta.addZone(new ZoneDTO('B', 55));
+        glorieta.addZone(new ZoneDTO('C', 35));
 
         VenueDTO instituto = new VenueDTO("Teatro del instituto", "Jaén, Jaén", "Calle del Estudiante 10");
 
@@ -127,6 +127,9 @@ public class TestDataCreator {
         feriaSanLucas.addPricePerZone(new PricePerZoneDTO('C', new BigDecimal(5), 20));
 
         EventDTO nochesAndaluces = new EventDTO("Noches andaluces", "Concierto", "20/10/2016", ferialId);
+        nochesAndaluces.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(40), 10));
+        nochesAndaluces.addPricePerZone(new PricePerZoneDTO('B', new BigDecimal(20), 25));
+        nochesAndaluces.addPricePerZone(new PricePerZoneDTO('C', new BigDecimal(10), 35));
 
         EventDTO bandoneon = new EventDTO("Al ritmo del bandoneón", "Concierto", "20/11/2016", centroJubiladosId);
         bandoneon.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(20), 10));
