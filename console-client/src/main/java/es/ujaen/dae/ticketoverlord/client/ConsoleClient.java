@@ -17,7 +17,7 @@ public class ConsoleClient {
     private final BufferedReader br = new BufferedReader(isr);
     private final static List<String> affirmatives = Arrays.asList("S", "SI", "SÍ", "Y", "YES");
     private final static List<String> negatives = Arrays.asList("N", "NO");
-    public final static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private UserDTO authenticatedUser = null;
 
     public static void main(String[] args) {
@@ -117,11 +117,12 @@ public class ConsoleClient {
         String eventName = readText();
         // TODO
         //List<EventDTO> events = eventsService.findEventsByName(eventName);
-        //if (!events.isEmpty()) {
-        //printEventList(events);
-        //} else {
-        //System.out.println("No se han encontrado eventos con ese nombre");
-        //}
+        List<EventDTO> events = new ArrayList<>();
+        if (!events.isEmpty()) {
+            printEventList(events);
+        } else {
+            System.out.println("No se han encontrado eventos con ese nombre");
+        }
     }
 
     private void findEventsByNameAndCity() {
@@ -132,11 +133,12 @@ public class ConsoleClient {
         String eventCity = readText();
         // TODO
         //List<EventDTO> events = eventsService.findEventsByNameAndCity(eventName, eventCity);
-        //if (!events.isEmpty()) {
-        //printEventList(events);
-        //} else {
-        //System.out.println("No se han encontrado eventos con ese nombre en esa localidad");
-        //}
+        List<EventDTO> events = new ArrayList<>();
+        if (!events.isEmpty()) {
+            printEventList(events);
+        } else {
+            System.out.println("No se han encontrado eventos con ese nombre en esa localidad");
+        }
     }
 
     private void findEventsByDateAndType() {
@@ -147,11 +149,12 @@ public class ConsoleClient {
         String eventType = readText();
         // TODO
         //List<EventDTO> events = eventsService.findEventsByDateAndType(eventDate, eventType);
-        //if (!events.isEmpty()) {
-        //printEventList(events);
-        //} else {
-        //System.out.println("No se han encontrado eventos de ese tipo en esa fecha");
-        //}
+        List<EventDTO> events = new ArrayList<>();
+        if (!events.isEmpty()) {
+            printEventList(events);
+        } else {
+            System.out.println("No se han encontrado eventos de ese tipo en esa fecha");
+        }
     }
 
     private void findEventsByDateTypeAndCity() {
@@ -164,11 +167,12 @@ public class ConsoleClient {
         String eventCity = readText();
         // TODO
         //List<EventDTO> events = eventsService.findEventsByDateTypeAndCity(eventDate, eventType, eventCity);
-        //if (!events.isEmpty()) {
-        //printEventList(events);
-        //} else {
-        //System.out.println("No se han encontrado eventos de ese tipo en esa fecha y en esa localidad");
-        //}
+        List<EventDTO> events = new ArrayList<>();
+        if (!events.isEmpty()) {
+            printEventList(events);
+        } else {
+            System.out.println("No se han encontrado eventos de ese tipo en esa fecha y en esa localidad");
+        }
     }
 
     private void printEventList(List<EventDTO> events) {
@@ -289,9 +293,14 @@ public class ConsoleClient {
 
                 if (affirmatives.contains(input)) {
                     //try {
-                    // TODO
-                    //ticketsService.buyTicket(authenticatedUser, event, priceToCharge, ticketsToBuy);
-                    //System.out.println("La operación se ha completado satisfactoriamente");
+                    TicketDTO ticket = new TicketDTO();
+                    ticket.setUserId(authenticatedUser.getUserId());
+                    ticket.setEventId(event.getEventId());
+                    ticket.setPrice(priceToCharge.getPrice());
+                    ticket.setQuantity(ticketsToBuy);
+
+                    RestTemplates.Tickets.addTicket(ticket);
+                    System.out.println("La operación se ha completado satisfactoriamente");
                     //} catch (NoTicketsAvailableException e) {
                     //System.err.println("Operación cancelada: No hay tickets disponibles");
                     //} catch (TicketTransactionException e) {
@@ -310,9 +319,7 @@ public class ConsoleClient {
 
     private void listTickets() {
 
-        // TODO
-        //List<TicketDTO> tickets = ticketsService.listTicketsByUser(authenticatedUser);
-        List<TicketDTO> tickets = new ArrayList<>();
+        List<TicketDTO> tickets = RestTemplates.Tickets.getAllTickets();
 
         if (!tickets.isEmpty()) {
             System.out.println();
@@ -320,13 +327,13 @@ public class ConsoleClient {
             System.out.println("-----------------------------------");
             for (TicketDTO ticket : tickets) {
 
-                EventDTO event = ticket.getEvent();
+                EventDTO event = RestTemplates.Events.getEvent(ticket.getEventId());
                 VenueDTO venue = RestTemplates.Venues.getVenue(event.getEventId());
 
                 System.out.println("Evento: " + event.getName());
                 System.out.println("    Fecha: " + event.getDate());
                 System.out.println("    Recinto: " + venue.getName());
-                System.out.println("    Zona: " + ticket.getZone().getName());
+                System.out.println("    Zona: " + ticket.getZoneName());
                 System.out.println("    Precio por ticket: " + ticket.getPrice());
                 System.out.println("    Cantidad comprada: " + ticket.getQuantity());
             }
@@ -368,7 +375,7 @@ public class ConsoleClient {
         eventDTO.setName(readText());
 
         System.out.println("Ingrese el tipo de evento:");
-        eventDTO.setType(readText()); // TODO: Posible Enum y mostrarlo como lista?
+        eventDTO.setType(readText());
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         eventDTO.setDate(readDate().format(DATE_FORMAT));
