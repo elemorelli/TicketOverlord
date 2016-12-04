@@ -4,14 +4,20 @@ import es.ujaen.dae.ticketoverlord.exceptions.dao.events.EventInsertionException
 import es.ujaen.dae.ticketoverlord.exceptions.dao.events.EventRemovalException;
 import es.ujaen.dae.ticketoverlord.exceptions.dao.events.EventUpdateException;
 import es.ujaen.dae.ticketoverlord.models.Event;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository("EventsDAO")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -36,50 +42,34 @@ public class EventsDAOJPAImpl implements EventsDAO {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Event> selectEventsByName(String eventName) {
+    public List<Event> selectEventsWithFilters(Map<String, String> filters) {
 
-        return em.createQuery("SELECT e FROM Event e " +
-                "WHERE UPPER(e.name) LIKE UPPER(:eventname)", Event.class)
-                .setParameter("eventname", "%" + eventName + "%")
-                .getResultList();
-    }
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Event> query = builder.createQuery(Event.class);
+        Root<Event> event = query.from(Event.class);
 
-    @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Event> selectEventsByNameAndCity(String eventName, String eventCity) {
+        List<Predicate> predicates = new ArrayList<>();
 
-        return em.createQuery("SELECT e FROM Event e " +
-                "WHERE UPPER(e.name) LIKE UPPER(:eventname) " +
-                "AND UPPER(e.venue.city) LIKE UPPER(:cityname)", Event.class)
-                .setParameter("eventname", "%" + eventName + "%")
-                .setParameter("cityname", "%" + eventCity + "%")
-                .getResultList();
-    }
+        String eventName = filters.get("name");
+        if (StringUtils.isNotBlank(eventName)) {
+            predicates.add(builder.like(event.get("name"), "%" + eventName + "%"));
+        }
+        String eventDate = filters.get("date");
+        if (StringUtils.isNotBlank(eventDate)) {
+            predicates.add(builder.equal(event.get("date"), eventDate));
+        }
+        String eventType = filters.get("type");
+        if (StringUtils.isNotBlank(eventType)) {
+            predicates.add(builder.equal(event.get("type"), eventType));
+        }
+        String eventCity = filters.get("city");
+        if (StringUtils.isNotBlank(eventCity)) {
+            predicates.add(builder.like(event.get("city"), "%" + eventCity + "%"));
+        }
 
-    @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Event> selectEventsByDateAndType(LocalDate eventDate, String eventType) {
+        query.select(event).where(predicates.toArray(new Predicate[]{}));
 
-        return em.createQuery("SELECT e FROM Event e " +
-                "WHERE e.date = :eventdate " +
-                "AND UPPER(e.type) LIKE UPPER(:eventtype)", Event.class)
-                .setParameter("eventdate", "%" + eventDate + "%")
-                .setParameter("eventtype", "%" + eventType + "%")
-                .getResultList();
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Event> selectEventsByDateTypeAndCity(LocalDate eventDate, String eventType, String eventCity) {
-
-        return em.createQuery("SELECT e FROM Event e " +
-                "WHERE e.date = :eventdate " +
-                "AND UPPER(e.type) LIKE UPPER(:eventtype) " +
-                "AND UPPER(e.venue.city) LIKE UPPER(:cityname)", Event.class)
-                .setParameter("eventdate", "%" + eventDate + "%")
-                .setParameter("eventtype", "%" + eventType + "%")
-                .setParameter("cityname", "%" + eventCity + "%")
-                .getResultList();
+        return em.createQuery(query).getResultList();
     }
 
     @Override

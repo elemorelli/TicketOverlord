@@ -4,13 +4,15 @@ import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.services.EventsService;
-import es.ujaen.dae.ticketoverlord.services.TicketsService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 
@@ -19,13 +21,27 @@ import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 public class EventsResource {
     @Autowired
     private EventsService eventsService;
-    @Autowired
-    private TicketsService ticketsService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<String> getEvents() {
+    public List<String> getEvents(
+            @RequestParam(value = "name", defaultValue = "") String name,
+            @RequestParam(value = "date", defaultValue = "") String date,
+            @RequestParam(value = "type", defaultValue = "") String type,
+            @RequestParam(value = "city", defaultValue = "") String city) {
 
-        List<EventDTO> events = eventsService.getEvents();
+        List<EventDTO> events;
+        if (StringUtils.isNotBlank(name) || StringUtils.isNotBlank(date)
+                || StringUtils.isNotBlank(type) || StringUtils.isNotBlank(city)) {
+            Map<String, String> filters = new HashMap<>();
+            filters.put("name", name);
+            filters.put("date", date);
+            filters.put("type", type);
+            filters.put("city", city);
+
+            events = eventsService.getEventsWithFilters(filters);
+        } else {
+            events = eventsService.getEvents();
+        }
         List<String> links = new ArrayList<>();
         for (EventDTO event : events) {
             links.add(event.getLink(Link.REL_SELF).getHref());

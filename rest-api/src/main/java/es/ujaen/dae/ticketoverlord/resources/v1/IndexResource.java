@@ -29,7 +29,7 @@ public class IndexResource {
         links.put("Logout", linkTo(IndexResource.class.getMethod("logout", UserDTO.class), 2L).withSelfRel().getHref());
         links.put("Users", linkTo(UsersResource.class.getMethod("getUsers"), 2L).withSelfRel().getHref());
         links.put("Venues", linkTo(VenuesResource.class.getMethod("getVenues"), 2L).withSelfRel().getHref());
-        links.put("Events", linkTo(EventsResource.class.getMethod("getEvents"), 2L).withSelfRel().getHref());
+        links.put("Events", linkTo(EventsResource.class.getMethod("getEvents", String.class, String.class, String.class, String.class), 2L).withSelfRel().getHref());
         links.put("Tickets", linkTo(TicketsResource.class.getMethod("getTickets"), 2L).withSelfRel().getHref());
 
         return links;

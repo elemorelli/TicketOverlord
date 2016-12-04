@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
 
@@ -40,27 +41,8 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
-    public List<EventDTO> findEventsByName(String name) {
-
-        return getDTOsFromEvents(eventsDAO.selectEventsByName(name));
-    }
-
-    @Override
-    public List<EventDTO> findEventsByNameAndCity(String name, String city) {
-
-        return getDTOsFromEvents(eventsDAO.selectEventsByNameAndCity(name, city));
-    }
-
-    @Override
-    public List<EventDTO> findEventsByDateAndType(LocalDate date, String type) {
-
-        return getDTOsFromEvents(eventsDAO.selectEventsByDateAndType(date, type));
-    }
-
-    @Override
-    public List<EventDTO> findEventsByDateTypeAndCity(LocalDate date, String type, String city) {
-
-        return getDTOsFromEvents(eventsDAO.selectEventsByDateTypeAndCity(date, type, city));
+    public List<EventDTO> getEventsWithFilters(Map<String, String> filters) {
+        return getDTOsFromEvents(eventsDAO.selectEventsWithFilters(filters));
     }
 
     @Override
