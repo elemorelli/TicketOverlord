@@ -17,9 +17,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 @RestController
 @RequestMapping(API)
 public class IndexResource {
+    final static String API = "/api/v1";
     @Autowired
     private SessionService sessionService;
-    final static String API = "/api/v1";
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public Map<String, String> getHomeLinks() throws NoSuchMethodException {
