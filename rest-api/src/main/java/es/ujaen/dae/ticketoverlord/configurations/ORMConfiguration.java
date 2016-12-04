@@ -26,7 +26,7 @@ public class ORMConfiguration {
     public DriverManagerDataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:tcp://localhost/~/test;DB_CLOSE_ON_EXIT=TRUE;FILE_LOCK=NO");
+        dataSource.setUrl("jdbc:h2:tcp://localhost/~/test;DB_CLOSE_ON_EXIT=TRUE;FILE_LOCK=NO;IGNORECASE=TRUE");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
         return dataSource;
