@@ -36,7 +36,7 @@ public class UsersResource {
     @RequestMapping(method = RequestMethod.GET, value = "/{userTag}")
     public UserDTO getUserData(@PathVariable String userTag) {
 
-        if (StringUtils.isNumericSpace(userTag)) {
+        if (StringUtils.isNumeric(userTag)) {
             return usersService.getUser(Integer.parseInt(userTag));
         } else {
             UserDTO userDTO = new UserDTO();
@@ -45,17 +45,21 @@ public class UsersResource {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{userId}/tickets")
-    public List<String> getUserTickets(@PathVariable Integer userId) {
+    @RequestMapping(method = RequestMethod.GET, value = "/{userTag}/tickets")
+    public List<String> getUserTickets(@PathVariable String userTag) {
+
         UserDTO userDTO = new UserDTO();
-        userDTO.setUserId(userId);
+        if (StringUtils.isNumeric(userTag)) {
+            userDTO.setUserId(Integer.parseInt(userTag));
+        } else {
+            userDTO.setName(userTag);
+            userDTO = usersService.getUser(userDTO);
+        }
 
         List<TicketDTO> tickets = ticketsService.getTicketsByUser(userDTO);
         List<String> links = new ArrayList<>();
         for (TicketDTO ticket : tickets) {
-            // TODO: Cambiar al link de ticket cuando este su recurso
-            //links.add(ticket.getLink(Link.REL_SELF).getHref());
-            links.add("Ticket " + ticket.getTicketId());
+            links.add(ticket.getLink(Link.REL_SELF).getHref());
         }
         return links;
     }

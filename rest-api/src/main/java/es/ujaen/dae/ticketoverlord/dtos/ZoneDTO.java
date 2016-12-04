@@ -31,7 +31,6 @@ public class ZoneDTO extends ResourceSupport {
                 .slash("zones")
                 .slash(this.getName()).withSelfRel());
 
-
         this.add(linkTo(VenuesResource.class)
                 .slash(zone.getVenue().getId()).withSelfRel());
     }
@@ -44,7 +43,6 @@ public class ZoneDTO extends ResourceSupport {
                 ", seats=" + seats +
                 '}';
     }
-
 
     @JsonIgnore
     @JsonProperty

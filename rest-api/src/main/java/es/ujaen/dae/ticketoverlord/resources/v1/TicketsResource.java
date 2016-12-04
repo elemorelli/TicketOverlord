@@ -31,9 +31,7 @@ public class TicketsResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{ticketId}")
     public TicketDTO getTicket(@PathVariable Integer ticketId) {
-        TicketDTO ticketDTO = new TicketDTO();
-        ticketDTO.setTicketId(ticketId);
-        return ticketsService.getTicket(ticketDTO);
+        return ticketsService.getTicket(ticketId);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{ticketId}", consumes = "application/json")

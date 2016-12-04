@@ -12,7 +12,7 @@ public interface TicketsService {
 
     List<TicketDTO> getTicketsByUser(UserDTO user);
 
-    TicketDTO getTicket(TicketDTO ticket);
+    TicketDTO getTicket(Integer ticketId);
 
     TicketDTO buyTicket(UserDTO userDTO, TicketDTO ticketDTO) throws NoTicketsAvailableException, TicketTransactionException;
 

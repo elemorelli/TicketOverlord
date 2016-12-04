@@ -56,9 +56,14 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @Transactional(readOnly = true)
-    public TicketDTO getTicket(TicketDTO ticket) {
+    public TicketDTO getTicket(Integer ticketId) {
 
-        return new TicketDTO(ticketsDAO.selectTicketById(ticket.getTicketId()));
+        Ticket ticket = ticketsDAO.selectTicketById(ticketId);
+        if (ticket != null) {
+            return new TicketDTO(ticket);
+        } else {
+            throw new NoTicketFoundException();
+        }
     }
 
     @Override
@@ -106,8 +111,19 @@ public class TicketsServiceImpl implements TicketsService {
 
         Ticket ticket = ticketsDAO.selectTicketById(ticketDTO.getTicketId());
         if (ticket != null) {
-//            ticket.setName(ticketDTO.getName());
-//            ticket.setPassword(ticketDTO.getPassword());
+
+            User user = usersDAO.selectUserById(ticketDTO.getUserId());
+            ticket.setUser(user);
+
+            Event event = eventsDAO.selectEventById(ticketDTO.getEventId());
+            ticket.setEvent(event);
+            ticket.setZone(event.getVenue().getZones().get(ticketDTO.getZoneName()));
+
+            // TODO: Rollback de la transaccion anterior, restableciendo la cantidad de tickets disponibles
+
+            ticket.setPrice(ticketDTO.getPrice());
+            ticket.setQuantity(ticketDTO.getQuantity());
+
             ticketsDAO.updateTicket(ticket);
             return new TicketDTO(ticket);
         } else {
@@ -119,6 +135,9 @@ public class TicketsServiceImpl implements TicketsService {
     public void deleteTicket(TicketDTO ticketDTO) {
 
         Ticket ticket = ticketsDAO.selectTicketById(ticketDTO.getTicketId());
+
+        // TODO: Rollback de la transaccion anterior, restableciendo la cantidad de tickets disponibles
+
         if (ticket != null) {
             ticketsDAO.deleteTicket(ticket);
         } else {
