@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RestTemplates {
     private final static String BASE_URL = "http://localhost:8080/ticketoverlord/api/v1/";
@@ -53,16 +54,22 @@ public class RestTemplates {
     }
 
     public static class Events {
-        private static final String URL = BASE_URL + "events/";
+        private static final String URL = BASE_URL + "events/?";
         private static final String URL_ID = URL + "{eventsId}/";
 
         public static void addEvent(EventDTO eventDTO) {
             new RestTemplate().put(URL, eventDTO);
         }
 
-        public static List<EventDTO> getAllEvents() {
+        public static List<EventDTO> getAllEvents(Map<String, String> filters) {
+
+            String queryURL = URL;
+            for (Map.Entry<String, String> entry : filters.entrySet()) {
+                queryURL += entry.getKey() + "=" + entry.getValue() + "&";
+            }
+
             List<EventDTO> events = new ArrayList<>();
-            ArrayList<String> links = new RestTemplate().getForObject(URL, (new ArrayList<String>()).getClass());
+            ArrayList<String> links = new RestTemplate().getForObject(queryURL, (new ArrayList<String>()).getClass());
             for (String link : links) {
                 events.add(new RestTemplate().getForObject(link, EventDTO.class));
             }

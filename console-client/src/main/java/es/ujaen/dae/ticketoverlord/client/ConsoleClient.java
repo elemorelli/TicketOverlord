@@ -115,9 +115,11 @@ public class ConsoleClient {
 
         System.out.println("Ingrese el nombre del evento:");
         String eventName = readText();
-        // TODO
-        //List<EventDTO> events = eventsService.findEventsByName(eventName);
-        List<EventDTO> events = new ArrayList<>();
+
+        Map<String, String> filters = new HashMap<>();
+        filters.put("name", eventName);
+        List<EventDTO> events = RestTemplates.Events.getAllEvents(filters);
+
         if (!events.isEmpty()) {
             printEventList(events);
         } else {
@@ -131,9 +133,12 @@ public class ConsoleClient {
         String eventName = readText();
         System.out.println("Ingrese la localidad");
         String eventCity = readText();
-        // TODO
-        //List<EventDTO> events = eventsService.findEventsByNameAndCity(eventName, eventCity);
-        List<EventDTO> events = new ArrayList<>();
+
+        Map<String, String> filters = new HashMap<>();
+        filters.put("name", eventName);
+        filters.put("city", eventCity);
+        List<EventDTO> events = RestTemplates.Events.getAllEvents(filters);
+
         if (!events.isEmpty()) {
             printEventList(events);
         } else {
@@ -144,12 +149,15 @@ public class ConsoleClient {
     private void findEventsByDateAndType() {
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        LocalDate eventDate = readDate();
+        String eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
         String eventType = readText();
-        // TODO
-        //List<EventDTO> events = eventsService.findEventsByDateAndType(eventDate, eventType);
-        List<EventDTO> events = new ArrayList<>();
+
+        Map<String, String> filters = new HashMap<>();
+        filters.put("date", eventDate);
+        filters.put("type", eventType);
+        List<EventDTO> events = RestTemplates.Events.getAllEvents(filters);
+
         if (!events.isEmpty()) {
             printEventList(events);
         } else {
@@ -160,14 +168,18 @@ public class ConsoleClient {
     private void findEventsByDateTypeAndCity() {
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        LocalDate eventDate = readDate();
+        String eventDate = readDate();
         System.out.println("Ingrese el tipo de evento:");
         String eventType = readText();
         System.out.println("Ingrese la localidad");
         String eventCity = readText();
-        // TODO
-        //List<EventDTO> events = eventsService.findEventsByDateTypeAndCity(eventDate, eventType, eventCity);
-        List<EventDTO> events = new ArrayList<>();
+
+        Map<String, String> filters = new HashMap<>();
+        filters.put("date", eventDate);
+        filters.put("type", eventType);
+        filters.put("city", eventCity);
+        List<EventDTO> events = RestTemplates.Events.getAllEvents(filters);
+
         if (!events.isEmpty()) {
             printEventList(events);
         } else {
@@ -378,7 +390,7 @@ public class ConsoleClient {
         eventDTO.setType(readText());
 
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
-        eventDTO.setDate(readDate().format(DATE_FORMAT));
+        eventDTO.setDate(readDate());
 
         List<VenueDTO> venues = RestTemplates.Venues.getAllVenues();
 
@@ -519,12 +531,12 @@ public class ConsoleClient {
         } while (true);
     }
 
-    private LocalDate readDate() {
+    private String readDate() {
 
         do {
             try {
                 String date = br.readLine();
-                return LocalDate.parse(date, DATE_FORMAT);
+                return LocalDate.parse(date, DATE_FORMAT).format(DATE_FORMAT);
             } catch (DateTimeParseException | IOException e) {
                 System.err.println("Error en el formato de ingreso de la fecha");
             }

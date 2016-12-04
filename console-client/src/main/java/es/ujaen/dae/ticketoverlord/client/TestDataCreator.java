@@ -4,6 +4,7 @@ import es.ujaen.dae.ticketoverlord.client.dtos.*;
 import es.ujaen.dae.ticketoverlord.client.utilities.RestTemplates;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 public class TestDataCreator {
@@ -63,7 +64,7 @@ public class TestDataCreator {
 
     private void deleteEvents() {
 
-        List<EventDTO> events = RestTemplates.Events.getAllEvents();
+        List<EventDTO> events = RestTemplates.Events.getAllEvents(new HashMap<>());
         for (EventDTO eventDTO : events) {
             RestTemplates.Events.deleteEvent(eventDTO);
         }
