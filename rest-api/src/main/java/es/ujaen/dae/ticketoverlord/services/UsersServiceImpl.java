@@ -8,6 +8,7 @@ import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.NoResultException;
 import java.util.*;
 
 @Component("UsersService")
@@ -81,7 +82,11 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UserDTO getUser(UserDTO userToQuery) {
-        return getUserAsDTO(usersDAO.selectUserByName(userToQuery.getName()));
+        try {
+            return getUserAsDTO(usersDAO.selectUserByName(userToQuery.getName()));
+        } catch (NoResultException e) {
+            throw new NoUserFoundException();
+        }
     }
 
     @Override

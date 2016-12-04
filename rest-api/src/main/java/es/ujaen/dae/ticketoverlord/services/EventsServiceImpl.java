@@ -37,7 +37,13 @@ public class EventsServiceImpl implements EventsService {
 
     @Override
     public EventDTO getEvent(Integer eventId) {
-        return new EventDTO(eventsDAO.selectEventById(eventId));
+
+        Event event = eventsDAO.selectEventById(eventId);
+        if (event != null) {
+            return new EventDTO(event);
+        } else {
+            throw new NoEventFoundException();
+        }
     }
 
     @Override

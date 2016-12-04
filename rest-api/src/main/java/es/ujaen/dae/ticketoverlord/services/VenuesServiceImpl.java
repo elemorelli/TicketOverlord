@@ -29,7 +29,13 @@ public class VenuesServiceImpl implements VenuesService {
 
     @Override
     public VenueDTO getVenue(Integer venueId) {
-        return new VenueDTO(venuesDAO.selectVenueById(venueId));
+
+        Venue venue = venuesDAO.selectVenueById(venueId);
+        if (venue != null) {
+            return new VenueDTO(venue);
+        } else {
+            throw new NoVenueFoundException();
+        }
     }
 
     @Override
