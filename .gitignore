@@ -17,6 +17,7 @@ lib/
 
 # Build tools
 .gradle/
+node_modules
 build/
 
 # Specific IDE files
