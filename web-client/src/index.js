@@ -1,9 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import {Router, Route, IndexRoute, hashHistory} from "react-router";
+import Layout from "./pages/Layout";
+import Featured from "./pages/Featured";
+import Events from "./pages/Events";
 import "./index.css";
 
+const app = document.getElementById('app');
 ReactDOM.render(
-    <App />,
-    document.getElementById('root')
-);
+    <Router history={hashHistory}>
+        <Route path="/" component={Layout}>
+            <IndexRoute component={Featured}/>
+            <Route path="events" component={Events}/>
+        </Route>
+    </Router>,
+    app);
