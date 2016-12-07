@@ -23,9 +23,9 @@ public class Ticket {
     public String toString() {
         return "Ticket{" +
                 "id=" + id +
-                ", user=" + user +
-                ", event=" + event +
-                ", zone=" + zone +
+                ", userId=" + user.getId() +
+                ", eventId=" + event.getId() +
+                ", zoneName=" + zone.getName() +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';

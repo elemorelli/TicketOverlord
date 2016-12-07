@@ -32,6 +32,7 @@ public class PricePerZone {
     public String toString() {
         return "PricePerZone{" +
                 "id=" + id +
+                ", eventId=" + event.getId() +
                 ", price=" + price +
                 ", zone=" + zone +
                 ", availableSeats=" + availableSeats +

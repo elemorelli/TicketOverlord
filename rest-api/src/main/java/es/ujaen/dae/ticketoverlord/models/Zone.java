@@ -26,6 +26,7 @@ public class Zone {
     public String toString() {
         return "Zone{" +
                 "id=" + id +
+                ", venueId=" + venue.getId() +
                 ", name=" + name +
                 ", seats=" + seats +
                 '}';

@@ -37,8 +37,9 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", uuidToken='" + uuidToken + '\'' +
-                ", name='" + username + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 
@@ -88,5 +89,9 @@ public class User {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 }

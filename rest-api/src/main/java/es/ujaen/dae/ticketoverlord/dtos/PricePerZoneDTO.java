@@ -33,7 +33,7 @@ public class PricePerZoneDTO extends ResourceSupport {
         this.availableSeats = price.getAvailableSeats();
 
         this.add(linkTo(EventsResource.class)
-                .slash(price.getEvent().getEventId())
+                .slash(price.getEvent().getId())
                 .slash("availability")
                 .slash(this.getZoneName()).withSelfRel());
 
@@ -44,8 +44,8 @@ public class PricePerZoneDTO extends ResourceSupport {
     public String toString() {
         return "PricePerZoneDTO{" +
                 "pricePerZoneId=" + pricePerZoneId +
-                ", price=" + price +
                 ", zoneName=" + zoneName +
+                ", price=" + price +
                 ", availableSeats=" + availableSeats +
                 '}';
     }

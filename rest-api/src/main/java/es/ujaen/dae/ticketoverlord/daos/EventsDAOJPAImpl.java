@@ -98,7 +98,7 @@ public class EventsDAOJPAImpl implements EventsDAO {
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteEvent(Event event) {
         try {
-            em.remove(em.find(Event.class, event.getEventId()));
+            em.remove(em.find(Event.class, event.getId()));
             // em.remove(event);
             em.flush();
         } catch (Exception e) {

@@ -35,7 +35,7 @@ public class EventDTO extends ResourceSupport {
     }
 
     public EventDTO(Event event) {
-        this.eventId = event.getEventId();
+        this.eventId = event.getId();
         this.name = event.getName();
         this.type = event.getType();
         this.date = event.getDate().format(DATE_FORMAT);
@@ -60,7 +60,7 @@ public class EventDTO extends ResourceSupport {
                 "eventId=" + eventId +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", date=" + date +
+                ", date='" + date + '\'' +
                 ", venueId=" + venueId +
                 ", pricesPerZone=" + pricesPerZone +
                 '}';

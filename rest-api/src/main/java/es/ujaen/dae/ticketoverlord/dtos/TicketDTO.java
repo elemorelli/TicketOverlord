@@ -25,7 +25,7 @@ public class TicketDTO extends ResourceSupport {
     public TicketDTO(Ticket ticket) {
         this.ticketId = ticket.getId();
         this.userId = ticket.getUser().getId();
-        this.eventId = ticket.getEvent().getEventId();
+        this.eventId = ticket.getEvent().getId();
         this.zoneName = ticket.getZone().getName();
         this.price = ticket.getPrice();
         this.quantity = ticket.getQuantity();
@@ -49,8 +49,9 @@ public class TicketDTO extends ResourceSupport {
     public String toString() {
         return "TicketDTO{" +
                 "ticketId=" + ticketId +
-                ", event=" + eventId +
-                ", zone=" + zoneName +
+                ", userId=" + userId +
+                ", eventId=" + eventId +
+                ", zoneName=" + zoneName +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
