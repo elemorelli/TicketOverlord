@@ -14,7 +14,7 @@ public class TestDataCreator {
         creator.insertTestData();
     }
 
-    public void insertTestData() {
+    private void insertTestData() {
 
         for (int i = 0; i < 2; i++) {
             try {
@@ -143,6 +143,7 @@ public class TestDataCreator {
     private void insertUsers() {
 
         UserDTO admin = new UserDTO("3842affe-750b-4fa1-8120-0433a21a2f74", "Admin", "admin");
+        admin.setRole(UserDTO.ROLE_ADMIN);
         UserDTO user1 = new UserDTO("4b955cda-215d-4937-a77c-e5140c6ed0cc", "Anto", "pass");
         UserDTO user2 = new UserDTO("d18716ed-4f31-4ad5-9a5c-984a81873a68", "Ele", "pass");
         UserDTO user3 = new UserDTO("1588204b-bce1-4afb-81b4-74140049c150", "Alessandro", "intrigante");

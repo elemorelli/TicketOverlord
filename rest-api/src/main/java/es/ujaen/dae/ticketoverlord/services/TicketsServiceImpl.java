@@ -1,6 +1,5 @@
 package es.ujaen.dae.ticketoverlord.services;
 
-import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.TicketsDAO;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
@@ -31,7 +30,6 @@ public class TicketsServiceImpl implements TicketsService {
     private EventsDAO eventsDAO;
 
     @Override
-    @LoggedUserOperation
     @Transactional(readOnly = true)
     public List<TicketDTO> getTickets(UserDTO userDTO) {
 
@@ -43,7 +41,6 @@ public class TicketsServiceImpl implements TicketsService {
     }
 
     @Override
-    @LoggedUserOperation
     @Transactional(readOnly = true)
     public List<TicketDTO> getTicketsByUser(UserDTO user) {
 
@@ -67,7 +64,6 @@ public class TicketsServiceImpl implements TicketsService {
     }
 
     @Override
-    @LoggedUserOperation
     @Transactional(rollbackFor = {TicketTransactionException.class})
     public TicketDTO buyTicket(UserDTO userDTO, TicketDTO ticketDTO) throws NoTicketsAvailableException, TicketTransactionException {
 

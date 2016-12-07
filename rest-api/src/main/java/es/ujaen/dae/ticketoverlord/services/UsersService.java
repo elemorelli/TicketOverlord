@@ -13,8 +13,6 @@ public interface UsersService {
 
     boolean userExists(UserDTO user);
 
-    boolean isAdmin(UserDTO user);
-
     List<UserDTO> getUsers();
 
     UserDTO getUser(UserDTO user);

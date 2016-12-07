@@ -1,6 +1,5 @@
 package es.ujaen.dae.ticketoverlord.services;
 
-import es.ujaen.dae.ticketoverlord.annotations.AdminOperation;
 import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
@@ -52,7 +51,6 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
-    @AdminOperation
     public EventDTO addNewEvent(UserDTO userDTO, EventDTO eventDTO) {
 
         Event event = new Event();

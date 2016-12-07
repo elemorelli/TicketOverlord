@@ -11,27 +11,31 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 public class UserDTO extends ResourceSupport {
     private Integer userId;
     private String uuidToken;
-    private String name;
+    private String username;
     private String password;
-    private boolean isAdmin;
+    private String role;
+    private boolean enabled;
 
     public UserDTO() {
     }
 
-    public UserDTO(String uuidToken, String name, String password) {
+    public UserDTO(String uuidToken, String username, String password) {
         this.uuidToken = uuidToken;
-        this.name = name;
+        this.username = username;
         this.password = password;
     }
 
     public UserDTO(User user) {
         this.userId = user.getId();
-        this.name = user.getUsername();
+        this.username = user.getUsername();
         this.uuidToken = user.getUuidToken();
+        this.role = user.getRole();
+        this.enabled = user.isEnabled();
+
         this.add(linkTo(UsersResource.class)
-                .slash(this.getName()).withSelfRel());
+                .slash(this.getUsername()).withSelfRel());
         this.add(linkTo(UsersResource.class)
-                .slash(this.getName())
+                .slash(this.getUsername())
                 .slash("tickets").withRel("tickets"));
     }
 
@@ -40,9 +44,10 @@ public class UserDTO extends ResourceSupport {
         return "UserDTO{" +
                 "userId=" + userId +
                 ", uuidToken='" + uuidToken + '\'' +
-                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", isAdmin=" + isAdmin +
+                ", role='" + role + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 
@@ -62,12 +67,12 @@ public class UserDTO extends ResourceSupport {
         this.uuidToken = uuidToken;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String nombre) {
-        this.name = nombre;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -78,11 +83,19 @@ public class UserDTO extends ResourceSupport {
         this.password = password;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public String getRole() {
+        return role;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

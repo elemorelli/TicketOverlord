@@ -40,7 +40,7 @@ public class UsersResource {
             return usersService.getUser(Integer.parseInt(userTag));
         } else {
             UserDTO userDTO = new UserDTO();
-            userDTO.setName(userTag);
+            userDTO.setUsername(userTag);
             return usersService.getUser(userDTO);
         }
     }
@@ -52,7 +52,7 @@ public class UsersResource {
         if (StringUtils.isNumeric(userTag)) {
             userDTO.setUserId(Integer.parseInt(userTag));
         } else {
-            userDTO.setName(userTag);
+            userDTO.setUsername(userTag);
             userDTO = usersService.getUser(userDTO);
         }
 

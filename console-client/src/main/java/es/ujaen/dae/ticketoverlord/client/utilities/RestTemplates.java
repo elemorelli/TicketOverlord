@@ -13,16 +13,6 @@ import java.util.Map;
 public class RestTemplates {
     private final static String BASE_URL = "http://localhost:8080/ticketoverlord/api/v1/";
 
-    public static class Session {
-        public static void login(UserDTO user) {
-            new RestTemplate().put(BASE_URL + "login/", user);
-        }
-
-        public static void logout(UserDTO user) {
-            new RestTemplate().delete(BASE_URL + "logout/", user);
-        }
-    }
-
     public static class Venues {
         private final static String URL = BASE_URL + "venues/";
         private final static String URL_ID = URL + "{venuesId}/";

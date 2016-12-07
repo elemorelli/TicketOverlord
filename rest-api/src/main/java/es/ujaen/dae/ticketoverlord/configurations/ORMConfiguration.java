@@ -18,8 +18,7 @@ import javax.persistence.EntityManagerFactory;
 public class ORMConfiguration {
     @Bean
     public PersistenceAnnotationBeanPostProcessor persistenceAnnotationBeanPostProcessor() {
-        PersistenceAnnotationBeanPostProcessor annotationBeanPostProcessor = new PersistenceAnnotationBeanPostProcessor();
-        return annotationBeanPostProcessor;
+        return new PersistenceAnnotationBeanPostProcessor();
     }
 
     @Bean

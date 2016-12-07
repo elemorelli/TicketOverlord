@@ -15,8 +15,11 @@ public class User {
     private String username;
     private String password;
     private boolean enabled;
+    private String role;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Ticket> tickets;
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     public User() {
     }
@@ -24,12 +27,14 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.role = ROLE_USER;
     }
 
     public User(String uuidToken, String username, String password) {
         this.uuidToken = uuidToken;
         this.username = username;
         this.password = password;
+        this.role = ROLE_USER;
     }
 
     @Override
@@ -40,6 +45,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", enabled=" + enabled +
+                ", role='" + role + '\'' +
+                ", tickets=" + tickets +
                 '}';
     }
 
@@ -81,6 +88,16 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        if (role.equals(ROLE_USER) || role.equals(ROLE_ADMIN))
+            this.role = role;
+        else throw new RuntimeException("Invalid user role");
     }
 
     public List<Ticket> getTickets() {

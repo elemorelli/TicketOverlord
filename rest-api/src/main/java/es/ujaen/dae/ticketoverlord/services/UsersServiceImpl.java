@@ -1,6 +1,5 @@
 package es.ujaen.dae.ticketoverlord.services;
 
-import es.ujaen.dae.ticketoverlord.annotations.LoggedUserOperation;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.services.users.NoUserFoundException;
@@ -25,7 +24,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UserDTO addNewUser(UserDTO userDTO) {
 
-        User user = new User(userDTO.getName(), userDTO.getPassword());
+        User user = new User(userDTO.getUsername(), userDTO.getPassword());
         user.setUuidToken(UUID.randomUUID().toString());
         usersDAO.insertUser(user);
         return new UserDTO(user);
@@ -36,7 +35,7 @@ public class UsersServiceImpl implements UsersService {
 
         User user = usersDAO.selectUserById(userDTO.getUserId());
         if (user != null) {
-            user.setUsername(userDTO.getName());
+            user.setUsername(userDTO.getUsername());
             user.setPassword(userDTO.getPassword());
             usersDAO.updateUser(user);
             return new UserDTO(user);
@@ -59,13 +58,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public boolean userExists(UserDTO userToQuery) {
 
-        return usersDAO.selectUserByName(userToQuery.getName()) != null;
-    }
-
-    @Override
-    @LoggedUserOperation
-    public boolean isAdmin(UserDTO user) {
-        return user.getUuidToken().equals(this.adminToken);
+        return usersDAO.selectUserByName(userToQuery.getUsername()) != null;
     }
 
     @Override
@@ -83,7 +76,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UserDTO getUser(UserDTO userToQuery) {
         try {
-            return getUserAsDTO(usersDAO.selectUserByName(userToQuery.getName()));
+            return getUserAsDTO(usersDAO.selectUserByName(userToQuery.getUsername()));
         } catch (NoResultException e) {
             throw new NoUserFoundException();
         }
@@ -96,11 +89,7 @@ public class UsersServiceImpl implements UsersService {
 
     private UserDTO getUserAsDTO(User user) {
         if (user != null) {
-            UserDTO userDTO = new UserDTO(user);
-            if (isAdmin(userDTO)) {
-                userDTO.setAdmin(true);
-            }
-            return userDTO;
+            return new UserDTO(user);
         }
         throw new NoUserFoundException();
     }

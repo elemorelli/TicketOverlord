@@ -5,16 +5,20 @@ public class UserDTO {
     private String uuidToken;
     private String username;
     private String password;
-    private boolean isAdmin;
+    private String role;
     private boolean enabled;
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     public UserDTO() {
+        this.role = ROLE_USER;
     }
 
     public UserDTO(String uuidToken, String username, String password) {
         this.uuidToken = uuidToken;
         this.username = username;
         this.password = password;
+        this.role = ROLE_USER;
     }
 
     public Integer getUserId() {
@@ -49,12 +53,16 @@ public class UserDTO {
         this.password = password;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public String getRole() {
+        return role;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isAdmin() {
+        return this.role.equals("ADMIN");
     }
 
     public boolean isEnabled() {

@@ -456,33 +456,23 @@ public class ConsoleClient {
 
     private void authenticateUser() {
 
+        UserDTO userDTO = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
-        String userName = readText();
+        userDTO.setUsername(readText());
+        System.out.println("Introduzca la contraseña");
+        userDTO.setPassword(readText());
 
-        UserDTO userDTO = RestTemplates.Users.getUser(userName);
-
-        if (userDTO != null) {
-            System.out.println("Introduzca la contraseña");
-            String password = readText();
-            userDTO.setPassword(password);
-
-            try {
-                RestTemplates.Session.login(userDTO);
-                System.out.println("Autenticación correcta");
-                authenticatedUser = RestTemplates.Users.getUser(userName);
-            } catch (RuntimeException e) {
-                System.err.println("Password incorrecto");
-                authenticatedUser = null;
-            }
-        } else {
-            System.err.println("El usuario no existe");
+        try {
+            authenticatedUser = RestTemplates.Users.getUser(userDTO.getUsername());
+            System.out.println("Autenticación correcta");
+        } catch (RuntimeException e) {
+            System.err.println("El usuario o password son incorrectos");
             authenticatedUser = null;
         }
     }
 
     private void logout() {
 
-        RestTemplates.Session.logout(authenticatedUser);
         authenticatedUser = null;
         System.out.println("Se ha deslogueado correctamente");
     }
