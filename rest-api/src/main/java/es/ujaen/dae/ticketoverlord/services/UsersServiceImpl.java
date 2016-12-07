@@ -36,7 +36,7 @@ public class UsersServiceImpl implements UsersService {
 
         User user = usersDAO.selectUserById(userDTO.getUserId());
         if (user != null) {
-            user.setName(userDTO.getName());
+            user.setUsername(userDTO.getName());
             user.setPassword(userDTO.getPassword());
             usersDAO.updateUser(user);
             return new UserDTO(user);

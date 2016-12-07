@@ -12,22 +12,23 @@ public class User {
     @Column(unique = true)
     private String uuidToken;
     @Column(unique = true)
-    private String name;
+    private String username;
     private String password;
+    private boolean enabled;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Ticket> tickets;
 
     public User() {
     }
 
-    public User(String name, String password) {
-        this.name = name;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public User(String uuidToken, String name, String password) {
+    public User(String uuidToken, String username, String password) {
         this.uuidToken = uuidToken;
-        this.name = name;
+        this.username = username;
         this.password = password;
     }
 
@@ -36,7 +37,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", uuidToken='" + uuidToken + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
@@ -57,12 +58,12 @@ public class User {
         this.uuidToken = uuidToken;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -73,15 +74,19 @@ public class User {
         this.password = password;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public List<Ticket> getTickets() {
         return tickets;
     }
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
-    }
-
-    public void addTicket(Ticket ticket) {
-        this.tickets.add(ticket);
     }
 }

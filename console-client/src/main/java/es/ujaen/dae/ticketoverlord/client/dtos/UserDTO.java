@@ -3,16 +3,17 @@ package es.ujaen.dae.ticketoverlord.client.dtos;
 public class UserDTO {
     private Integer userId;
     private String uuidToken;
-    private String name;
+    private String username;
     private String password;
     private boolean isAdmin;
+    private boolean enabled;
 
     public UserDTO() {
     }
 
-    public UserDTO(String uuidToken, String name, String password) {
+    public UserDTO(String uuidToken, String username, String password) {
         this.uuidToken = uuidToken;
-        this.name = name;
+        this.username = username;
         this.password = password;
     }
 
@@ -32,12 +33,12 @@ public class UserDTO {
         this.uuidToken = uuidToken;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String nombre) {
-        this.name = nombre;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -54,5 +55,13 @@ public class UserDTO {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

@@ -28,7 +28,7 @@ public class UsersDAOJPAImpl implements UsersDAO {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public User selectUserByName(String username) {
         return em.createQuery("SELECT u FROM User u " +
-                "WHERE u.name = :username", User.class)
+                "WHERE u.username = :username", User.class)
                 .setParameter("username", username)
                 .getSingleResult();
     }

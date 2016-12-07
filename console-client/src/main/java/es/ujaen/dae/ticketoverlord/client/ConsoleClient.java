@@ -74,7 +74,7 @@ public class ConsoleClient {
 
         System.out.println();
         System.out.println("-----------------------------------");
-        System.out.println("Bienvenido " + authenticatedUser.getName() + ". Elija una opción:");
+        System.out.println("Bienvenido " + authenticatedUser.getUsername() + ". Elija una opción:");
         System.out.println("1.- Buscar eventos por nombre");
         System.out.println("2.- Buscar eventos por nombre y localidad");
         System.out.println("3.- Buscar eventos por fecha y tipo de evento");
@@ -335,7 +335,7 @@ public class ConsoleClient {
 
         if (!tickets.isEmpty()) {
             System.out.println();
-            System.out.println("Tickets adquiridos por el usuario " + authenticatedUser.getName() + ": ");
+            System.out.println("Tickets adquiridos por el usuario " + authenticatedUser.getUsername() + ": ");
             System.out.println("-----------------------------------");
             for (TicketDTO ticket : tickets) {
 
@@ -358,7 +358,7 @@ public class ConsoleClient {
 
         System.out.println();
         System.out.println("-----------------------------------");
-        System.out.println("Bienvenido " + authenticatedUser.getName() + ". Elija una opción:");
+        System.out.println("Bienvenido " + authenticatedUser.getUsername() + ". Elija una opción:");
         System.out.println("1.- Añadir nuevo evento");
         System.out.println("0.- Logout");
         System.out.println("-----------------------------------");
