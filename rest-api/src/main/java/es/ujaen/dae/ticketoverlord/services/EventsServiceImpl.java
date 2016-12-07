@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
+import static es.ujaen.dae.ticketoverlord.configurations.AppInitializer.DATE_FORMAT;
 
 @Component("EventsService")
 public class EventsServiceImpl implements EventsService {

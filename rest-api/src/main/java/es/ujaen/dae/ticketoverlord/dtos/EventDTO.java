@@ -11,7 +11,7 @@ import org.springframework.hateoas.ResourceSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-import static es.ujaen.dae.ticketoverlord.AppInitializer.DATE_FORMAT;
+import static es.ujaen.dae.ticketoverlord.configurations.AppInitializer.DATE_FORMAT;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 public class EventDTO extends ResourceSupport {

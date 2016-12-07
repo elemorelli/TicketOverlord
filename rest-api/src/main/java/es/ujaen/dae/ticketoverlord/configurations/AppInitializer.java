@@ -1,4 +1,4 @@
-package es.ujaen.dae.ticketoverlord;
+package es.ujaen.dae.ticketoverlord.configurations;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;

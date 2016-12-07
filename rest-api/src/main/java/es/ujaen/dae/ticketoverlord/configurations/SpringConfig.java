@@ -7,5 +7,5 @@ import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 @Configuration
 @EnableSpringConfigured
 @ComponentScan("es.ujaen.dae.ticketoverlord")
-public class AppConfiguration {
+public class SpringConfig {
 }

@@ -15,7 +15,7 @@ import javax.persistence.EntityManagerFactory;
 
 @Configuration
 @EnableTransactionManagement
-public class ORMConfiguration {
+public class ORMConfig {
     @Bean
     public PersistenceAnnotationBeanPostProcessor persistenceAnnotationBeanPostProcessor() {
         return new PersistenceAnnotationBeanPostProcessor();
