@@ -12,6 +12,10 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-context', version: '4.3.3.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
     compile group: 'org.springframework', name: 'spring-expression', version: '4.3.3.RELEASE'
+    // Spring Security
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.0.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.2.0.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.2.0.RELEASE'
     // Aspects
     compile group: 'org.springframework', name: 'spring-aop', version: '4.3.3.RELEASE'
     compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.9'
