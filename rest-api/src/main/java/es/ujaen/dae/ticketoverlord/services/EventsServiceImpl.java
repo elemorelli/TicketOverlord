@@ -13,6 +13,7 @@ import es.ujaen.dae.ticketoverlord.models.PricePerZone;
 import es.ujaen.dae.ticketoverlord.models.Venue;
 import es.ujaen.dae.ticketoverlord.models.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -51,7 +52,8 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
-    public EventDTO addNewEvent(UserDTO userDTO, EventDTO eventDTO) {
+    @Secured("ROLE_ADMIN")
+    public EventDTO addNewEvent(EventDTO eventDTO) {
 
         Event event = new Event();
         fillEventFromDTO(eventDTO, event);
@@ -60,6 +62,7 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public EventDTO modifyEvent(EventDTO eventDTO) {
 
         Event event = eventsDAO.selectEventById(eventDTO.getEventId());
@@ -73,6 +76,7 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public void deleteEvent(EventDTO eventDTO) {
 
         Event event = eventsDAO.selectEventById(eventDTO.getEventId());

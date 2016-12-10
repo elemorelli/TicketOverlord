@@ -11,8 +11,6 @@ public interface UsersService {
 
     void deleteUser(UserDTO user);
 
-    boolean userExists(UserDTO user);
-
     List<UserDTO> getUsers();
 
     UserDTO getUser(UserDTO user);

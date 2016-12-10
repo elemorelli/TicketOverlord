@@ -8,13 +8,13 @@ import es.ujaen.dae.ticketoverlord.exceptions.services.tickets.NoTicketsAvailabl
 import java.util.List;
 
 public interface TicketsService {
-    List<TicketDTO> getTickets(UserDTO userDTO);
+    List<TicketDTO> getTickets();
 
     List<TicketDTO> getTicketsByUser(UserDTO user);
 
     TicketDTO getTicket(Integer ticketId);
 
-    TicketDTO buyTicket(UserDTO userDTO, TicketDTO ticketDTO) throws NoTicketsAvailableException, TicketTransactionException;
+    TicketDTO buyTicket(TicketDTO ticketDTO) throws NoTicketsAvailableException, TicketTransactionException;
 
     TicketDTO modifyTicket(TicketDTO ticket);
 

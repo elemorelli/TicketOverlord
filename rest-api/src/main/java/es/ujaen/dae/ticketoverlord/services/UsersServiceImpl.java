@@ -5,6 +5,7 @@ import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.services.users.NoUserFoundException;
 import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
@@ -14,12 +15,6 @@ import java.util.*;
 public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersDAO usersDAO;
-    private final Set<String> authenticatedUsers; // TODO: Es una pseudo-sesión. Hay que removerla del servicio
-    private final String adminToken = "3842affe-750b-4fa1-8120-0433a21a2f74"; // TODO: Debe estar en la DB
-
-    public UsersServiceImpl() {
-        authenticatedUsers = new HashSet<>();
-    }
 
     @Override
     public UserDTO addNewUser(UserDTO userDTO) {
@@ -31,6 +26,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public UserDTO modifyUser(UserDTO userDTO) {
 
         User user = usersDAO.selectUserById(userDTO.getUserId());
@@ -45,6 +41,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public void deleteUser(UserDTO userDTO) {
 
         User user = usersDAO.selectUserById(userDTO.getUserId());
@@ -56,12 +53,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public boolean userExists(UserDTO userToQuery) {
-
-        return usersDAO.selectUserByName(userToQuery.getUsername()) != null;
-    }
-
-    @Override
+    @Secured("ROLE_ADMIN")
     public List<UserDTO> getUsers() {
 
         List<UserDTO> userDTOs = new ArrayList<>();
@@ -74,6 +66,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public UserDTO getUser(UserDTO userToQuery) {
         try {
             return getUserAsDTO(usersDAO.selectUserByName(userToQuery.getUsername()));
@@ -83,7 +76,9 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Secured({"ROLE_ADMIN", "ROLE_ADMIN"})
     public UserDTO getUser(Integer userId) {
+        // TODO: Check user rights
         return getUserAsDTO(usersDAO.selectUserById(userId));
     }
 

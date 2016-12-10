@@ -1,7 +1,6 @@
 package es.ujaen.dae.ticketoverlord.resources.v1;
 
 import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
-import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -21,7 +20,7 @@ public class TicketsResource {
     @RequestMapping(method = RequestMethod.GET)
     public List<String> getTickets() {
 
-        List<TicketDTO> tickets = ticketsService.getTickets(new UserDTO());
+        List<TicketDTO> tickets = ticketsService.getTickets();
         List<String> links = new ArrayList<>();
         for (TicketDTO ticket : tickets) {
             links.add(ticket.getLink(Link.REL_SELF).getHref());
@@ -42,7 +41,7 @@ public class TicketsResource {
 
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
     public TicketDTO addTicket(@RequestBody TicketDTO ticketDTO) {
-        return ticketsService.buyTicket(new UserDTO(), ticketDTO);
+        return ticketsService.buyTicket(ticketDTO);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{ticketId}")

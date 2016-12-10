@@ -14,6 +14,7 @@ import es.ujaen.dae.ticketoverlord.models.Ticket;
 import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,8 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TicketDTO> getTickets(UserDTO userDTO) {
+    @Secured("ROLE_ADMIN")
+    public List<TicketDTO> getTickets() {
 
         List<TicketDTO> tickets = new ArrayList<>();
         for (Ticket ticket : ticketsDAO.selectAllTickets()) {
@@ -42,8 +44,10 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @Transactional(readOnly = true)
+    @Secured("ROLE_USER")
     public List<TicketDTO> getTicketsByUser(UserDTO user) {
 
+        // TODO: Check that the user is the one that requested the tickets
         List<TicketDTO> tickets = new ArrayList<>();
         for (Ticket ticket : usersDAO.selectUserById(user.getUserId()).getTickets()) {
             tickets.add(new TicketDTO(ticket));
@@ -53,6 +57,7 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @Transactional(readOnly = true)
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public TicketDTO getTicket(Integer ticketId) {
 
         Ticket ticket = ticketsDAO.selectTicketById(ticketId);
@@ -65,7 +70,8 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @Transactional(rollbackFor = {TicketTransactionException.class})
-    public TicketDTO buyTicket(UserDTO userDTO, TicketDTO ticketDTO) throws NoTicketsAvailableException, TicketTransactionException {
+    @Secured("ROLE_USER")
+    public TicketDTO buyTicket(TicketDTO ticketDTO) throws NoTicketsAvailableException, TicketTransactionException {
 
         try {
             Ticket ticket = new Ticket();
@@ -103,6 +109,7 @@ public class TicketsServiceImpl implements TicketsService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public TicketDTO modifyTicket(TicketDTO ticketDTO) {
 
         Ticket ticket = ticketsDAO.selectTicketById(ticketDTO.getTicketId());
@@ -128,6 +135,7 @@ public class TicketsServiceImpl implements TicketsService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public void deleteTicket(TicketDTO ticketDTO) {
 
         Ticket ticket = ticketsDAO.selectTicketById(ticketDTO.getTicketId());

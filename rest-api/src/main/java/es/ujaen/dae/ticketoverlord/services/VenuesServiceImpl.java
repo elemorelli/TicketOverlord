@@ -7,6 +7,7 @@ import es.ujaen.dae.ticketoverlord.exceptions.services.venues.NoVenueFoundExcept
 import es.ujaen.dae.ticketoverlord.models.Venue;
 import es.ujaen.dae.ticketoverlord.models.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class VenuesServiceImpl implements VenuesService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public VenueDTO addNewVenue(VenueDTO venueDTO) {
 
         Venue venue = new Venue();
@@ -48,6 +50,7 @@ public class VenuesServiceImpl implements VenuesService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public VenueDTO modifyVenue(VenueDTO venueDTO) {
         Venue venue = venuesDAO.selectVenueById(venueDTO.getVenueId());
         if (venue != null) {
@@ -60,6 +63,7 @@ public class VenuesServiceImpl implements VenuesService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public void deleteVenue(VenueDTO venueDTO) {
         Venue venue = venuesDAO.selectVenueById(venueDTO.getVenueId());
         if (venue != null) {

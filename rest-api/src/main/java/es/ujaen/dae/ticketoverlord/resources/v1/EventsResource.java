@@ -2,7 +2,6 @@ package es.ujaen.dae.ticketoverlord.resources.v1;
 
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
-import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.services.EventsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +78,7 @@ public class EventsResource {
 
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
     public EventDTO addEvent(@RequestBody EventDTO eventDTO) {
-        return eventsService.addNewEvent(new UserDTO(), eventDTO);
+        return eventsService.addNewEvent(eventDTO);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}")
