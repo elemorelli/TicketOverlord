@@ -4,6 +4,7 @@ import es.ujaen.dae.ticketoverlord.exceptions.dao.events.EventInsertionException
 import es.ujaen.dae.ticketoverlord.exceptions.dao.events.EventRemovalException;
 import es.ujaen.dae.ticketoverlord.exceptions.dao.events.EventUpdateException;
 import es.ujaen.dae.ticketoverlord.models.Event;
+import es.ujaen.dae.ticketoverlord.models.Venue;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -11,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static es.ujaen.dae.ticketoverlord.configurations.AppInitializer.DATE_FORMAT;
 
 @Repository("EventsDAO")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -56,7 +57,7 @@ public class EventsDAOJPAImpl implements EventsDAO {
         }
         String eventDate = filters.get("date");
         if (StringUtils.isNotBlank(eventDate)) {
-            predicates.add(builder.equal(event.get("date"), eventDate));
+            predicates.add(builder.equal(event.get("date"), LocalDate.parse(eventDate, DATE_FORMAT)));
         }
         String eventType = filters.get("type");
         if (StringUtils.isNotBlank(eventType)) {
@@ -64,7 +65,8 @@ public class EventsDAOJPAImpl implements EventsDAO {
         }
         String eventCity = filters.get("city");
         if (StringUtils.isNotBlank(eventCity)) {
-            predicates.add(builder.like(event.get("city"), "%" + eventCity + "%"));
+            Join<Event, Venue> venueCity = event.join("venue");
+            predicates.add(builder.like(venueCity.get("city"), "%" + eventCity + "%"));
         }
 
         query.select(event).where(predicates.toArray(new Predicate[]{}));

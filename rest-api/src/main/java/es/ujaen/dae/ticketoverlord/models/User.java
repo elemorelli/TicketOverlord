@@ -22,18 +22,6 @@ public class User {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     public User() {
-    }
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.role = ROLE_USER;
-    }
-
-    public User(String uuidToken, String username, String password) {
-        this.uuidToken = uuidToken;
-        this.username = username;
-        this.password = password;
         this.role = ROLE_USER;
     }
 

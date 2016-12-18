@@ -6,21 +6,29 @@ import es.ujaen.dae.ticketoverlord.exceptions.services.users.NoUserFoundExceptio
 import es.ujaen.dae.ticketoverlord.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Component("UsersService")
 public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersDAO usersDAO;
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Override
     public UserDTO addNewUser(UserDTO userDTO) {
 
-        User user = new User(userDTO.getUsername(), userDTO.getPassword());
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(encoder.encode(userDTO.getPassword()));
         user.setUuidToken(UUID.randomUUID().toString());
+        user.setEnabled(true);
         usersDAO.insertUser(user);
         return new UserDTO(user);
     }

@@ -4,7 +4,6 @@ import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.VenueDAO;
 import es.ujaen.dae.ticketoverlord.dtos.EventDTO;
 import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
-import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.services.events.EventZoneMismatchException;
 import es.ujaen.dae.ticketoverlord.exceptions.services.events.NoEventFoundException;
 import es.ujaen.dae.ticketoverlord.exceptions.services.venues.NoVenueFoundException;
