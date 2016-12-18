@@ -17,12 +17,12 @@ public class GeneralLogger {
         log = LoggerFactory.getLogger(GeneralLogger.class);
     }
 
-//    @Before(value = "execution(* es.ujaen.dae.ticketoverlord..* (..))")
+    @Before(value = "execution(* es.ujaen.dae.ticketoverlord..* (..))")
     public void logMethodExecution(JoinPoint joinpoint) {
         log.debug(joinpoint.getSignature().toShortString());
     }
 
-//    @AfterThrowing(value = "execution(* es.ujaen.dae.ticketoverlord..* (..))", throwing = "exception")
+    @AfterThrowing(value = "execution(* es.ujaen.dae.ticketoverlord..* (..))", throwing = "exception")
     public void logAfterException(JoinPoint joinpoint, Exception exception) {
         log.warn("Exception on: " + joinpoint.getSignature().toShortString());
         log.warn(exception.getClass().toString() + " :: " + exception.getMessage());
