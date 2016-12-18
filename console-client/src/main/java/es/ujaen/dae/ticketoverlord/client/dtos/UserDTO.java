@@ -62,7 +62,7 @@ public class UserDTO {
     }
 
     public boolean isAdmin() {
-        return this.role.equals("ADMIN");
+        return this.role.equals(ROLE_ADMIN);
     }
 
     public boolean isEnabled() {

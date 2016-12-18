@@ -1,7 +1,10 @@
 package es.ujaen.dae.ticketoverlord.client;
 
 import es.ujaen.dae.ticketoverlord.client.dtos.*;
-import es.ujaen.dae.ticketoverlord.client.utilities.RestTemplates;
+import es.ujaen.dae.ticketoverlord.client.utilities.EventsTemplate;
+import es.ujaen.dae.ticketoverlord.client.utilities.TicketsTemplate;
+import es.ujaen.dae.ticketoverlord.client.utilities.UsersTemplate;
+import es.ujaen.dae.ticketoverlord.client.utilities.VenuesTemplate;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -48,33 +51,35 @@ public class TestDataCreator {
 
     private void deleteTickets() {
 
-        List<TicketDTO> tickets = RestTemplates.Tickets.getAllTickets();
+        List<TicketDTO> tickets = TicketsTemplate.getAllTickets();
         for (TicketDTO ticketDTO : tickets) {
-            RestTemplates.Tickets.deleteTicket(ticketDTO);
+            TicketsTemplate.deleteTicket(ticketDTO);
         }
     }
 
     private void deleteVenues() {
 
-        List<VenueDTO> venues = RestTemplates.Venues.getAllVenues();
+        List<VenueDTO> venues = VenuesTemplate.getAllVenues();
         for (VenueDTO venueDTO : venues) {
-            RestTemplates.Venues.deleteVenue(venueDTO);
+            VenuesTemplate.deleteVenue(venueDTO);
         }
     }
 
     private void deleteEvents() {
 
-        List<EventDTO> events = RestTemplates.Events.getAllEvents(new HashMap<>());
+        List<EventDTO> events = EventsTemplate.getAllEvents(new HashMap<>());
         for (EventDTO eventDTO : events) {
-            RestTemplates.Events.deleteEvent(eventDTO);
+            EventsTemplate.deleteEvent(eventDTO);
         }
     }
 
     private void deleteUsers() {
 
-        List<UserDTO> users = RestTemplates.Users.getAllUsers();
+        List<UserDTO> users = UsersTemplate.getAllUsers();
         for (UserDTO userDTO : users) {
-            RestTemplates.Users.deleteUser(userDTO);
+            if (!userDTO.getUsername().equalsIgnoreCase("admin")) {
+                UsersTemplate.deleteUser(userDTO);
+            }
         }
     }
 
@@ -101,16 +106,16 @@ public class TestDataCreator {
 
         VenueDTO instituto = new VenueDTO("Teatro del instituto", "Jaén, Jaén", "Calle del Estudiante 10");
 
-        RestTemplates.Venues.addVenue(ferial);
-        RestTemplates.Venues.addVenue(plazaToros);
-        RestTemplates.Venues.addVenue(centroJubilados);
-        RestTemplates.Venues.addVenue(glorieta);
-        RestTemplates.Venues.addVenue(instituto);
+        VenuesTemplate.addVenue(ferial);
+        VenuesTemplate.addVenue(plazaToros);
+        VenuesTemplate.addVenue(centroJubilados);
+        VenuesTemplate.addVenue(glorieta);
+        VenuesTemplate.addVenue(instituto);
     }
 
     private void insertEvents() {
 
-        List<VenueDTO> venues = RestTemplates.Venues.getAllVenues();
+        List<VenueDTO> venues = VenuesTemplate.getAllVenues();
 
         Integer ferialId = null;
         Integer centroJubiladosId = null;
@@ -135,24 +140,21 @@ public class TestDataCreator {
         EventDTO bandoneon = new EventDTO("Al ritmo del bandoneón", "Concierto", "20/11/2016", centroJubiladosId);
         bandoneon.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(20), 10));
 
-        RestTemplates.Events.addEvent(feriaSanLucas);
-        RestTemplates.Events.addEvent(nochesAndaluces);
-        RestTemplates.Events.addEvent(bandoneon);
+        EventsTemplate.addEvent(feriaSanLucas);
+        EventsTemplate.addEvent(nochesAndaluces);
+        EventsTemplate.addEvent(bandoneon);
     }
 
     private void insertUsers() {
 
-        UserDTO admin = new UserDTO("3842affe-750b-4fa1-8120-0433a21a2f74", "Admin", "admin");
-        admin.setRole(UserDTO.ROLE_ADMIN);
         UserDTO user1 = new UserDTO("4b955cda-215d-4937-a77c-e5140c6ed0cc", "Anto", "pass");
         UserDTO user2 = new UserDTO("d18716ed-4f31-4ad5-9a5c-984a81873a68", "Ele", "pass");
         UserDTO user3 = new UserDTO("1588204b-bce1-4afb-81b4-74140049c150", "Alessandro", "intrigante");
         UserDTO user4 = new UserDTO("89b42c9a-0ad9-42c5-86a9-a89945404038", "Egle", "minkia");
 
-        RestTemplates.Users.addUser(admin);
-        RestTemplates.Users.addUser(user1);
-        RestTemplates.Users.addUser(user2);
-        RestTemplates.Users.addUser(user3);
-        RestTemplates.Users.addUser(user4);
+        UsersTemplate.addUser(user1);
+        UsersTemplate.addUser(user2);
+        UsersTemplate.addUser(user3);
+        UsersTemplate.addUser(user4);
     }
 }

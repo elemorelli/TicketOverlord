@@ -1,7 +1,10 @@
 package es.ujaen.dae.ticketoverlord.client;
 
 import es.ujaen.dae.ticketoverlord.client.dtos.*;
-import es.ujaen.dae.ticketoverlord.client.utilities.RestTemplates;
+import es.ujaen.dae.ticketoverlord.client.utilities.EventsTemplate;
+import es.ujaen.dae.ticketoverlord.client.utilities.TicketsTemplate;
+import es.ujaen.dae.ticketoverlord.client.utilities.UsersTemplate;
+import es.ujaen.dae.ticketoverlord.client.utilities.VenuesTemplate;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -118,7 +121,7 @@ public class ConsoleClient {
 
         Map<String, String> filters = new HashMap<>();
         filters.put("name", eventName);
-        List<EventDTO> events = RestTemplates.Events.getAllEvents(filters);
+        List<EventDTO> events = EventsTemplate.getAllEvents(filters);
 
         if (!events.isEmpty()) {
             printEventList(events);
@@ -137,7 +140,7 @@ public class ConsoleClient {
         Map<String, String> filters = new HashMap<>();
         filters.put("name", eventName);
         filters.put("city", eventCity);
-        List<EventDTO> events = RestTemplates.Events.getAllEvents(filters);
+        List<EventDTO> events = EventsTemplate.getAllEvents(filters);
 
         if (!events.isEmpty()) {
             printEventList(events);
@@ -156,7 +159,7 @@ public class ConsoleClient {
         Map<String, String> filters = new HashMap<>();
         filters.put("date", eventDate);
         filters.put("type", eventType);
-        List<EventDTO> events = RestTemplates.Events.getAllEvents(filters);
+        List<EventDTO> events = EventsTemplate.getAllEvents(filters);
 
         if (!events.isEmpty()) {
             printEventList(events);
@@ -178,7 +181,7 @@ public class ConsoleClient {
         filters.put("date", eventDate);
         filters.put("type", eventType);
         filters.put("city", eventCity);
-        List<EventDTO> events = RestTemplates.Events.getAllEvents(filters);
+        List<EventDTO> events = EventsTemplate.getAllEvents(filters);
 
         if (!events.isEmpty()) {
             printEventList(events);
@@ -193,7 +196,7 @@ public class ConsoleClient {
         int eventNumber = 0;
         for (EventDTO event : events) {
 
-            VenueDTO venue = RestTemplates.Venues.getVenue(event.getEventId());
+            VenueDTO venue = VenuesTemplate.getVenue(event.getVenueId());
 
             System.out.println();
             System.out.println("  EVENTO " + ++eventNumber + ": \"" + event.getName() + "\"");
@@ -202,7 +205,7 @@ public class ConsoleClient {
             System.out.println("    Recinto: " + venue.getName());
             System.out.println("    Localidad: " + venue.getCity());
 
-            List<PricePerZoneDTO> pricesPerZone = event.getPricesPerZone();
+            List<PricePerZoneDTO> pricesPerZone = EventsTemplate.getEventAvailability(event.getEventId());
             if (!pricesPerZone.isEmpty()) {
                 System.out.println("    Precios:");
 
@@ -249,7 +252,7 @@ public class ConsoleClient {
             EventDTO event = events.get(eventNumber - 1);
 
             Set<Character> zoneNames = new HashSet<>();
-            List<PricePerZoneDTO> prices = event.getPricesPerZone();
+            List<PricePerZoneDTO> prices = EventsTemplate.getEventAvailability(event.getEventId());
             if (prices != null && !prices.isEmpty()) {
                 System.out.println("Seleccione zona a la cual desea asistir:");
 
@@ -265,25 +268,32 @@ public class ConsoleClient {
                 }
 
                 Character selectedZone;
+                PricePerZoneDTO selectedPrice = null;
                 do {
                     selectedZone = readCharacter();
                     if (!zoneNames.contains(selectedZone)) {
                         System.err.println("La zona ingresada no existe");
-                    } else if (prices.get(selectedZone).getAvailableSeats() <= 0) {
-                        System.err.println("TICKETS AGOTADOS PARA LA ZONA '" + selectedZone + "'");
+                    } else {
+                        for (PricePerZoneDTO price : prices) {
+                            if (price.getZoneName().equals(selectedZone)) {
+                                selectedPrice = price;
+                                break;
+                            }
+                        }
+                        if (selectedPrice.getAvailableSeats() <= 0) {
+                            System.err.println("TICKETS AGOTADOS PARA LA ZONA '" + selectedZone + "'");
+                        }
                     }
                 }
-                while (!zoneNames.contains(selectedZone) || prices.get(selectedZone).getAvailableSeats() <= 0);
-
-                PricePerZoneDTO priceToCharge = prices.get(selectedZone);
+                while (!zoneNames.contains(selectedZone) || selectedPrice.getAvailableSeats() <= 0);
 
                 Integer ticketsToBuy;
                 do {
-                    System.out.println("Ingrese la cantidad de tickets (" + priceToCharge.getAvailableSeats() + " tickets disponibles):");
+                    System.out.println("Ingrese la cantidad de tickets (" + selectedPrice.getAvailableSeats() + " tickets disponibles):");
                     ticketsToBuy = readNumber();
-                } while (ticketsToBuy <= 0 || ticketsToBuy > priceToCharge.getAvailableSeats());
+                } while (ticketsToBuy <= 0 || ticketsToBuy > selectedPrice.getAvailableSeats());
 
-                VenueDTO venue = RestTemplates.Venues.getVenue(event.getEventId());
+                VenueDTO venue = VenuesTemplate.getVenue(event.getVenueId());
 
                 System.out.println();
                 System.out.println("-----------------------------------");
@@ -291,10 +301,10 @@ public class ConsoleClient {
                 System.out.println("  Evento: " + event.getName());
                 System.out.println("  Fecha: " + event.getDate());
                 System.out.println("  Recinto: " + venue.getName());
-                System.out.println("  Zona: " + priceToCharge.getZoneName());
-                System.out.println("  Precio por ticket: €" + priceToCharge.getPrice());
+                System.out.println("  Zona: " + selectedPrice.getZoneName());
+                System.out.println("  Precio por ticket: €" + selectedPrice.getPrice());
                 System.out.println("  Cantidad de tickets: " + ticketsToBuy);
-                System.out.println("  Se le facturará un total de €" + (priceToCharge.getPrice().multiply(new BigDecimal(ticketsToBuy))));
+                System.out.println("  Se le facturará un total de €" + (selectedPrice.getPrice().multiply(new BigDecimal(ticketsToBuy))));
                 System.out.println("-----------------------------------");
                 System.out.println();
                 System.out.println("  ¿Desea confirmar la operación? S/N");
@@ -308,10 +318,11 @@ public class ConsoleClient {
                     TicketDTO ticket = new TicketDTO();
                     ticket.setUserId(authenticatedUser.getUserId());
                     ticket.setEventId(event.getEventId());
-                    ticket.setPrice(priceToCharge.getPrice());
+                    ticket.setZoneName(selectedZone);
+                    ticket.setPrice(selectedPrice.getPrice());
                     ticket.setQuantity(ticketsToBuy);
 
-                    RestTemplates.Tickets.addTicket(ticket);
+                    TicketsTemplate.addTicket(ticket, authenticatedUser.getUsername(), authenticatedUser.getPassword());
                     System.out.println("La operación se ha completado satisfactoriamente");
                     //} catch (NoTicketsAvailableException e) {
                     //System.err.println("Operación cancelada: No hay tickets disponibles");
@@ -331,7 +342,7 @@ public class ConsoleClient {
 
     private void listTickets() {
 
-        List<TicketDTO> tickets = RestTemplates.Tickets.getAllTickets();
+        List<TicketDTO> tickets = TicketsTemplate.getAllTickets();
 
         if (!tickets.isEmpty()) {
             System.out.println();
@@ -339,8 +350,8 @@ public class ConsoleClient {
             System.out.println("-----------------------------------");
             for (TicketDTO ticket : tickets) {
 
-                EventDTO event = RestTemplates.Events.getEvent(ticket.getEventId());
-                VenueDTO venue = RestTemplates.Venues.getVenue(event.getEventId());
+                EventDTO event = EventsTemplate.getEvent(ticket.getEventId());
+                VenueDTO venue = VenuesTemplate.getVenue(event.getVenueId());
 
                 System.out.println("Evento: " + event.getName());
                 System.out.println("    Fecha: " + event.getDate());
@@ -392,7 +403,7 @@ public class ConsoleClient {
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         eventDTO.setDate(readDate());
 
-        List<VenueDTO> venues = RestTemplates.Venues.getAllVenues();
+        List<VenueDTO> venues = VenuesTemplate.getAllVenues();
 
         Integer venueNumber = 0;
         for (VenueDTO venue : venues) {
@@ -432,7 +443,7 @@ public class ConsoleClient {
             System.out.println("El recinto no tiene zonas");
         }
 
-        RestTemplates.Events.addEvent(eventDTO);
+        EventsTemplate.addEvent(eventDTO);
         System.out.println("El evento '" + eventDTO.getName() + "' ha sido creado correctamente");
     }
 
@@ -441,13 +452,13 @@ public class ConsoleClient {
         System.out.println("Introduzca el nombre de usuario");
         String userName = readText();
 
-        UserDTO userDTO = RestTemplates.Users.getUser(userName);
+        UserDTO userDTO = UsersTemplate.getUser(userName);
 
         if (userDTO != null) {
             System.out.println("Introduzca la contraseña");
             String password = readText();
             userDTO.setPassword(password);
-            RestTemplates.Users.addUser(userDTO);
+            UsersTemplate.addUser(userDTO);
             System.out.println("El usuario " + userName + " ha sido registrado");
         } else {
             System.out.println("Nombre de usuario no disponible");
@@ -463,7 +474,8 @@ public class ConsoleClient {
         userDTO.setPassword(readText());
 
         try {
-            authenticatedUser = RestTemplates.Users.getUser(userDTO.getUsername());
+            authenticatedUser = UsersTemplate.getUser(userDTO.getUsername());
+            authenticatedUser.setPassword(userDTO.getPassword());
             System.out.println("Autenticación correcta");
         } catch (RuntimeException e) {
             System.err.println("El usuario o password son incorrectos");

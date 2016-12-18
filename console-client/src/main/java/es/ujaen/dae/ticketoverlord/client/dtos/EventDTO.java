@@ -74,12 +74,4 @@ public class EventDTO {
     public void addPricePerZone(PricePerZoneDTO pricePerZoneDTO) {
         this.pricesPerZone.add(pricePerZoneDTO);
     }
-
-    public PricePerZoneDTO getPricePerZone(Character zoneName) {
-        for (PricePerZoneDTO dto : pricesPerZone) {
-            if (dto.getZoneName().equals(zoneName))
-                return dto;
-        }
-        return null;
-    }
 }
