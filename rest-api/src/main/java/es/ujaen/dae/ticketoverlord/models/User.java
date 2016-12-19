@@ -10,8 +10,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(unique = true)
-    private String uuidToken;
-    @Column(unique = true)
     private String username;
     private String password;
     private boolean enabled;
@@ -29,7 +27,6 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", uuidToken='" + uuidToken + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", enabled=" + enabled +
@@ -44,14 +41,6 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUuidToken() {
-        return uuidToken;
-    }
-
-    public void setUuidToken(String uuidToken) {
-        this.uuidToken = uuidToken;
     }
 
     public String getUsername() {

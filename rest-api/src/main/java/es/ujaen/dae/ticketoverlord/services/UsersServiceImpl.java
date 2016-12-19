@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Component("UsersService")
 public class UsersServiceImpl implements UsersService {
@@ -24,7 +23,6 @@ public class UsersServiceImpl implements UsersService {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
-        user.setUuidToken(UUID.randomUUID().toString());
         user.setEnabled(true);
         usersDAO.insertUser(user);
         return new UserDTO(user);

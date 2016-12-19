@@ -2,7 +2,6 @@ package es.ujaen.dae.ticketoverlord.client.dtos;
 
 public class UserDTO {
     private Integer userId;
-    private String uuidToken;
     private String username;
     private String password;
     private String role;
@@ -14,8 +13,7 @@ public class UserDTO {
         this.role = ROLE_USER;
     }
 
-    public UserDTO(String uuidToken, String username, String password) {
-        this.uuidToken = uuidToken;
+    public UserDTO(String username, String password) {
         this.username = username;
         this.password = password;
         this.role = ROLE_USER;
@@ -27,14 +25,6 @@ public class UserDTO {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public String getUuidToken() {
-        return uuidToken;
-    }
-
-    public void setUuidToken(String uuidToken) {
-        this.uuidToken = uuidToken;
     }
 
     public String getUsername() {

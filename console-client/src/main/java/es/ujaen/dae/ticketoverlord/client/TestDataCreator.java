@@ -130,7 +130,7 @@ public class TestDataCreator {
             }
         }
 
-        EventDTO feriaSanLucas = new EventDTO("Feria de San Lucas 2016", "Todo", "08/10/2016", ferialId);
+        EventDTO feriaSanLucas = new EventDTO("Feria de San Lucas 2016", "Variado", "08/10/2016", ferialId);
         feriaSanLucas.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(20), 5));
         feriaSanLucas.addPricePerZone(new PricePerZoneDTO('B', new BigDecimal(10), 10));
         feriaSanLucas.addPricePerZone(new PricePerZoneDTO('C', new BigDecimal(5), 20));
@@ -150,10 +150,10 @@ public class TestDataCreator {
 
     private void insertUsers() {
 
-        UserDTO user1 = new UserDTO("4b955cda-215d-4937-a77c-e5140c6ed0cc", "Anto", "pass");
-        UserDTO user2 = new UserDTO("d18716ed-4f31-4ad5-9a5c-984a81873a68", "Ele", "pass");
-        UserDTO user3 = new UserDTO("1588204b-bce1-4afb-81b4-74140049c150", "Alessandro", "intrigante");
-        UserDTO user4 = new UserDTO("89b42c9a-0ad9-42c5-86a9-a89945404038", "Egle", "minkia");
+        UserDTO user1 = new UserDTO("Anto", "pass");
+        UserDTO user2 = new UserDTO("Ele", "pass");
+        UserDTO user3 = new UserDTO("Alessandro", "intrigante");
+        UserDTO user4 = new UserDTO("Egle", "minkia");
 
         UsersTemplate.addUser(USER, PASS, user1);
         UsersTemplate.addUser(USER, PASS, user2);
