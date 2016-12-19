@@ -1,31 +1,33 @@
 package es.ujaen.dae.ticketoverlord.client.utilities;
 
-import org.apache.commons.codec.binary.Base64;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-
-import java.util.Arrays;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
 abstract class ApiTemplate {
-    final static String BASE_URL = "http://localhost:8080/ticketoverlord/api/v1/";
-    private final static String ADMIN_USERNAME = "admin";
-    private final static String ADMIN_PASSWORD = "admin";
+    private final static String LOCALHOST = "localhost";
+    private final static Integer PORT = 8080;
+    private final static String SCHEME = "http";
+    final static String BASE_URL = SCHEME + "://" + LOCALHOST + ":" + PORT + "/ticketoverlord/api/v1/";
 
-    static HttpEntity<Object> getRequest(Object data) {
-        return getRequest(data, ADMIN_USERNAME, ADMIN_PASSWORD);
+    static RestTemplate getTemplate(String user, String pass) {
+        HttpHost host = new HttpHost(LOCALHOST, PORT, SCHEME);
+        CloseableHttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider(user, pass)).useSystemProperties().build();
+        HttpComponentsClientHttpRequestFactory requestFactory = new DigestAuthRequestFactory(host, client);
+
+        return new RestTemplate(requestFactory);
     }
 
-    static HttpEntity<Object> getRequest(Object data, String user, String pass) {
-        String plainCreds = user + ":" + pass;
-        byte[] plainCredsBytes = plainCreds.getBytes();
-        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-        String base64Creds = new String(base64CredsBytes);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + base64Creds);
-        headers.add("Content-Type", "application/json");
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        return new HttpEntity<>(data, headers);
+    private static CredentialsProvider provider(String user, String pass) {
+        CredentialsProvider provider = new BasicCredentialsProvider();
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user, pass);
+        provider.setCredentials(AuthScope.ANY, credentials);
+        return provider;
     }
 }

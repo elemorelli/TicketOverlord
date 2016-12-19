@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TestDataCreator {
+    private final static String USER = "admin";
+    private final static String PASS = "admin";
+
     public static void main(String[] args) {
 
         TestDataCreator creator = new TestDataCreator();
@@ -51,34 +54,34 @@ public class TestDataCreator {
 
     private void deleteTickets() {
 
-        List<TicketDTO> tickets = TicketsTemplate.getAllTickets();
+        List<TicketDTO> tickets = TicketsTemplate.getAllTickets(USER, PASS);
         for (TicketDTO ticketDTO : tickets) {
-            TicketsTemplate.deleteTicket(ticketDTO);
+            TicketsTemplate.deleteTicket(USER, PASS, ticketDTO);
         }
     }
 
     private void deleteVenues() {
 
-        List<VenueDTO> venues = VenuesTemplate.getAllVenues();
+        List<VenueDTO> venues = VenuesTemplate.getAllVenues(USER, PASS);
         for (VenueDTO venueDTO : venues) {
-            VenuesTemplate.deleteVenue(venueDTO);
+            VenuesTemplate.deleteVenue(USER, PASS, venueDTO);
         }
     }
 
     private void deleteEvents() {
 
-        List<EventDTO> events = EventsTemplate.getAllEvents(new HashMap<>());
+        List<EventDTO> events = EventsTemplate.getAllEvents(USER, PASS, new HashMap<>());
         for (EventDTO eventDTO : events) {
-            EventsTemplate.deleteEvent(eventDTO);
+            EventsTemplate.deleteEvent(USER, PASS, eventDTO);
         }
     }
 
     private void deleteUsers() {
 
-        List<UserDTO> users = UsersTemplate.getAllUsers();
+        List<UserDTO> users = UsersTemplate.getAllUsers(USER, PASS);
         for (UserDTO userDTO : users) {
             if (!userDTO.getUsername().equalsIgnoreCase("admin")) {
-                UsersTemplate.deleteUser(userDTO);
+                UsersTemplate.deleteUser(USER, PASS, userDTO);
             }
         }
     }
@@ -106,16 +109,16 @@ public class TestDataCreator {
 
         VenueDTO instituto = new VenueDTO("Teatro del instituto", "Jaén, Jaén", "Calle del Estudiante 10");
 
-        VenuesTemplate.addVenue(ferial);
-        VenuesTemplate.addVenue(plazaToros);
-        VenuesTemplate.addVenue(centroJubilados);
-        VenuesTemplate.addVenue(glorieta);
-        VenuesTemplate.addVenue(instituto);
+        VenuesTemplate.addVenue(USER, PASS, ferial);
+        VenuesTemplate.addVenue(USER, PASS, plazaToros);
+        VenuesTemplate.addVenue(USER, PASS, centroJubilados);
+        VenuesTemplate.addVenue(USER, PASS, glorieta);
+        VenuesTemplate.addVenue(USER, PASS, instituto);
     }
 
     private void insertEvents() {
 
-        List<VenueDTO> venues = VenuesTemplate.getAllVenues();
+        List<VenueDTO> venues = VenuesTemplate.getAllVenues(USER, PASS);
 
         Integer ferialId = null;
         Integer centroJubiladosId = null;
@@ -140,9 +143,9 @@ public class TestDataCreator {
         EventDTO bandoneon = new EventDTO("Al ritmo del bandoneón", "Concierto", "20/11/2016", centroJubiladosId);
         bandoneon.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(20), 10));
 
-        EventsTemplate.addEvent(feriaSanLucas);
-        EventsTemplate.addEvent(nochesAndaluces);
-        EventsTemplate.addEvent(bandoneon);
+        EventsTemplate.addEvent(USER, PASS, feriaSanLucas);
+        EventsTemplate.addEvent(USER, PASS, nochesAndaluces);
+        EventsTemplate.addEvent(USER, PASS, bandoneon);
     }
 
     private void insertUsers() {
@@ -152,9 +155,9 @@ public class TestDataCreator {
         UserDTO user3 = new UserDTO("1588204b-bce1-4afb-81b4-74140049c150", "Alessandro", "intrigante");
         UserDTO user4 = new UserDTO("89b42c9a-0ad9-42c5-86a9-a89945404038", "Egle", "minkia");
 
-        UsersTemplate.addUser(user1);
-        UsersTemplate.addUser(user2);
-        UsersTemplate.addUser(user3);
-        UsersTemplate.addUser(user4);
+        UsersTemplate.addUser(USER, PASS, user1);
+        UsersTemplate.addUser(USER, PASS, user2);
+        UsersTemplate.addUser(USER, PASS, user3);
+        UsersTemplate.addUser(USER, PASS, user4);
     }
 }

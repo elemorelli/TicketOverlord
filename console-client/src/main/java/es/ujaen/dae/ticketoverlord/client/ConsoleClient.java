@@ -121,7 +121,7 @@ public class ConsoleClient {
 
         Map<String, String> filters = new HashMap<>();
         filters.put("name", eventName);
-        List<EventDTO> events = EventsTemplate.getAllEvents(filters);
+        List<EventDTO> events = EventsTemplate.getAllEvents(authenticatedUser.getUsername(), authenticatedUser.getPassword(), filters);
 
         if (!events.isEmpty()) {
             printEventList(events);
@@ -140,7 +140,7 @@ public class ConsoleClient {
         Map<String, String> filters = new HashMap<>();
         filters.put("name", eventName);
         filters.put("city", eventCity);
-        List<EventDTO> events = EventsTemplate.getAllEvents(filters);
+        List<EventDTO> events = EventsTemplate.getAllEvents(authenticatedUser.getUsername(), authenticatedUser.getPassword(), filters);
 
         if (!events.isEmpty()) {
             printEventList(events);
@@ -159,7 +159,7 @@ public class ConsoleClient {
         Map<String, String> filters = new HashMap<>();
         filters.put("date", eventDate);
         filters.put("type", eventType);
-        List<EventDTO> events = EventsTemplate.getAllEvents(filters);
+        List<EventDTO> events = EventsTemplate.getAllEvents(authenticatedUser.getUsername(), authenticatedUser.getPassword(), filters);
 
         if (!events.isEmpty()) {
             printEventList(events);
@@ -181,7 +181,7 @@ public class ConsoleClient {
         filters.put("date", eventDate);
         filters.put("type", eventType);
         filters.put("city", eventCity);
-        List<EventDTO> events = EventsTemplate.getAllEvents(filters);
+        List<EventDTO> events = EventsTemplate.getAllEvents(authenticatedUser.getUsername(), authenticatedUser.getPassword(), filters);
 
         if (!events.isEmpty()) {
             printEventList(events);
@@ -196,7 +196,7 @@ public class ConsoleClient {
         int eventNumber = 0;
         for (EventDTO event : events) {
 
-            VenueDTO venue = VenuesTemplate.getVenue(event.getVenueId());
+            VenueDTO venue = VenuesTemplate.getVenue(authenticatedUser.getUsername(), authenticatedUser.getPassword(), event.getVenueId());
 
             System.out.println();
             System.out.println("  EVENTO " + ++eventNumber + ": \"" + event.getName() + "\"");
@@ -205,7 +205,7 @@ public class ConsoleClient {
             System.out.println("    Recinto: " + venue.getName());
             System.out.println("    Localidad: " + venue.getCity());
 
-            List<PricePerZoneDTO> pricesPerZone = EventsTemplate.getEventAvailability(event.getEventId());
+            List<PricePerZoneDTO> pricesPerZone = EventsTemplate.getEventAvailability(authenticatedUser.getUsername(), authenticatedUser.getPassword(), event.getEventId());
             if (!pricesPerZone.isEmpty()) {
                 System.out.println("    Precios:");
 
@@ -252,7 +252,7 @@ public class ConsoleClient {
             EventDTO event = events.get(eventNumber - 1);
 
             Set<Character> zoneNames = new HashSet<>();
-            List<PricePerZoneDTO> prices = EventsTemplate.getEventAvailability(event.getEventId());
+            List<PricePerZoneDTO> prices = EventsTemplate.getEventAvailability(authenticatedUser.getUsername(), authenticatedUser.getPassword(), event.getEventId());
             if (prices != null && !prices.isEmpty()) {
                 System.out.println("Seleccione zona a la cual desea asistir:");
 
@@ -293,7 +293,7 @@ public class ConsoleClient {
                     ticketsToBuy = readNumber();
                 } while (ticketsToBuy <= 0 || ticketsToBuy > selectedPrice.getAvailableSeats());
 
-                VenueDTO venue = VenuesTemplate.getVenue(event.getVenueId());
+                VenueDTO venue = VenuesTemplate.getVenue(authenticatedUser.getUsername(), authenticatedUser.getPassword(), event.getVenueId());
 
                 System.out.println();
                 System.out.println("-----------------------------------");
@@ -322,7 +322,7 @@ public class ConsoleClient {
                     ticket.setPrice(selectedPrice.getPrice());
                     ticket.setQuantity(ticketsToBuy);
 
-                    TicketsTemplate.addTicket(ticket, authenticatedUser.getUsername(), authenticatedUser.getPassword());
+                    TicketsTemplate.addTicket(authenticatedUser.getUsername(), authenticatedUser.getPassword(), ticket);
                     System.out.println("La operación se ha completado satisfactoriamente");
                     //} catch (NoTicketsAvailableException e) {
                     //System.err.println("Operación cancelada: No hay tickets disponibles");
@@ -342,7 +342,7 @@ public class ConsoleClient {
 
     private void listTickets() {
 
-        List<TicketDTO> tickets = TicketsTemplate.getAllTickets();
+        List<TicketDTO> tickets = UsersTemplate.getUserTickets(authenticatedUser.getUsername(), authenticatedUser.getPassword(), authenticatedUser.getUsername());
 
         if (!tickets.isEmpty()) {
             System.out.println();
@@ -350,8 +350,8 @@ public class ConsoleClient {
             System.out.println("-----------------------------------");
             for (TicketDTO ticket : tickets) {
 
-                EventDTO event = EventsTemplate.getEvent(ticket.getEventId());
-                VenueDTO venue = VenuesTemplate.getVenue(event.getVenueId());
+                EventDTO event = EventsTemplate.getEvent(authenticatedUser.getUsername(), authenticatedUser.getPassword(), ticket.getEventId());
+                VenueDTO venue = VenuesTemplate.getVenue(authenticatedUser.getUsername(), authenticatedUser.getPassword(), event.getVenueId());
 
                 System.out.println("Evento: " + event.getName());
                 System.out.println("    Fecha: " + event.getDate());
@@ -403,7 +403,7 @@ public class ConsoleClient {
         System.out.println("Ingrese la fecha del evento (Formato dd/mm/aaaa):");
         eventDTO.setDate(readDate());
 
-        List<VenueDTO> venues = VenuesTemplate.getAllVenues();
+        List<VenueDTO> venues = VenuesTemplate.getAllVenues(authenticatedUser.getUsername(), authenticatedUser.getPassword());
 
         Integer venueNumber = 0;
         for (VenueDTO venue : venues) {
@@ -443,7 +443,7 @@ public class ConsoleClient {
             System.out.println("El recinto no tiene zonas");
         }
 
-        EventsTemplate.addEvent(eventDTO);
+        EventsTemplate.addEvent(authenticatedUser.getUsername(), authenticatedUser.getPassword(), eventDTO);
         System.out.println("El evento '" + eventDTO.getName() + "' ha sido creado correctamente");
     }
 
@@ -452,13 +452,13 @@ public class ConsoleClient {
         System.out.println("Introduzca el nombre de usuario");
         String userName = readText();
 
-        UserDTO userDTO = UsersTemplate.getUser(userName);
+        UserDTO userDTO = UsersTemplate.getUser("", "", userName);
 
         if (userDTO != null) {
             System.out.println("Introduzca la contraseña");
             String password = readText();
             userDTO.setPassword(password);
-            UsersTemplate.addUser(userDTO);
+            UsersTemplate.addUser("", "", userDTO);
             System.out.println("El usuario " + userName + " ha sido registrado");
         } else {
             System.out.println("Nombre de usuario no disponible");
@@ -467,15 +467,14 @@ public class ConsoleClient {
 
     private void authenticateUser() {
 
-        UserDTO userDTO = new UserDTO();
         System.out.println("Introduzca el nombre de usuario");
-        userDTO.setUsername(readText());
+        String username = readText();
         System.out.println("Introduzca la contraseña");
-        userDTO.setPassword(readText());
+        String password = readText();
 
         try {
-            authenticatedUser = UsersTemplate.getUser(userDTO.getUsername());
-            authenticatedUser.setPassword(userDTO.getPassword());
+            authenticatedUser = UsersTemplate.getUser(username, password, username);
+            authenticatedUser.setPassword(password);
             System.out.println("Autenticación correcta");
         } catch (RuntimeException e) {
             System.err.println("El usuario o password son incorrectos");

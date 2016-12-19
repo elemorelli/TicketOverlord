@@ -9,8 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
 import javax.sql.DataSource;
 
@@ -25,18 +26,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final static String ROLES_QUERY = "SELECT username, role FROM users WHERE username=?";
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return super.userDetailsServiceBean();
+    }
+
+    @Bean
+    public DigestAuthenticationFilter authFilter() throws Exception {
+        DigestAuthenticationFilter filter = new DigestAuthenticationFilter();
+        filter.setUserDetailsService(userDetailsServiceBean()); // ref="jdbcDaoImpl" ?
+        filter.setAuthenticationEntryPoint(digestEntryPoint());
+        return filter;
+    }
+
+    @Bean
+    public DigestAuthenticationEntryPoint digestEntryPoint() {
+        DigestAuthenticationEntryPoint entryPoint = new DigestAuthenticationEntryPoint();
+        entryPoint.setRealmName(REALM);
+        entryPoint.setKey("uniqueAndSecret");
+        return entryPoint;
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth, PasswordEncoder encoder) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery(USERS_QUERY)
                 .authoritiesByUsernameQuery(ROLES_QUERY)
-                .passwordEncoder(encoder)
         ;
     }
 
@@ -45,9 +61,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .httpBasic()
+                .exceptionHandling().authenticationEntryPoint(digestEntryPoint())
                 .and()
-                .csrf().disable(); // TODO: Es necesario deshabilitarlo? Sino tira error de token faltante
+                .addFilter(authFilter())
+                //.httpBasic()
+                .csrf().disable() // TODO: Es necesario deshabilitarlo? Sino tira error de token faltante
         ;
     }
 }
