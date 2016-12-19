@@ -22,6 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
     private final static String REALM = "TICKET_OVERLORD";
+    private final static String ENTRY_POINT_KEY = "3f6f47eb-89ec-470c-989d-a84a485e3be9";
     private final static String USERS_QUERY = "SELECT username, password, enabled FROM users WHERE username=?";
     private final static String ROLES_QUERY = "SELECT username, role FROM users WHERE username=?";
 
@@ -33,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DigestAuthenticationFilter authFilter() throws Exception {
         DigestAuthenticationFilter filter = new DigestAuthenticationFilter();
-        filter.setUserDetailsService(userDetailsServiceBean()); // ref="jdbcDaoImpl" ?
+        filter.setUserDetailsService(userDetailsServiceBean());
         filter.setAuthenticationEntryPoint(digestEntryPoint());
         return filter;
     }
@@ -42,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public DigestAuthenticationEntryPoint digestEntryPoint() {
         DigestAuthenticationEntryPoint entryPoint = new DigestAuthenticationEntryPoint();
         entryPoint.setRealmName(REALM);
-        entryPoint.setKey("uniqueAndSecret");
+        entryPoint.setKey(ENTRY_POINT_KEY);
         return entryPoint;
     }
 
@@ -64,8 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(digestEntryPoint())
                 .and()
                 .addFilter(authFilter())
-                //.httpBasic()
-                .csrf().disable() // TODO: Es necesario deshabilitarlo? Sino tira error de token faltante
+                .csrf().disable() // TODO: Error de token faltante - Tiene sentido?
         ;
     }
 }
