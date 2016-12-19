@@ -88,64 +88,80 @@ public class TestDataCreator {
 
     private void insertVenues() {
 
-        VenueDTO ferial = new VenueDTO("IFEJA, Ferias Jaén", "Jaén, Jaén", "Prolongación Carretera Granada S/N");
-        ferial.addZone(new ZoneDTO('A', 50));
-        ferial.addZone(new ZoneDTO('B', 60));
-        ferial.addZone(new ZoneDTO('C', 70));
+        VenueDTO teatroInfanta = new VenueDTO("Teatro Infanta Leonor", "Jaén, Jaén", "Calle Molino de la Condesa, s/n");
+        teatroInfanta.addZone(new ZoneDTO('A', 50));
+        teatroInfanta.addZone(new ZoneDTO('B', 150));
+        teatroInfanta.addZone(new ZoneDTO('C', 250));
 
         VenueDTO plazaToros = new VenueDTO("Plaza de Toros de Jaén", "Jaén, Jaén", "Alameda de Capuchinos S/N");
-        plazaToros.addZone(new ZoneDTO('A', 100));
-        plazaToros.addZone(new ZoneDTO('B', 200));
-        plazaToros.addZone(new ZoneDTO('C', 300));
-        plazaToros.addZone(new ZoneDTO('D', 400));
+        plazaToros.addZone(new ZoneDTO('A', 1000));
+        plazaToros.addZone(new ZoneDTO('B', 1000));
+        plazaToros.addZone(new ZoneDTO('C', 1000));
+        plazaToros.addZone(new ZoneDTO('D', 1000));
 
-        VenueDTO centroJubilados = new VenueDTO("Centro de jubilados \"La edad de oro\"", "Úbeda, Jaén", "Calle del Sabio 23");
-        centroJubilados.addZone(new ZoneDTO('A', 10));
+        VenueDTO cafeTeatro = new VenueDTO("Café Teatro Central", "Baeza, Jaén", "Calle Obispo Narváez 19");
+        cafeTeatro.addZone(new ZoneDTO('A', 15));
+        cafeTeatro.addZone(new ZoneDTO('B', 20));
+        cafeTeatro.addZone(new ZoneDTO('C', 35));
 
-        VenueDTO glorieta = new VenueDTO("Teatro La Glorieta", "Baeza, Jaén", "Calle del Artista 12");
-        glorieta.addZone(new ZoneDTO('A', 85));
-        glorieta.addZone(new ZoneDTO('B', 55));
-        glorieta.addZone(new ZoneDTO('C', 35));
+        VenueDTO auditorioAlameda = new VenueDTO("Auditorio Municipal La Alameda", "Jaén, Jaén", "Alameda de Capuchinos, 14");
 
-        VenueDTO instituto = new VenueDTO("Teatro del instituto", "Jaén, Jaén", "Calle del Estudiante 10");
+        VenueDTO auditorioUbeda = new VenueDTO("Auditorio Recinto Ferial de Úbeda", "Úbeda , Jaén", "Carretera de Baeza, s/n");
+        auditorioUbeda.addZone(new ZoneDTO('A', 60));
+        auditorioUbeda.addZone(new ZoneDTO('B', 80));
 
-        VenuesTemplate.addVenue(USER, PASS, ferial);
+        VenuesTemplate.addVenue(USER, PASS, teatroInfanta);
         VenuesTemplate.addVenue(USER, PASS, plazaToros);
-        VenuesTemplate.addVenue(USER, PASS, centroJubilados);
-        VenuesTemplate.addVenue(USER, PASS, glorieta);
-        VenuesTemplate.addVenue(USER, PASS, instituto);
+        VenuesTemplate.addVenue(USER, PASS, cafeTeatro);
+        VenuesTemplate.addVenue(USER, PASS, auditorioAlameda);
+        VenuesTemplate.addVenue(USER, PASS, auditorioUbeda);
     }
 
     private void insertEvents() {
 
         List<VenueDTO> venues = VenuesTemplate.getAllVenues(USER, PASS);
 
-        Integer ferialId = null;
-        Integer centroJubiladosId = null;
+        Integer teatroInfantaId = null;
+        Integer cafeTeatroId = null;
+        Integer auditorioUbedaId = null;
         for (VenueDTO venueDTO : venues) {
-            if (venueDTO.getName().equalsIgnoreCase("IFEJA, Ferias Jaén")) {
-                ferialId = venueDTO.getVenueId();
-            } else if (venueDTO.getName().equalsIgnoreCase("Centro de jubilados \"La edad de oro\"")) {
-                centroJubiladosId = venueDTO.getVenueId();
+            if (venueDTO.getName().equalsIgnoreCase("Teatro Infanta Leonor")) {
+                teatroInfantaId = venueDTO.getVenueId();
+            } else if (venueDTO.getName().equalsIgnoreCase("Café Teatro Central")) {
+                cafeTeatroId = venueDTO.getVenueId();
+            } else if (venueDTO.getName().equalsIgnoreCase("Auditorio Recinto Ferial de Úbeda")) {
+                auditorioUbedaId = venueDTO.getVenueId();
             }
         }
 
-        EventDTO feriaSanLucas = new EventDTO("Feria de San Lucas 2016", "Variado", "08/10/2016", ferialId);
-        feriaSanLucas.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(20), 5));
-        feriaSanLucas.addPricePerZone(new PricePerZoneDTO('B', new BigDecimal(10), 10));
-        feriaSanLucas.addPricePerZone(new PricePerZoneDTO('C', new BigDecimal(5), 20));
+        EventDTO lagoDeLosCisnes = new EventDTO("El lago de los cisnes", "Ballet", "01/01/2017", teatroInfantaId);
+        lagoDeLosCisnes.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(20), 5));
+        lagoDeLosCisnes.addPricePerZone(new PricePerZoneDTO('B', new BigDecimal(10), 10));
+        lagoDeLosCisnes.addPricePerZone(new PricePerZoneDTO('C', new BigDecimal(5), 20));
 
-        EventDTO nochesAndaluces = new EventDTO("Noches andaluces", "Concierto", "20/10/2016", ferialId);
-        nochesAndaluces.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(40), 10));
-        nochesAndaluces.addPricePerZone(new PricePerZoneDTO('B', new BigDecimal(20), 25));
-        nochesAndaluces.addPricePerZone(new PricePerZoneDTO('C', new BigDecimal(10), 35));
+        EventDTO nochesContrapelo = new EventDTO("Noches a contrapelo", "Comedia", "02/01/2017", teatroInfantaId);
+        nochesContrapelo.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(40), 10));
+        nochesContrapelo.addPricePerZone(new PricePerZoneDTO('B', new BigDecimal(20), 25));
+        nochesContrapelo.addPricePerZone(new PricePerZoneDTO('C', new BigDecimal(10), 35));
 
-        EventDTO bandoneon = new EventDTO("Al ritmo del bandoneón", "Concierto", "20/11/2016", centroJubiladosId);
-        bandoneon.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(20), 10));
+        EventDTO bandoneon = new EventDTO("Al ritmo del bandoneón", "Recital", "01/01/2017", cafeTeatroId);
+        bandoneon.addPricePerZone(new PricePerZoneDTO('A', new BigDecimal(50), 15));
+        bandoneon.addPricePerZone(new PricePerZoneDTO('B', new BigDecimal(30), 20));
+        bandoneon.addPricePerZone(new PricePerZoneDTO('C', new BigDecimal(20), 35));
 
-        EventsTemplate.addEvent(USER, PASS, feriaSanLucas);
-        EventsTemplate.addEvent(USER, PASS, nochesAndaluces);
+        EventDTO bajoTerapia = new EventDTO("Bajo terapia", "Comedia", "01/01/2017", auditorioUbedaId);
+        bajoTerapia.addPricePerZone(new PricePerZoneDTO('A',  new BigDecimal(20), 3));
+        bajoTerapia.addPricePerZone(new PricePerZoneDTO('B',  new BigDecimal(40), 7));
+
+        EventDTO quieroSerMago = new EventDTO("¡Quiero ser mago!", "Infantil", "02/01/2017", auditorioUbedaId);
+        quieroSerMago.addPricePerZone(new PricePerZoneDTO('A',  new BigDecimal(10), 20));
+        quieroSerMago.addPricePerZone(new PricePerZoneDTO('B',  new BigDecimal(20), 30));
+
+        EventsTemplate.addEvent(USER, PASS, lagoDeLosCisnes);
+        EventsTemplate.addEvent(USER, PASS, nochesContrapelo);
         EventsTemplate.addEvent(USER, PASS, bandoneon);
+        EventsTemplate.addEvent(USER, PASS, bajoTerapia);
+        EventsTemplate.addEvent(USER, PASS, quieroSerMago);
     }
 
     private void insertUsers() {
