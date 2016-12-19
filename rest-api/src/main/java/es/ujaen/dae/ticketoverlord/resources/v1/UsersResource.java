@@ -2,11 +2,14 @@ package es.ujaen.dae.ticketoverlord.resources.v1;
 
 import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
 import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
+import es.ujaen.dae.ticketoverlord.exceptions.services.ForbiddenAccessException;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,6 +39,8 @@ public class UsersResource {
     @RequestMapping(method = RequestMethod.GET, value = "/{userTag}")
     public UserDTO getUserData(@PathVariable String userTag) {
 
+        verifyAuthenticatedUser(userTag);
+
         if (StringUtils.isNumeric(userTag)) {
             return usersService.getUser(Integer.parseInt(userTag));
         } else {
@@ -47,6 +52,8 @@ public class UsersResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{userTag}/tickets")
     public List<String> getUserTickets(@PathVariable String userTag) {
+
+        verifyAuthenticatedUser(userTag);
 
         UserDTO userDTO = new UserDTO();
         if (StringUtils.isNumeric(userTag)) {
@@ -62,6 +69,15 @@ public class UsersResource {
             links.add(ticket.getLink(Link.REL_SELF).getHref());
         }
         return links;
+    }
+
+    private void verifyAuthenticatedUser(@PathVariable String userTag) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String authenticatedUser = userDetails.getUsername();
+
+        if (!authenticatedUser.equalsIgnoreCase("admin") &&  !authenticatedUser.equalsIgnoreCase(userTag)) {
+            throw new ForbiddenAccessException();
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{userId}", consumes = "application/json")

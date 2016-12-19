@@ -44,10 +44,9 @@ public class TicketsServiceImpl implements TicketsService {
 
     @Override
     @Transactional(readOnly = true)
-    @Secured("ROLE_USER")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public List<TicketDTO> getTicketsByUser(UserDTO user) {
 
-        // TODO: Check that the user is the one that requested the tickets
         List<TicketDTO> tickets = new ArrayList<>();
         for (Ticket ticket : usersDAO.selectUserById(user.getUserId()).getTickets()) {
             tickets.add(new TicketDTO(ticket));

@@ -1,9 +1,14 @@
 package es.ujaen.dae.ticketoverlord.resources.v1;
 
 import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
+import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
+import es.ujaen.dae.ticketoverlord.exceptions.services.ForbiddenAccessException;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
+import es.ujaen.dae.ticketoverlord.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,6 +21,8 @@ import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 public class TicketsResource {
     @Autowired
     private TicketsService ticketsService;
+    @Autowired
+    private UsersService usersService;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<String> getTickets() {
@@ -41,7 +48,22 @@ public class TicketsResource {
 
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
     public TicketDTO addTicket(@RequestBody TicketDTO ticketDTO) {
+
+        verifyAuthenticatedUser(ticketDTO.getUserId());
+
         return ticketsService.buyTicket(ticketDTO);
+    }
+
+    private void verifyAuthenticatedUser(@PathVariable Integer userId) {
+
+        UserDTO user = usersService.getUser(userId);
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String authenticatedUser = userDetails.getUsername();
+
+        if (!authenticatedUser.equalsIgnoreCase("admin") && !authenticatedUser.equalsIgnoreCase(user.getUsername())) {
+            throw new ForbiddenAccessException();
+        }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{ticketId}")
