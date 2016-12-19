@@ -15,11 +15,10 @@
         <class>es.ujaen.dae.ticketoverlord.models.Zone</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url"
-                      value="jdbc:h2:tcp://localhost/~/test;DB_CLOSE_ON_EXIT=TRUE;FILE_LOCK=NO;IGNORECASE=TRUE"/>
-            <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.driver" value="${db.driver}"/>
+            <property name="javax.persistence.jdbc.url" value="${db.url}"/>
+            <property name="javax.persistence.jdbc.user" value="${db.user}"/>
+            <property name="javax.persistence.jdbc.password" value="${db.pass}"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
