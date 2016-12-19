@@ -5,7 +5,6 @@ import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.services.ForbiddenAccessException;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,32 +35,19 @@ public class UsersResource {
         return links;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{userTag}")
-    public UserDTO getUserData(@PathVariable String userTag) {
+    @RequestMapping(method = RequestMethod.GET, value = "/{username}")
+    public UserDTO getUserData(@PathVariable String username) {
 
-        verifyAuthenticatedUser(userTag);
-
-        if (StringUtils.isNumeric(userTag)) {
-            return usersService.getUser(Integer.parseInt(userTag));
-        } else {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(userTag);
-            return usersService.getUser(userDTO);
-        }
+        verifyAuthenticatedUser(username);
+        return usersService.getUser(username);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{userTag}/tickets")
-    public List<String> getUserTickets(@PathVariable String userTag) {
+    @RequestMapping(method = RequestMethod.GET, value = "/{username}/tickets")
+    public List<String> getUserTickets(@PathVariable String username) {
 
-        verifyAuthenticatedUser(userTag);
+        verifyAuthenticatedUser(username);
 
-        UserDTO userDTO = new UserDTO();
-        if (StringUtils.isNumeric(userTag)) {
-            userDTO.setUserId(Integer.parseInt(userTag));
-        } else {
-            userDTO.setUsername(userTag);
-            userDTO = usersService.getUser(userDTO);
-        }
+        UserDTO userDTO = usersService.getUser(username);
 
         List<TicketDTO> tickets = ticketsService.getTicketsByUser(userDTO);
         List<String> links = new ArrayList<>();
@@ -71,11 +57,11 @@ public class UsersResource {
         return links;
     }
 
-    private void verifyAuthenticatedUser(@PathVariable String userTag) {
+    private void verifyAuthenticatedUser(@PathVariable String username) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String authenticatedUser = userDetails.getUsername();
 
-        if (!authenticatedUser.equalsIgnoreCase("admin") &&  !authenticatedUser.equalsIgnoreCase(userTag)) {
+        if (!authenticatedUser.equalsIgnoreCase("admin") && !authenticatedUser.equalsIgnoreCase(username)) {
             throw new ForbiddenAccessException();
         }
     }

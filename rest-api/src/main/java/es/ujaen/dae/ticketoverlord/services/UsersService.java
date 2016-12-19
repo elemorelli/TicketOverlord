@@ -13,7 +13,7 @@ public interface UsersService {
 
     List<UserDTO> getUsers();
 
-    UserDTO getUser(UserDTO user);
+    UserDTO getUser(String username);
 
     UserDTO getUser(Integer id);
 }

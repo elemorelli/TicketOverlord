@@ -70,9 +70,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
-    public UserDTO getUser(UserDTO userToQuery) {
+    public UserDTO getUser(String username) {
         try {
-            return getUserAsDTO(usersDAO.selectUserByName(userToQuery.getUsername()));
+            return getUserAsDTO(usersDAO.selectUserByName(username));
         } catch (NoResultException e) {
             throw new NoUserFoundException();
         }
