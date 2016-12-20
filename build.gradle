@@ -6,9 +6,7 @@ apply plugin: 'idea'
 
 compileJava.options.encoding = 'UTF-8'
 
-//task stage(dependsOn: ['installDist'])
-//task stage(dependsOn: ['build', 'clean'])
-task stage(dependsOn: ['build', 'clean', ':rest-api:copyToLib'])
+task stage(dependsOn: ['build', 'clean', ':rest-api:build', ':rest-api:copyToLib'])
 
 build.mustRunAfter clean
 
