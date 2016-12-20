@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar rest-api\build\server\webapp-runner-8.5.5.2.jar --port $PORT rest-api/build/libs/rest-api-1.0-SNAPSHOT.war
+web: java $JAVA_OPTS -jar rest-api/build/server/webapp-runner-8.5.5.2.jar --port $PORT rest-api/build/libs/rest-api-1.0-SNAPSHOT.war
