@@ -1,0 +1,1 @@
+gradlew -q :console-client:run
