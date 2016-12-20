@@ -24,10 +24,10 @@ public class ORMConfig {
     @Bean
     public DriverManagerDataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(System.getProperty("db.driver"));
-        dataSource.setUrl(System.getProperty("db.url"));
-        dataSource.setUsername(System.getProperty("db.user"));
-        dataSource.setPassword(System.getProperty("db.pass"));
+        dataSource.setDriverClassName(System.getenv().get("DB_DRIVER"));
+        dataSource.setUrl(System.getenv().get("DB_URL"));
+        dataSource.setUsername(System.getenv().get("DB_USER"));
+        dataSource.setPassword(System.getenv().get("DB_PASS"));
         return dataSource;
     }
 
