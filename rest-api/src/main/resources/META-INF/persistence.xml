@@ -19,7 +19,7 @@
             <property name="javax.persistence.jdbc.url" value="${DB_URL}"/>
             <property name="javax.persistence.jdbc.user" value="${DB_USER}"/>
             <property name="javax.persistence.jdbc.password" value="${DB_PASS}"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>

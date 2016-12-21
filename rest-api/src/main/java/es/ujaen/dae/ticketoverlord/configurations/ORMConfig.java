@@ -34,8 +34,8 @@ public class ORMConfig {
     @Bean
     public HibernateJpaVendorAdapter jpaAdapter() {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-        jpaVendorAdapter.setDatabase(Database.H2);
-        jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
+        jpaVendorAdapter.setDatabase(Database.POSTGRESQL);
+        jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.PostgreSQL95Dialect");
         jpaVendorAdapter.setShowSql(false);
         jpaVendorAdapter.setGenerateDdl(true);
         return jpaVendorAdapter;
@@ -59,7 +59,8 @@ public class ORMConfig {
     }
 
     @Bean
-    public TransactionTemplate transactionTemplate() {
+    public TransactionTemplate transactionTemplate() throws ClassNotFoundException {
+        Class.forName("org.postgresql.Driver");
         TransactionTemplate transactionTemplate = new TransactionTemplate();
         transactionTemplate.setTransactionManager(transactionManager(entityManagerFactory().getObject()));
         return transactionTemplate;
