@@ -29,8 +29,11 @@ public class VenuesTemplate extends ApiTemplate {
     }
 
     public static VenueDTO getVenue(String user, String pass, Integer venueId) {
-
-        return getTemplate(user, pass).exchange(URL_ID, HttpMethod.GET, new HttpEntity<>(null), VenueDTO.class, venueId).getBody();
+        try {
+            return getTemplate(user, pass).exchange(URL_ID, HttpMethod.GET, new HttpEntity<>(null), VenueDTO.class, venueId).getBody();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static void updateVenue(String user, String pass, VenueDTO venueDTO) {

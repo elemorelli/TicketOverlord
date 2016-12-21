@@ -33,7 +33,11 @@ public class UsersTemplate extends ApiTemplate {
     }
 
     public static UserDTO getUser(String user, String pass, String username) {
-        return getTemplate(user, pass).exchange(URL_ID, HttpMethod.GET, new HttpEntity<>(null), UserDTO.class, username).getBody();
+        try {
+            return getTemplate(user, pass).exchange(URL_ID, HttpMethod.GET, new HttpEntity<>(null), UserDTO.class, username).getBody();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static List<TicketDTO> getUserTickets(String user, String pass, String username) {

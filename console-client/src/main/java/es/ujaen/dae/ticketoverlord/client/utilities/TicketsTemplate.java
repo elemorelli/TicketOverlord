@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketoverlord.client.utilities;
 
+import es.ujaen.dae.ticketoverlord.client.Exceptions.TicketTransactionException;
 import es.ujaen.dae.ticketoverlord.client.dtos.TicketDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -12,8 +13,12 @@ public class TicketsTemplate extends ApiTemplate {
     private static final String URL = BASE_URL + "tickets/";
     private static final String URL_ID = URL + "{ticketsId}/";
 
-    public static void addTicket(String user, String pass, TicketDTO ticketDTO) {
-        getTemplate(user, pass).exchange(URL, HttpMethod.PUT, new HttpEntity<>(ticketDTO), TicketDTO.class);
+    public static void addTicket(String user, String pass, TicketDTO ticketDTO) throws TicketTransactionException {
+        try {
+            getTemplate(user, pass).exchange(URL, HttpMethod.PUT, new HttpEntity<>(ticketDTO), TicketDTO.class);
+        } catch (Exception e) {
+            throw new TicketTransactionException(e);
+        }
     }
 
     public static List<TicketDTO> getAllTickets(String user, String pass) {
@@ -27,7 +32,11 @@ public class TicketsTemplate extends ApiTemplate {
     }
 
     public static TicketDTO getTicket(String user, String pass, Integer ticketId) {
-        return getTemplate(user, pass).exchange(URL_ID, HttpMethod.GET, new HttpEntity<>(null), TicketDTO.class, ticketId).getBody();
+        try {
+            return getTemplate(user, pass).exchange(URL_ID, HttpMethod.GET, new HttpEntity<>(null), TicketDTO.class, ticketId).getBody();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static void updateTicket(String user, String pass, TicketDTO ticketDTO) {

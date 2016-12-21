@@ -37,7 +37,11 @@ public class EventsTemplate extends ApiTemplate {
     }
 
     public static EventDTO getEvent(String user, String pass, Integer eventId) {
-        return getTemplate(user, pass).exchange(URL_ID, HttpMethod.GET, new HttpEntity<>(null), EventDTO.class, eventId).getBody();
+        try {
+            return getTemplate(user, pass).exchange(URL_ID, HttpMethod.GET, new HttpEntity<>(null), EventDTO.class, eventId).getBody();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static List<PricePerZoneDTO> getEventAvailability(String user, String pass, Integer eventId) {

@@ -1,5 +1,6 @@
 package es.ujaen.dae.ticketoverlord.client;
 
+import es.ujaen.dae.ticketoverlord.client.Exceptions.TicketTransactionException;
 import es.ujaen.dae.ticketoverlord.client.dtos.*;
 import es.ujaen.dae.ticketoverlord.client.utilities.EventsTemplate;
 import es.ujaen.dae.ticketoverlord.client.utilities.TicketsTemplate;
@@ -322,13 +323,12 @@ public class ConsoleClient {
                     ticket.setPrice(selectedPrice.getPrice());
                     ticket.setQuantity(ticketsToBuy);
 
-                    TicketsTemplate.addTicket(authenticatedUser.getUsername(), authenticatedUser.getPassword(), ticket);
-                    System.out.println("La operación se ha completado satisfactoriamente");
-                    //} catch (NoTicketsAvailableException e) {
-                    //System.err.println("Operación cancelada: No hay tickets disponibles");
-                    //} catch (TicketTransactionException e) {
-                    //System.err.println("Operación cancelada: Error procesando transacción");
-                    //}
+                    try {
+                        TicketsTemplate.addTicket(authenticatedUser.getUsername(), authenticatedUser.getPassword(), ticket);
+                        System.out.println("La operación se ha completado satisfactoriamente");
+                    } catch (TicketTransactionException e) {
+                        System.err.println("Operación cancelada: Error procesando transacción");
+                    }
                 } else {
                     System.err.println("Operación cancelada");
                 }
