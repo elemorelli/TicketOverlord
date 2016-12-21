@@ -32,7 +32,7 @@ public class ZoneDTO extends ResourceSupport {
                 .slash(this.getName()).withSelfRel());
 
         this.add(linkTo(VenuesResource.class)
-                .slash(zone.getVenue().getId()).withSelfRel());
+                .slash(zone.getVenue().getId()).withRel("venue"));
     }
 
     @Override
