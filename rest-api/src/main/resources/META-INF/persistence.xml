@@ -4,23 +4,12 @@
              http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
     <persistence-unit name="TicketsOverlordPersistenceUnit" transaction-type="RESOURCE_LOCAL">
-
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
         <class>es.ujaen.dae.ticketoverlord.models.Event</class>
         <class>es.ujaen.dae.ticketoverlord.models.PricePerZone</class>
         <class>es.ujaen.dae.ticketoverlord.models.Ticket</class>
         <class>es.ujaen.dae.ticketoverlord.models.User</class>
         <class>es.ujaen.dae.ticketoverlord.models.Venue</class>
         <class>es.ujaen.dae.ticketoverlord.models.Zone</class>
-
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="${DB_DRIVER}"/>
-            <property name="javax.persistence.jdbc.url" value="${DB_URL}"/>
-            <property name="javax.persistence.jdbc.user" value="${DB_USER}"/>
-            <property name="javax.persistence.jdbc.password" value="${DB_PASS}"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-        </properties>
     </persistence-unit>
 </persistence>

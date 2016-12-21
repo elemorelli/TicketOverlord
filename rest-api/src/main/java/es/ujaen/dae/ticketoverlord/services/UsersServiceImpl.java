@@ -71,6 +71,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public UserDTO getUser(String username) {
+        // TODO: Return more info only if it's the current user
         try {
             return getUserAsDTO(usersDAO.selectUserByName(username));
         } catch (NoResultException e) {
@@ -79,9 +80,8 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    @Secured({"ROLE_ADMIN", "ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public UserDTO getUser(Integer userId) {
-        // TODO: Check user rights
         return getUserAsDTO(usersDAO.selectUserById(userId));
     }
 
