@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManagerFactory;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Configuration
 @EnableTransactionManagement
@@ -22,12 +24,13 @@ public class ORMConfig {
     }
 
     @Bean
-    public DriverManagerDataSource dataSource() {
+    public DriverManagerDataSource dataSource() throws URISyntaxException {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(System.getenv().get("DB_DRIVER"));
-        dataSource.setUrl(System.getenv().get("DB_URL"));
-        dataSource.setUsername(System.getenv().get("DB_USER"));
-        dataSource.setPassword(System.getenv().get("DB_PASS"));
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath());
+        dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
+        dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
         return dataSource;
     }
 
@@ -42,7 +45,7 @@ public class ORMConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws URISyntaxException {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setPackagesToScan("es.ujaen.dae.ticketoverlord.models");
         entityManagerFactory.setDataSource(dataSource());
@@ -59,7 +62,7 @@ public class ORMConfig {
     }
 
     @Bean
-    public TransactionTemplate transactionTemplate() throws ClassNotFoundException {
+    public TransactionTemplate transactionTemplate() throws ClassNotFoundException, URISyntaxException {
         Class.forName("org.postgresql.Driver");
         TransactionTemplate transactionTemplate = new TransactionTemplate();
         transactionTemplate.setTransactionManager(transactionManager(entityManagerFactory().getObject()));
