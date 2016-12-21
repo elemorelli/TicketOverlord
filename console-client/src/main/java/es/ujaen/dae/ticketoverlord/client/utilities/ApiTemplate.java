@@ -11,13 +11,13 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 abstract class ApiTemplate {
-    private final static String LOCALHOST = "localhost";
-    private final static Integer PORT = 8080;
+    private final static String HOST = "ticket-overlord.herokuapp.com";
+    private final static Integer PORT = 80;
     private final static String SCHEME = "http";
-    final static String BASE_URL = SCHEME + "://" + LOCALHOST + ":" + PORT + "/ticketoverlord/api/v1/";
+    final static String BASE_URL = SCHEME + "://" + HOST + ":" + PORT + "/api/v1/";
 
     static RestTemplate getTemplate(String user, String pass) {
-        HttpHost host = new HttpHost(LOCALHOST, PORT, SCHEME);
+        HttpHost host = new HttpHost(HOST, PORT, SCHEME);
         CloseableHttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider(user, pass)).useSystemProperties().build();
         HttpComponentsClientHttpRequestFactory requestFactory = new DigestAuthRequestFactory(host, client);
 
