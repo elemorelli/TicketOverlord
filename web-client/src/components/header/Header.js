@@ -2,19 +2,17 @@ import React, {Component} from "react";
 import {Link} from "react-router";
 import "./Header.css";
 
-class Header extends Component {
+export default class Header extends Component {
     render() {
         return (
             <header>
-                <h1>Ticket Overlord</h1>
-                <ul>
-                    <li><Link to="/">Featured</Link></li>
-                    <li><Link to="events">Events</Link></li>
-                    <li>Login</li>
-                </ul>
+                <div>
+                    <h1> <Link to="/">Ticket Overlord</Link></h1>
+                    <Link to="events" activeClassName="active">Events</Link>
+                    <Link to="venues" activeClassName="active">Venues</Link>
+                    <Link to="login" activeClassName="active"> Login</Link>
+                </div>
             </header>
         );
     }
 }
-
-export default Header;

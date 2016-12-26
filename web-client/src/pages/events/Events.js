@@ -1,12 +1,13 @@
 import React, {Component} from "react";
+import {Link} from "react-router";
 
-class Events extends Component {
+export default class Events extends Component {
     render() {
         return (
             <div>
                 <h2>Todos los eventos</h2>
                 <ul>
-                    <li>a</li>
+                    <li><Link to="/events/a">a</Link></li>
                     <li>b</li>
                     <li>c</li>
                 </ul>
@@ -14,5 +15,3 @@ class Events extends Component {
         );
     }
 }
-
-export default Events;
