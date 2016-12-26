@@ -43,7 +43,7 @@ public class UsersResource {
         return ticketsService.getTicketsByUser(username);
     }
 
-    private void verifyAuthenticatedUser(@PathVariable String username) {
+    private void verifyAuthenticatedUser(String username) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String authenticatedUser = userDetails.getUsername();
 

@@ -47,7 +47,7 @@ public class TicketsResource {
         return ticketsService.buyTicket(ticketDTO);
     }
 
-    private void verifyAuthenticatedUser(@PathVariable Integer userId) {
+    private void verifyAuthenticatedUser(Integer userId) {
 
         UserDTO user = usersService.getUser(userId);
 
