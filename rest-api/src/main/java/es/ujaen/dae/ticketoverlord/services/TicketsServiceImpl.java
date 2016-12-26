@@ -4,7 +4,6 @@ import es.ujaen.dae.ticketoverlord.daos.EventsDAO;
 import es.ujaen.dae.ticketoverlord.daos.TicketsDAO;
 import es.ujaen.dae.ticketoverlord.daos.UsersDAO;
 import es.ujaen.dae.ticketoverlord.dtos.TicketDTO;
-import es.ujaen.dae.ticketoverlord.dtos.UserDTO;
 import es.ujaen.dae.ticketoverlord.exceptions.TicketTransactionException;
 import es.ujaen.dae.ticketoverlord.exceptions.services.tickets.NoTicketFoundException;
 import es.ujaen.dae.ticketoverlord.exceptions.services.tickets.NoTicketsAvailableException;
@@ -45,10 +44,10 @@ public class TicketsServiceImpl implements TicketsService {
     @Override
     @Transactional(readOnly = true)
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
-    public List<TicketDTO> getTicketsByUser(UserDTO user) {
+    public List<TicketDTO> getTicketsByUser(String username) {
 
         List<TicketDTO> tickets = new ArrayList<>();
-        for (Ticket ticket : usersDAO.selectUserById(user.getUserId()).getTickets()) {
+        for (Ticket ticket : usersDAO.selectUserByName(username).getTickets()) {
             tickets.add(new TicketDTO(ticket));
         }
         return tickets;
