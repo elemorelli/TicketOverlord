@@ -5,10 +5,8 @@ import es.ujaen.dae.ticketoverlord.dtos.PricePerZoneDTO;
 import es.ujaen.dae.ticketoverlord.services.EventsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +20,7 @@ public class EventsResource {
     private EventsService eventsService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<String> getEvents(
+    public List<EventDTO> getEvents(
             @RequestParam(value = "name", defaultValue = "") String name,
             @RequestParam(value = "date", defaultValue = "") String date,
             @RequestParam(value = "type", defaultValue = "") String type,
@@ -37,15 +35,10 @@ public class EventsResource {
             filters.put("type", type);
             filters.put("city", city);
 
-            events = eventsService.getEventsWithFilters(filters);
+            return eventsService.getEventsWithFilters(filters);
         } else {
-            events = eventsService.getEvents();
+            return eventsService.getEvents();
         }
-        List<String> links = new ArrayList<>();
-        for (EventDTO event : events) {
-            links.add(event.getLink(Link.REL_SELF).getHref());
-        }
-        return links;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{eventId}")
@@ -54,14 +47,9 @@ public class EventsResource {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{eventId}/availability")
-    public List<String> getEventAvailability(@PathVariable Integer eventId) {
+    public List<PricePerZoneDTO> getEventAvailability(@PathVariable Integer eventId) {
 
-        List<PricePerZoneDTO> pricesPerZone = eventsService.getEvent(eventId).getPricesPerZone();
-        List<String> links = new ArrayList<>();
-        for (PricePerZoneDTO pricePerZoneDTO : pricesPerZone) {
-            links.add(pricePerZoneDTO.getLink(Link.REL_SELF).getHref());
-        }
-        return links;
+        return eventsService.getEvent(eventId).getPricesPerZone();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{eventId}/availability/{zoneName}")

@@ -6,12 +6,10 @@ import es.ujaen.dae.ticketoverlord.exceptions.services.ForbiddenAccessException;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
@@ -25,14 +23,9 @@ public class TicketsResource {
     private UsersService usersService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<String> getTickets() {
+    public List<TicketDTO> getTickets() {
 
-        List<TicketDTO> tickets = ticketsService.getTickets();
-        List<String> links = new ArrayList<>();
-        for (TicketDTO ticket : tickets) {
-            links.add(ticket.getLink(Link.REL_SELF).getHref());
-        }
-        return links;
+        return ticketsService.getTickets();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{ticketId}")

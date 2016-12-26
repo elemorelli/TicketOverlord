@@ -6,12 +6,10 @@ import es.ujaen.dae.ticketoverlord.exceptions.services.ForbiddenAccessException;
 import es.ujaen.dae.ticketoverlord.services.TicketsService;
 import es.ujaen.dae.ticketoverlord.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
@@ -25,14 +23,9 @@ public class UsersResource {
     private TicketsService ticketsService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<String> getUsers() {
+    public List<UserDTO> getUsers() {
 
-        List<UserDTO> users = usersService.getUsers();
-        List<String> links = new ArrayList<>();
-        for (UserDTO user : users) {
-            links.add(user.getLink(Link.REL_SELF).getHref());
-        }
-        return links;
+        return usersService.getUsers();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{username}")
@@ -43,18 +36,11 @@ public class UsersResource {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{username}/tickets")
-    public List<String> getUserTickets(@PathVariable String username) {
+    public List<TicketDTO> getUserTickets(@PathVariable String username) {
 
         verifyAuthenticatedUser(username);
 
-        UserDTO userDTO = usersService.getUser(username);
-
-        List<TicketDTO> tickets = ticketsService.getTicketsByUser(userDTO);
-        List<String> links = new ArrayList<>();
-        for (TicketDTO ticket : tickets) {
-            links.add(ticket.getLink(Link.REL_SELF).getHref());
-        }
-        return links;
+        return ticketsService.getTicketsByUser(username);
     }
 
     private void verifyAuthenticatedUser(@PathVariable String username) {

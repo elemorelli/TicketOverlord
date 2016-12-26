@@ -4,10 +4,8 @@ import es.ujaen.dae.ticketoverlord.dtos.VenueDTO;
 import es.ujaen.dae.ticketoverlord.dtos.ZoneDTO;
 import es.ujaen.dae.ticketoverlord.services.VenuesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
@@ -19,14 +17,9 @@ public class VenuesResource {
     private VenuesService venuesService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<String> getVenues() {
+    public List<VenueDTO> getVenues() {
 
-        List<VenueDTO> venues = venuesService.getVenues();
-        List<String> links = new ArrayList<>();
-        for (VenueDTO venue : venues) {
-            links.add(venue.getLink(Link.REL_SELF).getHref());
-        }
-        return links;
+        return venuesService.getVenues();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{venueId}")
@@ -35,14 +28,9 @@ public class VenuesResource {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{venueId}/zones")
-    public List<String> getZones(@PathVariable Integer venueId) {
+    public List<ZoneDTO> getZones(@PathVariable Integer venueId) {
 
-        List<ZoneDTO> zones = venuesService.getVenue(venueId).getZones();
-        List<String> links = new ArrayList<>();
-        for (ZoneDTO zoneDTO : zones) {
-            links.add(zoneDTO.getLink(Link.REL_SELF).getHref());
-        }
-        return links;
+        return venuesService.getVenue(venueId).getZones();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{venueId}/zones/{zoneName}")
