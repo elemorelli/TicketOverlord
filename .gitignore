@@ -24,6 +24,7 @@ target/
 .gradle/
 node_modules
 build/
+yarn.lock
 
 # Specific IDE files
 .idea/
