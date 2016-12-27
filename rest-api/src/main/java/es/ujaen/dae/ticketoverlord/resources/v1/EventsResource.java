@@ -15,7 +15,7 @@ import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 
 @RestController
 @RequestMapping(API + "/events")
-public class EventsResource {
+public class EventsResource extends ApiResource {
     @Autowired
     private EventsService eventsService;
 
@@ -43,6 +43,7 @@ public class EventsResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{eventId}")
     public EventDTO getEventData(@PathVariable Integer eventId) {
+
         return eventsService.getEvent(eventId);
     }
 
@@ -60,17 +61,20 @@ public class EventsResource {
 
     @RequestMapping(method = RequestMethod.POST, value = "/{eventId}", consumes = "application/json")
     public EventDTO modifyEvent(@PathVariable Integer eventId, @RequestBody EventDTO eventDTO) {
+
         eventDTO.setEventId(eventId);
         return eventsService.modifyEvent(eventDTO);
     }
 
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
     public EventDTO addEvent(@RequestBody EventDTO eventDTO) {
+
         return eventsService.addNewEvent(eventDTO);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}")
     public void deleteEvent(@PathVariable Integer eventId) {
+
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEventId(eventId);
         eventsService.deleteEvent(eventDTO);

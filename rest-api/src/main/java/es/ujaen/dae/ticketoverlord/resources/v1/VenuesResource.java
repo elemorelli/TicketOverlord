@@ -12,7 +12,7 @@ import static es.ujaen.dae.ticketoverlord.resources.v1.IndexResource.API;
 
 @RestController
 @RequestMapping(API + "/venues")
-public class VenuesResource {
+public class VenuesResource extends ApiResource {
     @Autowired
     private VenuesService venuesService;
 
@@ -24,6 +24,7 @@ public class VenuesResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{venueId}")
     public VenueDTO getVenueData(@PathVariable Integer venueId) {
+
         return venuesService.getVenue(venueId);
     }
 
@@ -35,22 +36,26 @@ public class VenuesResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{venueId}/zones/{zoneName}")
     public ZoneDTO getZone(@PathVariable Integer venueId, @PathVariable Character zoneName) {
+
         return venuesService.getVenue(venueId).getZone(zoneName);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{venueId}", consumes = "application/json")
     public VenueDTO modifyVenue(@PathVariable Integer venueId, @RequestBody VenueDTO venueDTO) {
+
         venueDTO.setVenueId(venueId);
         return venuesService.modifyVenue(venueDTO);
     }
 
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
     public VenueDTO addVenue(@RequestBody VenueDTO venueDTO) {
+
         return venuesService.addNewVenue(venueDTO);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{venueId}")
     public void deleteVenue(@PathVariable Integer venueId) {
+
         VenueDTO venueDTO = new VenueDTO();
         venueDTO.setVenueId(venueId);
         venuesService.deleteVenue(venueDTO);

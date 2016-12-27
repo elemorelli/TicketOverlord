@@ -12,11 +12,12 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(API)
-public class IndexResource {
+public class IndexResource extends ApiResource {
     final static String API = "/api/v1";
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public Map<String, String> getHomeLinks() throws NoSuchMethodException {
+
         Map<String, String> links = new LinkedHashMap<>();
 
         links.put("Users", linkTo(UsersResource.class.getMethod("getUsers"), 2L).withSelfRel().getHref());
